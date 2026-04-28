@@ -56,7 +56,7 @@ def reply(reply_token: str, text: str):
 
 def search_now():
     genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(model_name="gemini-2.0-flash")
+    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
     today = datetime.now().strftime("%Y年%m月%d日")
     resp = model.generate_content(
         f"今天是{today}。請列出台灣適合大學生參加、與以下主題相關的比賽：「{PROJECT_INFO}」。"
