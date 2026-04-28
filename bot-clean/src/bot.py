@@ -1,52 +1,76 @@
 import os
 import requests
 from datetime import datetime
-import google.generativeai as genai
+from groq import Groq
 
 LINE_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_USER_ID = os.environ["LINE_USER_ID"]
-GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
+GROQ_API_KEY = os.environ["GROQ_API_KEY"]
+SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
 HEADERS = {
     "Authorization": f"Bearer {LINE_TOKEN}",
     "Content-Type": "application/json"
 }
 
-def search_competitions():
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash",
-        tools="google_search"
+def search_google(query: str) -> str:
+    resp = requests.post(
+        "https://google.serper.dev/search",
+        headers={"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"},
+        json={"q": query, "gl": "tw", "hl": "zh-tw", "num": 10}
     )
+    data = resp.json()
+    results = []
+    for item in data.get("organic", []):
+        results.append(f"標題：{item.get('title')}\n連結：{item.get('link')}\n摘要：{item.get('snippet')}")
+    return "\n\n".join(results)
+
+def search_competitions():
     today = datetime.now().strftime("%Y年%m月%d日")
-    prompt = f"""今天是 {today}，請用 Google 搜尋找出台灣【現在實際開放報名】的學生競賽。
+    queries = [
+        "2025 2026 台灣 金融科技競賽 報名",
+        "2025 2026 台灣 AI創新競賽 大學生 報名中",
+        "2025 2026 台灣 創新創業比賽 報名截止",
+        "2025 2026 台灣 資訊應用競賽 大學生"
+    ]
+    all_results = []
+    for q in queries:
+        result = search_google(q)
+        if result:
+            all_results.append(result)
+    combined = "\n\n---\n\n".join(all_results)
 
-請搜尋這些關鍵字：
-- "2025 金融科技競賽 報名"
-- "2025 AI創新競賽 大學生 台灣"
-- "2025 創新創業比賽 報名中"
-- "2026 資訊應用競賽 報名"
+    client = Groq(api_key=GROQ_API_KEY)
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{
+            "role": "user",
+            "content": f"""今天是 {today}。以下是 Google 搜尋結果：
+{combined}
 
-我的專題是「智慧保險系統」，主題涵蓋：金融科技、AI應用、網站設計、線上諮詢媒合。
+請從以上搜尋結果中，找出【目前確認開放報名】的比賽，截止日期必須在 {today} 之後。
+我的專題是「智慧保險系統」，主題：金融科技、AI應用、網站設計、線上諮詢媒合。
 
-【重要規則】
-1. 只列出【目前確認開放報名】的比賽，截止日期必須在 {today} 之後
-2. 如果找不到確認開放的比賽，直接說「目前查無開放報名的比賽，建議明天再查」
-3. 絕對不可以用「通常在某月」這種不確定的說法
-4. 沒有實際截止日期和報名連結的比賽一律不列出
+規則：
+1. 只列確認開放報名的比賽，截止日期在今天之後
+2. 找不到就說「目前查無開放報名的比賽」
+3. 不可以用「通常在某月」這種說法
+4. 沒有實際截止日期和連結的不列出
 
-每個比賽用以下格式：
+每個比賽格式：
 🏆 比賽名稱
 🏢 主辦：xxx
-📅 報名截止：xxxx年xx月xx日
-👥 組員人數：x~x人
+📅 截止：xxxx年xx月xx日
+👥 人數：x~x人
 📋 需準備：xxx
-🔗 報名連結：https://...
+🔗 連結：https://...
 💡 適合原因：一句話
 
-請用繁體中文回答。"""
-    response = model.generate_content(prompt)
-    return response.text
+繁體中文回答。"""
+        }],
+        max_tokens=2000
+    )
+    return response.choices[0].message.content
 
 def send_line_message(text):
     max_len = 4900
