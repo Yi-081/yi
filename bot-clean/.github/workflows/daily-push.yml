@@ -2,10 +2,8 @@ name: Daily Competition Push
 
 on:
   schedule:
-    # 每天台灣時間早上 9:00 (UTC 01:00)
     - cron: '0 1 * * *'
   workflow_dispatch:
-    # 可從 GitHub 手動觸發
 
 jobs:
   push:
@@ -13,17 +11,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install dependencies
-        run: pip install google-generativeai requests
-
+        run: pip install requests
       - name: Run bot
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: python src/bot.py
