@@ -35,11 +35,9 @@ PROJECT_DESCRIPTION = """
 def search_competitions():
     """Use Gemini with Google Search to find relevant competitions"""
     genai.configure(api_key=GEMINI_API_KEY)
+    from google.generativeai import types
 
-    model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash",
-        tools=[{"google_search": {}}]
-    )
+    model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
     today = datetime.now().strftime("%Y年%m月%d日")
 
@@ -69,7 +67,10 @@ def search_competitions():
 
 請用繁體中文回答，格式清晰易讀。"""
 
-    response = model.generate_content(prompt)
+    response = model.generate_content(
+        prompt,
+        tools=[types.Tool(google_search=types.GoogleSearch())]
+    )
     return response.text
 
 
