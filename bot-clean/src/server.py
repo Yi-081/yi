@@ -56,7 +56,10 @@ def reply(reply_token: str, text: str):
 
 def search_now():
     genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(model_name="gemini-2.0-flash", tools="google_search")
+    model = genai.GenerativeModel(
+        model_name="gemini-2.0-flash",
+        tools=[{"google_search": {}}]
+    )
     today = datetime.now().strftime("%Y年%m月%d日")
     resp = model.generate_content(
         f"今天是{today}。搜尋台灣目前開放報名、適合「{PROJECT_INFO}」參加的比賽，"
@@ -65,13 +68,34 @@ def search_now():
     return resp.text
 
 
-def handle_async(reply_token: str, msg: str):
+def push(user_id: str, text: str):
+    """Push message to user (no time limit, unlike reply token)"""
+    max_len = 4900
+    chunks = []
+    while text:
+        if len(text) <= max_len:
+            chunks.append(text)
+            break
+        split = text.rfind('\n', 0, max_len) or max_len
+        chunks.append(text[:split])
+        text = text[split:].lstrip('\n')
+
+    for chunk in chunks[:5]:
+        requests.post(
+            "https://api.line.me/v2/bot/message/push",
+            headers=HEADERS,
+            json={"to": user_id, "messages": [{"type": "text", "text": chunk}]}
+        )
+
+
+def handle_async(reply_token: str, user_id: str, msg: str):
     try:
         low = msg.strip().lower()
         if any(k in low for k in ['比賽', '競賽', '搜尋', '找', '報名']):
-            reply(reply_token, "🔍 搜尋中，約需30秒，請稍候...")
+            # 立刻用 reply 回應（在30秒內），然後用 push 傳結果（無時間限制）
+            reply(reply_token, "🔍 搜尋比賽中，結果稍後送達...")
             result = search_now()
-            reply(reply_token, f"🏆 最新比賽（{datetime.now().strftime('%m/%d')}）\n━━━━━━\n{result}")
+            push(user_id, f"🏆 最新比賽（{datetime.now().strftime('%m/%d')}）\n━━━━━━\n{result}")
         elif any(k in low for k in ['說明', 'help', '幫助', '功能']):
             reply(reply_token,
                 "🤖 競賽小幫手\n"
@@ -96,7 +120,10 @@ def handle_async(reply_token: str, msg: str):
             reply(reply_token, "Hi！傳「比賽」搜尋最新賽事 🏆\n傳「說明」查看功能")
     except Exception as e:
         logger.error(f"handle error: {e}")
-        reply(reply_token, f"❌ 發生錯誤：{str(e)[:100]}")
+        try:
+            push(user_id, f"❌ 發生錯誤：{str(e)[:100]}")
+        except:
+            pass
 
 
 @app.route("/webhook", methods=["POST"])
@@ -114,9 +141,10 @@ def webhook():
 
     for ev in events:
         if ev.get("type") == "message" and ev.get("message", {}).get("type") == "text":
+            user_id = ev.get("source", {}).get("userId", "")
             t = threading.Thread(
                 target=handle_async,
-                args=(ev.get("replyToken", ""), ev["message"]["text"]),
+                args=(ev.get("replyToken", ""), user_id, ev["message"]["text"]),
                 daemon=True
             )
             t.start()
