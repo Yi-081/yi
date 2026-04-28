@@ -318,6 +318,14 @@ def handle_message_async(reply_token: str, user_id: str, user_message: str):
                 "（例如：8點、7:30、7點半、9點15分）"
             )
 
+        # 已報名比賽
+        elif any(kw in msg_lower for kw in ['已報名', '報名進度', '我的報名', '進度表']):
+            reply_message(reply_token,
+                "📋 這是你的報名進度表 👇\n"
+                f"{SPREADSHEET_URL}\n\n"
+                "點連結就可以直接開啟 Google 試算表囉！"
+            )
+
         # === 說明 ===
         elif any(kw in msg_lower for kw in ['說明', 'help', '怎麼用', '功能']):
             h = push_time["hour"]
