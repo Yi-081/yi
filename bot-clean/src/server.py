@@ -155,9 +155,13 @@ def handle_search_async(user_id: str):
         today_str = datetime.now().strftime("%m/%d")
 
         if not competitions:
+            # 解析失敗，直接推原始內容
             push_message(user_id,
-                f"🔍 搜了一圈（{today_str}），目前找不到確認開放報名的比賽...\n"
-                "不過別灰心！明天再查看看，或是你也可以隨時輸入「比賽」讓我再搜一次 💪"
+                f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━"
+            )
+            push_message(user_id, raw)
+            push_message(user_id,
+                "有問題隨時問我，像是怎麼準備、簡報怎麼做之類的 😊"
             )
             return
 
@@ -172,7 +176,6 @@ def handle_search_async(user_id: str):
             push_message(user_id, comp)
 
         if remaining:
-            # 儲存剩下的，等使用者回應
             pending_competitions[user_id] = remaining
             push_message(user_id,
                 f"還有 {len(remaining)} 個比賽我還沒告訴你 👀\n"
@@ -186,7 +189,7 @@ def handle_search_async(user_id: str):
 
     except Exception as e:
         print(f"Search error: {e}")
-        push_message(user_id, f"哎呀，搜尋的時候好像出了點問題 😅\n稍後再試試看？\n（錯誤：{str(e)[:80]}）")
+        push_message(user_id, f"哎呀，搜尋的時候好像出了點問題 😅\n稍後再試試看？\n（錯誤：{str(e)[:80]}）"))
 
 def handle_message_async(reply_token: str, user_id: str, user_message: str):
     try:
