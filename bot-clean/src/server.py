@@ -56,14 +56,13 @@ def reply(reply_token: str, text: str):
 
 def search_now():
     genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash",
-        tools=[{"google_search": {}}]
-    )
+    model = genai.GenerativeModel(model_name="gemini-2.0-flash")
     today = datetime.now().strftime("%Y年%m月%d日")
     resp = model.generate_content(
-        f"今天是{today}。搜尋台灣目前開放報名、適合「{PROJECT_INFO}」參加的比賽，"
-        f"列出3個最相關的，每個包含：名稱、截止日期、主題、組員人數、需要資料、報名連結。繁體中文，簡潔格式。"
+        f"今天是{today}。請列出台灣適合大學生參加、與以下主題相關的比賽：「{PROJECT_INFO}」。"
+        f"涵蓋金融科技、AI應用、網站設計、創新創業類。"
+        f"每個比賽列出：名稱、主辦單位、大約報名時間（依歷年慣例）、組員人數、需準備資料、官網連結。"
+        f"列出5個，繁體中文，格式清晰。"
     )
     return resp.text
 
