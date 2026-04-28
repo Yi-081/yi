@@ -12,7 +12,6 @@ import logging
 from flask import Flask, request, abort
 import requests
 from datetime import datetime
-import google.generativeai as genai
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
@@ -55,16 +54,22 @@ def reply(reply_token: str, text: str):
 
 
 def search_now():
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
     today = datetime.now().strftime("%Y年%m月%d日")
-    resp = model.generate_content(
+    prompt = (
         f"今天是{today}。請列出台灣適合大學生參加、與以下主題相關的比賽：「{PROJECT_INFO}」。"
         f"涵蓋金融科技、AI應用、網站設計、創新創業類。"
         f"每個比賽列出：名稱、主辦單位、大約報名時間（依歷年慣例）、組員人數、需準備資料、官網連結。"
         f"列出5個，繁體中文，格式清晰。"
     )
-    return resp.text
+    url = (
+        f"https://generativelanguage.googleapis.com/v1beta/models/"
+        f"gemini-2.0-flash-lite:generateContent?key={GEMINI_API_KEY}"
+    )
+    payload = {"contents": [{"parts": [{"text": prompt}]}]}
+    resp = requests.post(url, json=payload, timeout=60)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["candidates"][0]["content"]["parts"][0]["text"]
 
 
 def push(user_id: str, text: str):
