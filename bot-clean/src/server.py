@@ -22,6 +22,7 @@ HEADERS = {
 }
 
 conversation_history = {}
+pending_competitions = {}  # 儲存每個 user 還沒看的比賽
 
 def verify_signature(body: bytes, signature: str) -> bool:
     hash_val = hmac.new(LINE_SECRET.encode('utf-8'), body, hashlib.sha256).digest()
@@ -83,11 +84,28 @@ def search_competitions_quick():
 請找出【目前確認開放報名】的比賽（截止日期在 {today} 之後）。
 我的專題：智慧保險系統，主題：金融科技、AI應用、網站設計。
 規則：只列有實際截止日期和連結的比賽；找不到就說目前查無；不可說通常在某月。
-格式：🏆名稱 🏢主辦 📅截止 👥人數 🔗連結 💡適合原因。繁體中文。"""
+
+請將每筆比賽用 [COMPETITION] 標記分隔，格式如下：
+[COMPETITION]
+🏆 比賽名稱
+🏢 主辦：xxx
+📅 截止：xxxx年xx月xx日
+👥 人數：x~x人
+🔗 連結：https://...
+💡 適合原因：一句話
+[/COMPETITION]
+
+繁體中文。"""
         }],
-        max_tokens=2000
+        max_tokens=3000
     )
     return response.choices[0].message.content
+
+def parse_competitions(raw: str):
+    """把回傳內容切成一筆一筆的比賽"""
+    import re
+    items = re.findall(r'\[COMPETITION\](.*?)\[/COMPETITION\]', raw, re.DOTALL)
+    return [item.strip() for item in items]
 
 def chat_with_groq(user_id: str, user_message: str) -> str:
     if user_id not in conversation_history:
@@ -95,8 +113,8 @@ def chat_with_groq(user_id: str, user_message: str) -> str:
 
     conversation_history[user_id].append({"role": "user", "content": user_message})
 
-    if len(conversation_history[user_id]) > 10:
-        conversation_history[user_id] = conversation_history[user_id][-10:]
+    if len(conversation_history[user_id]) > 20:
+        conversation_history[user_id] = conversation_history[user_id][-20:]
 
     client = Groq(api_key=GROQ_API_KEY)
     response = client.chat.completions.create(
@@ -104,11 +122,23 @@ def chat_with_groq(user_id: str, user_message: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": """你是「競賽小幫手」，專門協助使用者參加比賽。
+                "content": """你是「競賽小幫手」，是使用者的好朋友兼比賽顧問，個性活潑、親切、有點幽默。
 使用者的專題是「智慧保險系統」：網站平台配對保險員諮詢、AI分析保單、金融科技應用。
-你可以幫忙：比賽準備建議、簡報架構、團隊分工、評審問題預測等。
-用繁體中文回答，口氣友善親切。
-如果使用者問比賽資訊，提醒他輸入「比賽」來搜尋最新賽事。"""
+
+你的說話風格：
+- 像朋友聊天，不要太正式
+- 可以用一些輕鬆的語氣詞，例如「欸」「哈哈」「不用擔心」「其實蠻簡單的」
+- 回答不要太長，重點講清楚就好
+- 可以主動關心使用者的進度，例如「你們準備到哪了？」
+
+你擅長幫忙：
+- 比賽準備建議、簡報架構
+- 團隊分工、時程規劃
+- 預測評審可能問的問題
+- 幫使用者分析自己專題的優劣勢
+
+如果使用者問比賽資訊，提醒他輸入「比賽」來搜尋最新賽事。
+用繁體中文回答。"""
             }
         ] + conversation_history[user_id],
         max_tokens=1000
@@ -120,42 +150,101 @@ def chat_with_groq(user_id: str, user_message: str) -> str:
 
 def handle_search_async(user_id: str):
     try:
-        result = search_competitions_quick()
+        raw = search_competitions_quick()
+        competitions = parse_competitions(raw)
         today_str = datetime.now().strftime("%m/%d")
-        push_message(user_id, f"🏆 比賽情報（{today_str}）\n━━━━━━━━━━━━━━━\n{result}")
-        push_message(user_id, "━━━━━━━━━━━━━━━\n💡 以上為確認開放報名的比賽\n輸入「比賽」可重新查詢")
+
+        if not competitions:
+            push_message(user_id,
+                f"🔍 搜了一圈（{today_str}），目前找不到確認開放報名的比賽...\n"
+                "不過別灰心！明天再查看看，或是你也可以隨時輸入「比賽」讓我再搜一次 💪"
+            )
+            return
+
+        # 先推前3筆
+        first_three = competitions[:3]
+        remaining = competitions[3:]
+
+        push_message(user_id,
+            f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━"
+        )
+        for comp in first_three:
+            push_message(user_id, comp)
+
+        if remaining:
+            # 儲存剩下的，等使用者回應
+            pending_competitions[user_id] = remaining
+            push_message(user_id,
+                f"還有 {len(remaining)} 個比賽我還沒告訴你 👀\n"
+                "要繼續看嗎？回覆「還有哪些」或「繼續」我再列給你！"
+            )
+        else:
+            push_message(user_id,
+                "以上就是目前全部開放的比賽囉 ✅\n"
+                "有任何問題都可以問我，像是怎麼準備、簡報怎麼做之類的～"
+            )
+
     except Exception as e:
         print(f"Search error: {e}")
-        push_message(user_id, f"❌ 搜尋時發生錯誤，請稍後再試\n{str(e)[:100]}")
+        push_message(user_id, f"哎呀，搜尋的時候好像出了點問題 😅\n稍後再試試看？\n（錯誤：{str(e)[:80]}）")
 
 def handle_message_async(reply_token: str, user_id: str, user_message: str):
     try:
         msg_lower = user_message.strip().lower()
 
-        if any(kw in msg_lower for kw in ['比賽', '競賽', '搜尋比賽', '找比賽', '報名']):
-            reply_message(reply_token, "🔍 收到！正在搜尋最新比賽...\n結果約1分鐘內會送過來，請稍候 ⏳")
+        # 查看剩下的比賽
+        if any(kw in msg_lower for kw in ['還有', '繼續', '下一個', '其他', '更多']):
+            if user_id in pending_competitions and pending_competitions[user_id]:
+                remaining = pending_competitions[user_id]
+                show = remaining[:3]
+                rest = remaining[3:]
+                pending_competitions[user_id] = rest
+
+                reply_message(reply_token, "好！繼續來看～ 👇")
+                for comp in show:
+                    push_message(user_id, comp)
+
+                if rest:
+                    push_message(user_id,
+                        f"還剩 {len(rest)} 個，要繼續看嗎？\n回覆「繼續」就好！"
+                    )
+                else:
+                    push_message(user_id,
+                        "好了，這樣全部都看完囉 ✅\n有問題隨時問我！"
+                    )
+            else:
+                reply = chat_with_groq(user_id, user_message)
+                reply_message(reply_token, reply)
+
+        # 搜尋比賽
+        elif any(kw in msg_lower for kw in ['比賽', '競賽', '搜尋比賽', '找比賽', '報名']):
+            reply_message(reply_token,
+                "收到！我去幫你找一下 🔍\n大概一分鐘內送過來，先等我一下～"
+            )
             thread = threading.Thread(target=handle_search_async, args=(user_id,))
             thread.daemon = True
             thread.start()
 
+        # 說明
         elif any(kw in msg_lower for kw in ['說明', 'help', '怎麼用', '功能']):
             reply_message(reply_token,
-                "🤖 競賽小幫手使用說明\n━━━━━━━━━\n"
-                "📌 每天早上 9 點自動推播比賽\n\n"
-                "🔍 指令：\n"
-                "  「比賽」→ 搜尋最新賽事\n"
-                "  「說明」→ 查看此說明\n\n"
-                "💬 也可以直接聊天！\n"
-                "  問我比賽準備、簡報建議、分工方式等等"
+                "嗨！我是競賽小幫手 🏆\n━━━━━━━━━\n"
+                "📌 每天早上 9 點自動推播最新比賽\n\n"
+                "你可以這樣用：\n"
+                "  輸入「比賽」→ 馬上幫你搜尋\n"
+                "  直接聊天 → 問我怎麼準備、簡報建議、分工等等\n\n"
+                "我是針對「智慧保險系統」專題客製化的，\n"
+                "金融科技、AI、網站設計類的比賽都會幫你留意 👀"
             )
 
+        # 一般聊天
         else:
             reply = chat_with_groq(user_id, user_message)
             reply_message(reply_token, reply)
 
     except Exception as e:
         print(f"Error: {e}")
-        reply_message(reply_token, "❌ 發生錯誤，請稍後再試")
+        reply_message(reply_token, "啊，好像出了點問題 😅 稍後再試試？")
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
@@ -175,7 +264,10 @@ def webhook():
         reply_token = event.get("replyToken", "")
         user_id = event.get("source", {}).get("userId", "")
         user_message = event["message"]["text"]
-        thread = threading.Thread(target=handle_message_async, args=(reply_token, user_id, user_message))
+        thread = threading.Thread(
+            target=handle_message_async,
+            args=(reply_token, user_id, user_message)
+        )
         thread.daemon = True
         thread.start()
     return "OK", 200
