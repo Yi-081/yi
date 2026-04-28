@@ -53,6 +53,46 @@ def reply(reply_token: str, text: str):
     )
 
 
+GCP_PROJECT_ID = "ai-avatar-project-491110"
+GCP_LOCATION = "us-central1"
+
+SA_INFO = {
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDXANew7c0544kg\nJlmpsKBBFF66BiJiQuXohmcTt2gqeIoWBhFbUE1ePYr33shzdUTdNwu/aHb30Pzc\ncMsbOVtUfTzxWcZWvqxBkjYw9lfZMrU0BlQX+Hp/kmDEBY1WrNtn0K7s4NlsLgJM\nB88T4izNeQ0Xew3PbGsl7XGTNqZ2I4ZTWFBdax1NPvbSMcXIXPOMuy9nphJG7pVy\n6/W7pXTKJorJCypmYSLuukWbx3pEzVKxO9T3NNW60aGirYniKubEc0XfCf7hecdt\n1fyueGugB5GFHQUu38w2VLkw4JnPE/mjS/IDYQ57nod35o4fyGSuPPFPyUNL0/mk\nTmG52gzpAgMBAAECggEABCPpLhLhcfJemIjdDvU/rQrBJSn8V/yqrM5UtThS6ML/\naKyygVWwG3TH30YmTjy/k9bWwqRHpno9Oi/FdtbYa0uH1s5gM0xvjPSi8PuzT3Fn\nPMMikcO8FtOMwdIgneEcEw2MfABIVOeKk/uBUGIkL1PTVSXKHoabhkevPZYg3NRf\nEBpnMR110R0m+cyX2onkcA5U7uuS7SKoaURMFn9xNB68mfJl6IAJ5SGZlla9WGbN\nqzmgIn04D7bV1AXtQFxV3hzAvnZJQbrDrubvIppMDQghv6127sxLO+UOrMNNcFNw\nligboBWNnxA0arh1sB1CB0mlxSQO3Arfj1aR3A4d1wKBgQDvwXTfcBxiGI3jXYm7\nVxI0hOIHo5tgjwn1NlAgdpcSoItLtqqfUGGD0Gn9O8Eub0fEVUP56CWNnBBJPBQt\nnr2pmSTJn2PicQkuBpjhlspd2K5jPYAeeiP1Zx+x221IEwTm8Ijeq6iHxWwpJ3xV\n9oBiREU1w3Ybx1IN53dMQkmR2wKBgQDlkg7AAbXOFSe8qs15xa49ptGvm9s0eoII\nX6AOA462Cm8knfhPKJAk+gZ2fOlOSXPagJjGm92Ih+sw3FqxSTXlfuOWQeM5o6eM\nR3LyjKRQI0FUdCRVXCiQxL+uUETYvLnSEKr7H9IJWUfY4gDOAMbjcz/cMgSt8Ae5\npUUiveIBiwKBgQDt/RykRscF4NXHYaw8WBvsIhOz/YVYfeQmknlLICyqAs8CoxoO\n9l012QW8pzoFe9TDYNgPE49jWA0ahRaKik4+MZRAx4UA269/DnFnTKUoLtQ8EmpA\n1oEnMexWQjfiGW7+Rrm2PrMVwrSwzU8wjXW3FYmV6qYswNgEkUTsX8hjjQKBgFWs\nnoiVms3gI0ZL0Acj+RTVDugkmDgLiD+rwEW6miXh2vylX6fbEYBbNtI9Z6xpySzA\nVUO5o4FyiBliAw6qrcyKAFFxIWW/Z6X4fDN8vU2S+qyT84NPs2vjoU1ic28Xb5mv\n0r+Jbo9CnIeaQIagz5jOyARbPlfTfm6P+S8wAgplAoGAbAFZM2EMGGzItiaZwZBx\nfvMJS53xL+EGJ9vyJY00k8+eptoJtO+zn0B7zaGXBRira1uB6WGypMJ0SEQ0lSr0\nci3Qiz9YaPPkxOKwnwGVbQXMNpjsjkkrvgQEjysfqL3+0CYb+xDyNf1aEEfanY31\nXipWoyrhHWViqoEB/NkjI58=\n-----END PRIVATE KEY-----\n",
+    "client_email": "vertex-express@ai-avatar-project-491110.iam.gserviceaccount.com",
+    "token_uri": "https://oauth2.googleapis.com/token"
+}
+
+def get_access_token():
+    """Get OAuth2 access token from service account"""
+    import time, json, base64
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+
+    now = int(time.time())
+    header = base64.urlsafe_b64encode(json.dumps({"alg":"RS256","typ":"JWT"}).encode()).rstrip(b'=')
+    payload = base64.urlsafe_b64encode(json.dumps({
+        "iss": SA_INFO["client_email"],
+        "scope": "https://www.googleapis.com/auth/cloud-platform",
+        "aud": SA_INFO["token_uri"],
+        "exp": now + 3600,
+        "iat": now
+    }).encode()).rstrip(b'=')
+
+    msg = header + b'.' + payload
+    private_key = serialization.load_pem_private_key(SA_INFO["private_key"].encode(), password=None)
+    signature = base64.urlsafe_b64encode(
+        private_key.sign(msg, padding.PKCS1v15(), hashes.SHA256())
+    ).rstrip(b'=')
+
+    jwt = (msg + b'.' + signature).decode()
+    resp = requests.post(SA_INFO["token_uri"], data={
+        "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        "assertion": jwt
+    })
+    resp.raise_for_status()
+    return resp.json()["access_token"]
+
+
 def search_now():
     today = datetime.now().strftime("%Y年%m月%d日")
     prompt = (
@@ -61,12 +101,15 @@ def search_now():
         f"每個比賽列出：名稱、主辦單位、大約報名時間（依歷年慣例）、組員人數、需準備資料、官網連結。"
         f"列出5個，繁體中文，格式清晰。"
     )
+    token = get_access_token()
     url = (
-        f"https://generativelanguage.googleapis.com/v1beta/models/"
-        f"gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+        f"https://{GCP_LOCATION}-aiplatform.googleapis.com/v1/"
+        f"projects/{GCP_PROJECT_ID}/locations/{GCP_LOCATION}/"
+        f"publishers/google/models/gemini-2.0-flash:generateContent"
     )
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-    resp = requests.post(url, json=payload, timeout=60)
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    payload = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
+    resp = requests.post(url, json=payload, headers=headers, timeout=60)
     resp.raise_for_status()
     data = resp.json()
     return data["candidates"][0]["content"]["parts"][0]["text"]
