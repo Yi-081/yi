@@ -53,49 +53,69 @@ def push_message(user_id: str, text: str):
         requests.post("https://api.line.me/v2/bot/message/push", headers=HEADERS, json=payload)
 
 def parse_time_input(text: str):
-    """
-    解析各種時間格式，回傳 (hour, minute) 或 None
-    支援：7點、7:30、7.30、7點半、7點30、730、7時30分 等
-    """
     text = text.strip().replace(" ", "")
 
-    # 7點半 / 7點半
-    m = re.search(r'(\d{1,2})點半', text)
-    if m:
-        return int(m.group(1)), 30
+    # 判斷上午/下午/晚上
+    is_pm = any(kw in text for kw in ['下午', '晚上', '傍晚', '夜'])
+    is_am = any(kw in text for kw in ['早上', '上午', '早', '凌晨'])
 
-    # 7點30 / 7點30分
-    m = re.search(r'(\d{1,2})點(\d{1,2})分?', text)
-    if m:
-        return int(m.group(1)), int(m.group(2))
+    # 移除中文時段詞再解析
+    clean = re.sub(r'(早上|上午|下午|晚上|傍晚|凌晨|早|夜)', '', text)
+
+    h, m = None, None
+
+    # 7點半
+    match = re.search(r'(\d{1,2})點半', clean)
+    if match:
+        h, m = int(match.group(1)), 30
+
+    # 7點30分 / 7點30
+    if h is None:
+        match = re.search(r'(\d{1,2})點(\d{1,2})分?', clean)
+        if match:
+            h, m = int(match.group(1)), int(match.group(2))
 
     # 7點 / 7時
-    m = re.search(r'(\d{1,2})[點時]$', text)
-    if m:
-        return int(m.group(1)), 0
+    if h is None:
+        match = re.search(r'(\d{1,2})[點時]', clean)
+        if match:
+            h, m = int(match.group(1)), 0
 
     # 7:30 / 7：30
-    m = re.search(r'(\d{1,2})[：:](\d{2})', text)
-    if m:
-        return int(m.group(1)), int(m.group(2))
+    if h is None:
+        match = re.search(r'(\d{1,2})[：:](\d{2})', clean)
+        if match:
+            h, m = int(match.group(1)), int(match.group(2))
 
     # 7.30
-    m = re.search(r'(\d{1,2})\.(\d{2})', text)
-    if m:
-        return int(m.group(1)), int(m.group(2))
+    if h is None:
+        match = re.search(r'(\d{1,2})\.(\d{2})', clean)
+        if match:
+            h, m = int(match.group(1)), int(match.group(2))
 
-    # 730（直接數字）
-    m = re.fullmatch(r'(\d{3,4})', text)
-    if m:
-        t = m.group(1).zfill(4)
-        return int(t[:2]), int(t[2:])
+    # 730 / 0730
+    if h is None:
+        match = re.fullmatch(r'(\d{3,4})', clean)
+        if match:
+            t = match.group(1).zfill(4)
+            h, m = int(t[:2]), int(t[2:])
 
     # 純數字 7 或 17
-    m = re.fullmatch(r'(\d{1,2})', text)
-    if m:
-        return int(m.group(1)), 0
+    if h is None:
+        match = re.fullmatch(r'(\d{1,2})', clean)
+        if match:
+            h, m = int(match.group(1)), 0
 
-    return None
+    if h is None:
+        return None
+
+    # 套用上午/下午邏輯
+    if is_pm and h != 12 and h < 12:
+        h += 12  # 晚上7點 → 19點
+    if is_am and h == 12:
+        h = 0    # 早上12點 → 0點
+
+    return h, m
 
 def search_google(query: str) -> str:
     resp = requests.post(
