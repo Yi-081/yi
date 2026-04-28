@@ -35,7 +35,7 @@ PROJECT_DESCRIPTION = """
 def search_competitions():
     """Use Gemini with Google Search to find relevant competitions"""
     genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(model_name="gemini-2.0-flash")
+    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
     today = datetime.now().strftime("%Y年%m月%d日")
 
