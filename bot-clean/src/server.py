@@ -1,36 +1,87 @@
 import os
-import hashlib
-import hmac
-import base64
-import json
-import threading
-from flask import Flask, request, abort
 import requests
 from datetime import datetime
-from google import genai
-from google.genai import types
+from groq import Groq
 
-app = Flask(__name__)
-
-LINE_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN", "")
-LINE_SECRET = os.environ.get("LINE_CHANNEL_SECRET", "")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+LINE_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
+LINE_USER_ID = os.environ["LINE_USER_ID"]
+GROQ_API_KEY = os.environ["GROQ_API_KEY"]
+SERPER_API_KEY = os.environ["SERPER_API_KEY"]
 
 HEADERS = {
     "Authorization": f"Bearer {LINE_TOKEN}",
     "Content-Type": "application/json"
 }
 
-def verify_signature(body: bytes, signature: str) -> bool:
-    hash_val = hmac.new(LINE_SECRET.encode('utf-8'), body, hashlib.sha256).digest()
-    expected = base64.b64encode(hash_val).decode('utf-8')
-    return hmac.compare_digest(expected, signature)
+def search_google(query: str) -> str:
+    """用 Serper 搜尋 Google"""
+    resp = requests.post(
+        "https://google.serper.dev/search",
+        headers={"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"},
+        json={"q": query, "gl": "tw", "hl": "zh-tw", "num": 10}
+    )
+    data = resp.json()
+    results = []
+    for item in data.get("organic", []):
+        results.append(f"標題：{item.get('title')}\n連結：{item.get('link')}\n摘要：{item.get('snippet')}")
+    return "\n\n".join(results)
 
-def reply_message(reply_token: str, text: str):
-    payload = {"replyToken": reply_token, "messages": [{"type": "text", "text": text}]}
-    requests.post("https://api.line.me/v2/bot/message/reply", headers=HEADERS, json=payload)
+def search_competitions():
+    """搜尋比賽並用 Groq 整理"""
+    today = datetime.now().strftime("%Y年%m月%d日")
 
-def push_message(user_id: str, text: str):
+    # 搜尋多個關鍵字
+    queries = [
+        f"2025 2026 台灣 金融科技競賽 報名 site:tw",
+        f"2025 2026 台灣 AI創新競賽 大學生 報名中",
+        f"2025 2026 台灣 創新創業比賽 報名截止",
+        f"2025 2026 台灣 資訊應用競賽 大學生"
+    ]
+    
+    all_results = []
+    for q in queries:
+        result = search_google(q)
+        if result:
+            all_results.append(result)
+    
+    combined = "\n\n---\n\n".join(all_results)
+
+    client = Groq(api_key=GROQ_API_KEY)
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{
+            "role": "user",
+            "content": f"""今天是 {today}。
+
+以下是 Google 搜尋結果：
+{combined}
+
+請從以上搜尋結果中，找出【目前確認開放報名】的比賽，截止日期必須在 {today} 之後。
+
+我的專題是「智慧保險系統」，主題：金融科技、AI應用、網站設計、線上諮詢媒合。
+
+規則：
+1. 只列確認開放報名的比賽，截止日期在今天之後
+2. 找不到就說「目前查無開放報名的比賽」
+3. 不可以用「通常在某月」這種說法
+4. 沒有實際截止日期和連結的不列出
+
+每個比賽格式：
+🏆 比賽名稱
+🏢 主辦：xxx
+📅 截止：xxxx年xx月xx日
+👥 人數：x~x人
+📋 需準備：xxx
+🔗 連結：https://...
+💡 適合原因：一句話
+
+繁體中文回答。"""
+        }],
+        max_tokens=2000
+    )
+    return response.choices[0].message.content
+
+def send_line_message(text):
     max_len = 4900
     messages = []
     while len(text) > max_len:
@@ -40,111 +91,27 @@ def push_message(user_id: str, text: str):
         messages.append(text[:split_point])
         text = text[split_point:].lstrip('\n')
     messages.append(text)
-    for msg in messages:
-        payload = {"to": user_id, "messages": [{"type": "text", "text": msg}]}
-        requests.post("https://api.line.me/v2/bot/message/push", headers=HEADERS, json=payload)
+    for i, msg in enumerate(messages):
+        payload = {"to": LINE_USER_ID, "messages": [{"type": "text", "text": msg}]}
+        resp = requests.post("https://api.line.me/v2/bot/message/push", headers=HEADERS, json=payload)
+        resp.raise_for_status()
 
-def search_competitions_quick():
-    client = genai.Client(api_key=GEMINI_API_KEY)
-    today = datetime.now().strftime("%Y年%m月%d日")
-    prompt = f"""今天是 {today}，請用 Google 搜尋台灣【現在確認開放報名】的學生競賽。
-搜尋：2025金融科技競賽報名、2025 AI創新競賽大學生台灣、創新創業比賽報名中。
-規則：只列截止日期在 {today} 之後的比賽；每個要有實際日期和報名連結；不能說通常在某月；找不到就說目前查無開放比賽。
-格式每筆：
-🏆 名稱
-🏢 主辦：xxx
-📅 截止：xxxx年xx月xx日
-👥 人數：x~x人
-🔗 連結：https://...
-💡 適合原因：一句話
-繁體中文。"""
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            tools=[types.Tool(google_search=types.GoogleSearch())]
-        )
+def main():
+    today_str = datetime.now().strftime("%Y/%m/%d")
+    send_line_message(
+        f"🏆 每日競賽情報\n📅 {today_str}\n"
+        f"━━━━━━━━━━━━━━━\n"
+        f"正在搜尋今日開放報名的比賽...\n"
+        f"（智慧保險系統專題適用）"
     )
-    return response.text
-
-def handle_search_async(user_id: str):
-    try:
-        result = search_competitions_quick()
-        today_str = datetime.now().strftime("%m/%d")
-        push_message(user_id, f"🏆 比賽情報（{today_str}）\n━━━━━━━━━━━━━━━\n{result}")
-        push_message(user_id, "━━━━━━━━━━━━━━━\n💡 以上為確認開放報名的比賽\n輸入「比賽」可重新查詢")
-    except Exception as e:
-        print(f"Search error: {e}")
-        push_message(user_id, f"❌ 搜尋時發生錯誤：{str(e)[:200]}")
-
-def handle_message_async(reply_token: str, user_id: str, user_message: str):
-    try:
-        msg_lower = user_message.strip().lower()
-        if any(kw in msg_lower for kw in ['比賽', '競賽', '搜尋', '找', '報名', 'competition']):
-            reply_message(reply_token, "🔍 收到！正在搜尋最新比賽...\n結果約1分鐘內會送過來，請稍候 ⏳")
-            thread = threading.Thread(target=handle_search_async, args=(user_id,))
-            thread.daemon = True
-            thread.start()
-        elif any(kw in msg_lower for kw in ['說明', '幫助', 'help', '怎麼用', '功能']):
-            reply_message(reply_token,
-                "🤖 競賽小幫手使用說明\n━━━━━━━━━\n"
-                "📌 每天早上 9 點自動推播比賽資訊\n\n"
-                "🔍 手動查詢：\n"
-                "  輸入「比賽」→ 搜尋最新賽事\n"
-                "  輸入「我的專題」→ 查看專題資訊\n\n"
-                "🎯 專為「智慧保險系統」客製化\n"
-                "   涵蓋：金融科技/AI/網站設計類比賽"
-            )
-        elif any(kw in msg_lower for kw in ['專題', '作品', '介紹']):
-            reply_message(reply_token,
-                "📋 智慧保險系統\n━━━━━━━━━\n"
-                "🎯 核心功能：\n"
-                "• 配對線上真人保險員諮詢\n"
-                "• AI 分析個人保單\n"
-                "• AI 彙總報告給保險員\n\n"
-                "🔑 技術主題：金融科技、AI應用、網站設計\n\n"
-                "輸入「比賽」搜尋適合的賽事！"
-            )
-        else:
-            reply_message(reply_token,
-                "Hi！我是競賽小幫手 🏆\n"
-                "輸入「比賽」→ 搜尋最新賽事\n"
-                "輸入「說明」→ 查看使用方式"
-            )
-    except Exception as e:
-        print(f"Error: {e}")
-
-@app.route("/webhook", methods=["POST"])
-def webhook():
-    signature = request.headers.get("X-Line-Signature", "")
-    body = request.get_data()
-    if LINE_SECRET and not verify_signature(body, signature):
-        abort(400)
-    try:
-        events = json.loads(body)["events"]
-    except Exception:
-        abort(400)
-    for event in events:
-        if event.get("type") != "message":
-            continue
-        if event.get("message", {}).get("type") != "text":
-            continue
-        reply_token = event.get("replyToken", "")
-        user_id = event.get("source", {}).get("userId", "")
-        user_message = event["message"]["text"]
-        thread = threading.Thread(target=handle_message_async, args=(reply_token, user_id, user_message))
-        thread.daemon = True
-        thread.start()
-    return "OK", 200
-
-@app.route("/health", methods=["GET"])
-def health():
-    return {"status": "ok", "time": datetime.now().isoformat()}, 200
-
-@app.route("/", methods=["GET"])
-def index():
-    return "LINE Bot Competition Finder is running! 🏆", 200
+    competitions = search_competitions()
+    send_line_message(competitions)
+    send_line_message(
+        "━━━━━━━━━━━━━━━\n"
+        "💡 以上為今日確認開放報名的比賽\n"
+        "📌 下次推播：明天早上 9 點\n"
+        "輸入「比賽」可隨時重新查詢"
+    )
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    main()
