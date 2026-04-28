@@ -4,6 +4,7 @@ import hmac
 import base64
 import json
 import threading
+import re
 from flask import Flask, request, abort
 import requests
 from datetime import datetime
@@ -21,8 +22,12 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
+SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/1EnI7ZuvLCF2F4oqW-EeDRW94Uv-uMCsvciN-bh9tOKE/edit?usp=sharing"
+
 conversation_history = {}
-pending_competitions = {}  # 儲存每個 user 還沒看的比賽
+pending_competitions = {}
+push_time = {"hour": 9, "minute": 0}  # 預設早上 9:00
+waiting_for_time = set()  # 記錄哪些 user 正在設定時間
 
 def verify_signature(body: bytes, signature: str) -> bool:
     hash_val = hmac.new(LINE_SECRET.encode('utf-8'), body, hashlib.sha256).digest()
@@ -46,6 +51,51 @@ def push_message(user_id: str, text: str):
     for msg in messages:
         payload = {"to": user_id, "messages": [{"type": "text", "text": msg}]}
         requests.post("https://api.line.me/v2/bot/message/push", headers=HEADERS, json=payload)
+
+def parse_time_input(text: str):
+    """
+    解析各種時間格式，回傳 (hour, minute) 或 None
+    支援：7點、7:30、7.30、7點半、7點30、730、7時30分 等
+    """
+    text = text.strip().replace(" ", "")
+
+    # 7點半 / 7點半
+    m = re.search(r'(\d{1,2})點半', text)
+    if m:
+        return int(m.group(1)), 30
+
+    # 7點30 / 7點30分
+    m = re.search(r'(\d{1,2})點(\d{1,2})分?', text)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+
+    # 7點 / 7時
+    m = re.search(r'(\d{1,2})[點時]$', text)
+    if m:
+        return int(m.group(1)), 0
+
+    # 7:30 / 7：30
+    m = re.search(r'(\d{1,2})[：:](\d{2})', text)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+
+    # 7.30
+    m = re.search(r'(\d{1,2})\.(\d{2})', text)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+
+    # 730（直接數字）
+    m = re.fullmatch(r'(\d{3,4})', text)
+    if m:
+        t = m.group(1).zfill(4)
+        return int(t[:2]), int(t[2:])
+
+    # 純數字 7 或 17
+    m = re.fullmatch(r'(\d{1,2})', text)
+    if m:
+        return int(m.group(1)), 0
+
+    return None
 
 def search_google(query: str) -> str:
     resp = requests.post(
@@ -102,8 +152,6 @@ def search_competitions_quick():
     return response.choices[0].message.content
 
 def parse_competitions(raw: str):
-    """把回傳內容切成一筆一筆的比賽"""
-    import re
     items = re.findall(r'\[COMPETITION\](.*?)\[/COMPETITION\]', raw, re.DOTALL)
     return [item.strip() for item in items]
 
@@ -127,15 +175,15 @@ def chat_with_groq(user_id: str, user_message: str) -> str:
 
 你的說話風格：
 - 像朋友聊天，不要太正式
-- 可以用一些輕鬆的語氣詞，例如「欸」「哈哈」「不用擔心」「其實蠻簡單的」
+- 可以用輕鬆的語氣詞，例如「欸」「哈哈」「不用擔心」「其實蠻簡單的」
 - 回答不要太長，重點講清楚就好
-- 可以主動關心使用者的進度，例如「你們準備到哪了？」
+- 可以主動關心使用者的進度
 
 你擅長幫忙：
 - 比賽準備建議、簡報架構
 - 團隊分工、時程規劃
 - 預測評審可能問的問題
-- 幫使用者分析自己專題的優劣勢
+- 幫使用者分析專題優劣勢
 
 如果使用者問比賽資訊，提醒他輸入「比賽」來搜尋最新賽事。
 用繁體中文回答。"""
@@ -155,17 +203,13 @@ def handle_search_async(user_id: str):
         today_str = datetime.now().strftime("%m/%d")
 
         if not competitions:
-            # 解析失敗，直接推原始內容
             push_message(user_id,
                 f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━"
             )
             push_message(user_id, raw)
-            push_message(user_id,
-                "有問題隨時問我，像是怎麼準備、簡報怎麼做之類的 😊"
-            )
+            push_message(user_id, "有問題隨時問我 😊")
             return
 
-        # 先推前3筆
         first_three = competitions[:3]
         remaining = competitions[3:]
 
@@ -183,64 +227,92 @@ def handle_search_async(user_id: str):
             )
         else:
             push_message(user_id,
-                "以上就是目前全部開放的比賽囉 ✅\n"
-                "有任何問題都可以問我，像是怎麼準備、簡報怎麼做之類的～"
+                "以上就是目前全部開放的比賽囉 ✅\n有問題隨時問我～"
             )
 
     except Exception as e:
         print(f"Search error: {e}")
-        push_message(user_id, f"哎呀，搜尋的時候好像出了點問題 😅\n稍後再試試看？\n（錯誤：{str(e)[:80]}）"))
+        push_message(user_id, f"哎呀，搜尋出了點問題 😅 稍後再試試？\n（{str(e)[:80]}）")
 
 def handle_message_async(reply_token: str, user_id: str, user_message: str):
     try:
         msg_lower = user_message.strip().lower()
+        msg = user_message.strip()
 
-        # 查看剩下的比賽
+        # === 正在等待使用者輸入推播時間 ===
+        if user_id in waiting_for_time:
+            result = parse_time_input(msg)
+            if result:
+                h, m = result
+                if 0 <= h <= 23 and 0 <= m <= 59:
+                    push_time["hour"] = h
+                    push_time["minute"] = m
+                    waiting_for_time.discard(user_id)
+                    time_str = f"{h:02d}:{m:02d}"
+                    reply_message(reply_token,
+                        f"好！推播時間已改成每天 {time_str} ⏰\n"
+                        f"明天起就會在這個時間通知你囉～"
+                    )
+                else:
+                    reply_message(reply_token, "欸，時間好像不太對 😅 再輸入一次？（例如：8點、7:30、8點半）")
+            else:
+                reply_message(reply_token, "我看不太懂欸 🤔 可以試試「8點」「7:30」「7點半」這種格式！")
+            return
+
+        # === 查看剩下的比賽 ===
         if any(kw in msg_lower for kw in ['還有', '繼續', '下一個', '其他', '更多']):
             if user_id in pending_competitions and pending_competitions[user_id]:
                 remaining = pending_competitions[user_id]
                 show = remaining[:3]
                 rest = remaining[3:]
                 pending_competitions[user_id] = rest
-
                 reply_message(reply_token, "好！繼續來看～ 👇")
                 for comp in show:
                     push_message(user_id, comp)
-
                 if rest:
-                    push_message(user_id,
-                        f"還剩 {len(rest)} 個，要繼續看嗎？\n回覆「繼續」就好！"
-                    )
+                    push_message(user_id, f"還剩 {len(rest)} 個，要繼續看嗎？回覆「繼續」就好！")
                 else:
-                    push_message(user_id,
-                        "好了，這樣全部都看完囉 ✅\n有問題隨時問我！"
-                    )
+                    push_message(user_id, "好了，全部看完囉 ✅ 有問題隨時問我！")
             else:
                 reply = chat_with_groq(user_id, user_message)
                 reply_message(reply_token, reply)
 
-        # 搜尋比賽
-        elif any(kw in msg_lower for kw in ['比賽', '競賽', '搜尋比賽', '找比賽', '報名']):
-            reply_message(reply_token,
-                "收到！我去幫你找一下 🔍\n大概一分鐘內送過來，先等我一下～"
-            )
+        # === 搜尋比賽 ===
+        elif any(kw in msg_lower for kw in ['搜尋比賽', '找比賽', '最新比賽']):
+            reply_message(reply_token, "收到！我去幫你找一下 🔍\n大概一分鐘內送過來，先等我一下～")
             thread = threading.Thread(target=handle_search_async, args=(user_id,))
             thread.daemon = True
             thread.start()
 
-        # 說明
-        elif any(kw in msg_lower for kw in ['說明', 'help', '怎麼用', '功能']):
+        # === 推播設定 ===
+        elif any(kw in msg_lower for kw in ['推播設定', '推播時間', '每日推播', '改推播', '設定推播']):
+            h = push_time["hour"]
+            m = push_time["minute"]
+            time_str = f"{h:02d}:{m:02d}"
+            waiting_for_time.add(user_id)
             reply_message(reply_token,
-                "嗨！我是競賽小幫手 🏆\n━━━━━━━━━\n"
-                "📌 每天早上 9 點自動推播最新比賽\n\n"
-                "你可以這樣用：\n"
-                "  輸入「比賽」→ 馬上幫你搜尋\n"
-                "  直接聊天 → 問我怎麼準備、簡報建議、分工等等\n\n"
-                "我是針對「智慧保險系統」專題客製化的，\n"
-                "金融科技、AI、網站設計類的比賽都會幫你留意 👀"
+                f"目前推播時間是每天 {time_str} ⏰\n\n"
+                "想改成幾點呢？直接告訴我就好！\n"
+                "（例如：8點、7:30、7點半、9點15分）"
             )
 
-        # 一般聊天
+        # === 說明 ===
+        elif any(kw in msg_lower for kw in ['說明', 'help', '怎麼用', '功能']):
+            h = push_time["hour"]
+            m = push_time["minute"]
+            time_str = f"{h:02d}:{m:02d}"
+            reply_message(reply_token,
+                "嗨！我是競賽小幫手 🏆\n━━━━━━━━━\n"
+                f"📌 每天 {time_str} 自動推播最新比賽\n\n"
+                "你可以這樣用：\n"
+                "  🔍 按「搜尋比賽」→ 馬上幫你找\n"
+                "  📋 按「已報名比賽」→ 開啟報名進度表\n"
+                "  ⏰ 按「推播設定」→ 更改推播時間\n"
+                "  💬 直接聊天 → 問我準備建議、簡報怎麼做\n\n"
+                "專為「智慧保險系統」客製化 👀"
+            )
+
+        # === 一般聊天 ===
         else:
             reply = chat_with_groq(user_id, user_message)
             reply_message(reply_token, reply)
