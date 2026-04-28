@@ -223,32 +223,34 @@ def handle_search_async(user_id: str):
         today_str = datetime.now().strftime("%m/%d")
 
         if not competitions:
-            push_message(user_id,
-                f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━"
-            )
-            push_message(user_id, raw)
-            push_message(user_id, "有問題隨時問我 😊")
+            # 解析失敗，清除標記後直接送出
+            cleaned = raw.replace("[COMPETITION]", "").replace("[/COMPETITION]", "").strip()
+            # 如果根本就是查無結果
+            if "查無" in cleaned or "找不到" in cleaned or len(cleaned) < 20:
+                push_message(user_id,
+                    f"🔍 搜了一圈（{today_str}），目前找不到確認開放報名的比賽...\n"
+                    "不過別灰心！明天再查看看，或輸入「搜尋比賽」讓我再找一次 💪"
+                )
+            else:
+                push_message(user_id,
+                    f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━\n\n"
+                    f"{cleaned}"
+                )
             return
 
         first_three = competitions[:3]
         remaining = competitions[3:]
 
-        push_message(user_id,
-            f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━"
-        )
-        for comp in first_three:
-            push_message(user_id, comp)
+        combined = f"找到了！以下是目前開放報名的比賽（{today_str}）👇\n━━━━━━━━━━━━━━━\n\n"
+        combined += "\n\n━━━━━━━━━━━━━━━\n\n".join(first_three)
 
         if remaining:
             pending_competitions[user_id] = remaining
-            push_message(user_id,
-                f"還有 {len(remaining)} 個比賽我還沒告訴你 👀\n"
-                "要繼續看嗎？回覆「還有哪些」或「繼續」我再列給你！"
-            )
+            combined += f"\n\n━━━━━━━━━━━━━━━\n還有 {len(remaining)} 個比賽 👀\n回覆「繼續」我再列給你！"
         else:
-            push_message(user_id,
-                "以上就是目前全部開放的比賽囉 ✅\n有問題隨時問我～"
-            )
+            combined += "\n\n━━━━━━━━━━━━━━━\n以上就是全部開放的比賽囉 ✅\n有問題隨時問我～"
+
+        push_message(user_id, combined)
 
     except Exception as e:
         print(f"Search error: {e}")
