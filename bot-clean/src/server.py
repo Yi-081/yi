@@ -76,7 +76,7 @@ def search_now():
         f"今天是{today}。請列出台灣適合大學生參加、與以下主題相關的比賽：「{PROJECT_INFO}」。"
         f"涵蓋金融科技、AI應用、網站設計、創新創業類。"
         f"每個比賽列出：名稱、主辦單位、大約報名時間（依歷年慣例）、組員人數、需準備資料、官網連結。"
-        f"列出5個，繁體中文，格式清晰。"
+        f"列出5個，繁體中文，純文字格式，不要使用任何 markdown 符號（不要 ** # - 等），用數字編號即可。"
     )
     resp = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
