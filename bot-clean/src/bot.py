@@ -6,7 +6,6 @@
 import os
 import requests
 from datetime import datetime
-import google.generativeai as genai
 
 LINE_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_USER_ID = os.environ["LINE_USER_ID"]
@@ -33,40 +32,37 @@ PROJECT_DESCRIPTION = """
 """
 
 def search_competitions():
-    """Use Gemini with Google Search to find relevant competitions"""
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-
+    """Use Gemini REST API to find relevant competitions"""
     today = datetime.now().strftime("%Y年%m月%d日")
 
     prompt = f"""今天是 {today}。
 
-請幫我搜尋台灣目前可以報名或即將截止的各類學生競賽、創新創業比賽、資訊科技競賽等，
-特別是適合以下專題參加的比賽：
+請幫我列出台灣適合大學生參加、與以下專題相關的比賽：
 
 {PROJECT_DESCRIPTION}
-
-搜尋重點：
-1. 目前開放報名或即將開放的比賽（截止日期在未來1-3個月內優先）
-2. 適合大學生/專科生參加
-3. 主題涵蓋：金融科技、AI應用、網站設計、創新創業、資訊應用等
-4. 台灣本地比賽為主，知名國際比賽也可列入
 
 請整理出 3-5 個最相關的比賽，每個比賽請提供：
 - 比賽名稱
 - 主辦單位
-- 報名截止日期（若已知）
+- 報名截止日期（依歷年慣例估計）
 - 比賽主題/類別
 - 組員人數限制
-- 需要準備的資料（報名表、作品說明書、簡報等）
+- 需要準備的資料
 - 參賽資格條件
-- 官方報名連結（若有）
+- 官方網站連結
 - 為何適合我的智慧保險系統專題（1-2句）
 
 請用繁體中文回答，格式清晰易讀。"""
 
-    response = model.generate_content(prompt)
-    return response.text
+    url = (
+        f"https://generativelanguage.googleapis.com/v1beta/models/"
+        f"gemini-2.0-flash-lite:generateContent?key={GEMINI_API_KEY}"
+    )
+    payload = {"contents": [{"parts": [{"text": prompt}]}]}
+    resp = requests.post(url, json=payload, timeout=60)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["candidates"][0]["content"]["parts"][0]["text"]
 
 
 def send_line_message(text):
