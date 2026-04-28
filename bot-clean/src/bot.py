@@ -38,7 +38,7 @@ def search_competitions():
 
     model = genai.GenerativeModel(
         model_name="gemini-2.0-flash",
-        tools="google_search"
+        tools=[{"google_search": {}}]
     )
 
     today = datetime.now().strftime("%Y年%m月%d日")
