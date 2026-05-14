@@ -325,7 +325,9 @@ async function loadData() {
     const data = await res.json();
     allData = data.competitions || [];
     document.getElementById('lastUpdated').textContent =
-      '資料更新時間：' + data.last_updated?.replace('T', ' ').slice(0, 16) || '未知';
+      data.last_updated
+        ? '資料更新時間：' + data.last_updated.replace('T', ' ').slice(0, 16)
+        : '未知';
   } catch (e) {
     document.getElementById('lastUpdated').textContent = '無法載入資料';
     document.getElementById('grid').innerHTML =
@@ -350,8 +352,11 @@ function setCatFilter(val, btn) {
 
 function daysLeft(deadline) {
   if (!deadline) return null;
-  const diff = (new Date(deadline) - new Date()) / 86400000;
-  return Math.ceil(diff);
+  const [y, m, d] = deadline.split('-').map(Number);
+  const dl = new Date(y, m - 1, d);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.ceil((dl - today) / 86400000);
 }
 
 function render() {

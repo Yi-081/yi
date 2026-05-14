@@ -8,6 +8,7 @@ on:
   workflow_run:
     workflows: ["每日更新比賽資料"]
     types: [completed]
+    branches: [main, master]
   workflow_dispatch:
 
 permissions:
@@ -22,6 +23,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

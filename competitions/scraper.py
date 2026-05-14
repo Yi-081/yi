@@ -84,7 +84,7 @@ def fetch(url: str, timeout: int = 15) -> BeautifulSoup | None:
         resp = requests.get(url, headers=HEADERS, timeout=timeout)
         resp.raise_for_status()
         resp.encoding = resp.apparent_encoding
-        return BeautifulSoup(resp.text, "html.parser")
+        return BeautifulSoup(resp.text, "lxml")
     except Exception as e:
         log.warning(f"無法抓取 {url}：{e}")
         return None
@@ -273,7 +273,7 @@ def scrape_tfta() -> list[dict]:
     return results
 
 
-def scrape_nctu_hackathon() -> list[dict]:
+def scrape_ihergo() -> list[dict]:
     """iHergo — 台灣競賽資訊整合平台（黑客松、創新競賽）"""
     results = []
     url = "https://www.ihergo.com/categories/fintech"
@@ -332,17 +332,21 @@ def load_existing() -> list[dict]:
     return []
 
 
+OVERWRITE_FIELDS = {"deadline", "url", "organizer", "description", "prize", "category", "registration_start"}
+
 def merge(existing: list[dict], scraped: list[dict]) -> list[dict]:
-    existing_ids = {c["id"] for c in existing}
-    new_items = [c for c in scraped if c["id"] not in existing_ids]
-    # 更新現有條目的狀態
-    merged = []
     scraped_map = {c["id"]: c for c in scraped}
+    merged = []
     for c in existing:
-        if c["id"] in scraped_map:
-            c["status"] = get_status(c.get("deadline", ""))
+        fresh = scraped_map.get(c["id"])
+        if fresh and not c.get("manual"):
+            for field in OVERWRITE_FIELDS:
+                if fresh.get(field):
+                    c[field] = fresh[field]
+        c["status"] = get_status(c.get("deadline", ""))
         merged.append(c)
-    merged.extend(new_items)
+    existing_ids = {c["id"] for c in existing}
+    merged.extend(c for c in scraped if c["id"] not in existing_ids)
     return merged
 
 
@@ -355,7 +359,7 @@ def main():
         scrape_tii,
         scrape_findit,
         scrape_tfta,
-        scrape_nctu_hackathon,
+        scrape_ihergo,
         scrape_jingji,
     ]
     scraped: list[dict] = []
@@ -375,13 +379,27 @@ def main():
         return d if d else "9999-99-99"
     competitions.sort(key=sort_key)
 
+    old_last_updated = ""
+    if OUTPUT_FILE.exists():
+        old_data = json.loads(OUTPUT_FILE.read_text(encoding="utf-8"))
+        old_last_updated = old_data.get("last_updated", "")
+        old_competitions = old_data.get("competitions", [])
+    else:
+        old_competitions = []
+
+    content_changed = json.dumps(competitions, ensure_ascii=False, sort_keys=True) != \
+                      json.dumps(old_competitions, ensure_ascii=False, sort_keys=True)
+
     output = {
-        "last_updated": datetime.now().isoformat(timespec="seconds"),
+        "last_updated": datetime.now().isoformat(timespec="seconds") if content_changed else old_last_updated,
         "count": len(competitions),
         "competitions": competitions,
     }
     OUTPUT_FILE.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
-    log.info(f"完成！共 {len(competitions)} 筆，已寫入 {OUTPUT_FILE}")
+    if content_changed:
+        log.info(f"完成！共 {len(competitions)} 筆，資料有變更，已寫入 {OUTPUT_FILE}")
+    else:
+        log.info(f"完成！共 {len(competitions)} 筆，資料無變更，last_updated 保持不動")
 
 
 if __name__ == "__main__":
