@@ -248,13 +248,9 @@
   .card-footer {
     padding: .8rem 1.2rem;
     border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: .6rem;
   }
   .card-link {
-    flex: 1;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: .3rem;
@@ -268,7 +264,6 @@
     transition: background .15s;
   }
   .card-link:hover { background: var(--primary-dark); }
-  .link-note { font-size: .7rem; color: var(--text-muted); line-height: 1.3; }
 
   .empty { grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
   .empty-icon { font-size: 3.5rem; margin-bottom: .8rem; opacity: .4; }
@@ -366,7 +361,7 @@
 </div>
 
 <footer>
-  資料每日自動更新 &bull; 連結指向各主辦單位官網，報名資訊請至官網搜尋比賽名稱確認 &bull; 僅供參考
+  資料每日自動更新 &bull; 連結指向各比賽報名頁面，請以官網公告為準 &bull; 僅供參考
 </footer>
 
 <script>
@@ -502,13 +497,12 @@ function render() {
     const linkSection = c.url ? `
       <div class="card-footer">
         <a class="card-link" href="${escHtml(c.url)}" target="_blank" rel="noopener">
-          前往官網
+          前往比賽頁面
           <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor">
             <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
             <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
           </svg>
         </a>
-        <span class="link-note">請至官網<br>搜尋比賽名稱</span>
       </div>` : '';
 
     return `
