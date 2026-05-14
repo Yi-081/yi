@@ -1,0 +1,110 @@
+{
+  "last_updated": "2026-05-14T00:00:00",
+  "count": 8,
+  "competitions": [
+    {
+      "id": "seed_001",
+      "title": "2026 金融科技創新競賽",
+      "organizer": "金融監督管理委員會",
+      "category": ["fintech", "insurance"],
+      "deadline": "2026-08-31",
+      "registration_start": "2026-05-01",
+      "prize": "最高獎金 100 萬元",
+      "description": "鼓勵各界運用科技創新解決金融服務痛點，涵蓋保險科技、支付、借貸、財富管理等領域。",
+      "url": "https://www.fsc.gov.tw",
+      "source": "金管會",
+      "status": "open"
+    },
+    {
+      "id": "seed_002",
+      "title": "InsurTech 智慧保險黑客松",
+      "organizer": "財團法人保險事業發展中心",
+      "category": ["insurance", "insurtech"],
+      "deadline": "2026-07-15",
+      "registration_start": "2026-05-15",
+      "prize": "獎金 50 萬元及業師輔導",
+      "description": "以 AI、大數據、區塊鏈技術改善保險服務流程，包含智慧核保、理賠自動化、智慧保單設計等議題。",
+      "url": "https://www.tii.org.tw",
+      "source": "保發中心",
+      "status": "open"
+    },
+    {
+      "id": "seed_003",
+      "title": "台灣金融科技創業大賽",
+      "organizer": "台灣金融科技協會 (TFTA)",
+      "category": ["fintech", "startup"],
+      "deadline": "2026-09-30",
+      "registration_start": "2026-06-01",
+      "prize": "冠軍 30 萬元 + 國際參賽資格",
+      "description": "面向新創團隊，提供金融科技領域創業競賽舞台，優勝隊伍可獲海外參賽及媒合機會。",
+      "url": "https://www.tfta.org.tw",
+      "source": "台灣金融科技協會",
+      "status": "open"
+    },
+    {
+      "id": "seed_004",
+      "title": "國泰金控 AI 競賽",
+      "organizer": "國泰金融控股",
+      "category": ["fintech", "ai", "insurance"],
+      "deadline": "2026-07-01",
+      "registration_start": "2026-04-15",
+      "prize": "獎金總額 200 萬元",
+      "description": "以真實保險與金融數據進行 AI 模型開發競賽，題目涵蓋風險評估、客戶分群、保單推薦系統。",
+      "url": "https://cathayholdings.com",
+      "source": "企業主辦",
+      "status": "closing_soon"
+    },
+    {
+      "id": "seed_005",
+      "title": "富邦 FinTech 加速器計畫",
+      "organizer": "富邦金融控股",
+      "category": ["fintech", "startup"],
+      "deadline": "2026-06-30",
+      "registration_start": "2026-05-01",
+      "prize": "資金挹注 + 企業合作機會",
+      "description": "招募金融科技新創，提供資金、場域、資源三大支持，涵蓋支付、理財、保險科技等主題。",
+      "url": "https://www.fubon.com",
+      "source": "企業主辦",
+      "status": "closing_soon"
+    },
+    {
+      "id": "seed_006",
+      "title": "FINDIT 新創競賽 — 金融科技組",
+      "organizer": "FINDIT",
+      "category": ["fintech", "startup"],
+      "deadline": "2026-10-31",
+      "registration_start": "2026-07-01",
+      "prize": "獎金 + 海外展覽資格",
+      "description": "協助金融科技新創取得曝光、資金及國際連結，金融科技組涵蓋 InsurTech、RegTech、WealthTech 等。",
+      "url": "https://findit.org.tw",
+      "source": "FINDIT",
+      "status": "open"
+    },
+    {
+      "id": "seed_007",
+      "title": "中信銀行數位金融創新競賽",
+      "organizer": "中國信託銀行",
+      "category": ["fintech", "digital"],
+      "deadline": "2026-08-15",
+      "registration_start": "2026-05-20",
+      "prize": "冠軍 20 萬元",
+      "description": "以數位金融服務創新為主軸，鼓勵結合 AI、行動支付、Open Banking 等技術提升用戶體驗。",
+      "url": "https://www.ctbcbank.com",
+      "source": "企業主辦",
+      "status": "open"
+    },
+    {
+      "id": "seed_008",
+      "title": "全球人壽保險科技設計競賽",
+      "organizer": "全球人壽",
+      "category": ["insurance", "insurtech"],
+      "deadline": "2026-12-31",
+      "registration_start": "2026-09-01",
+      "prize": "總獎金 60 萬元",
+      "description": "徵求創新智慧保單設計方案，結合數位化核保、個人化保險商品、自動理賠流程等議題。",
+      "url": "https://www.transglobe.com.tw",
+      "source": "企業主辦",
+      "status": "open"
+    }
+  ]
+}

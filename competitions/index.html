@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金融科技 & 保險比賽查詢</title>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --primary: #1a56db;
+    --primary-dark: #1340a8;
+    --accent: #0e9f6e;
+    --danger: #e02424;
+    --warning: #c27803;
+    --gray: #6b7280;
+    --border: #e5e7eb;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --radius: 12px;
+    --shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, #1a56db 0%, #0e9f6e 100%);
+    color: #fff;
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+  }
+  header h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: .4rem; }
+  header p  { opacity: .88; font-size: .95rem; }
+  .last-updated {
+    margin-top: .7rem;
+    font-size: .8rem;
+    opacity: .7;
+  }
+
+  /* ── Controls ── */
+  .controls {
+    max-width: 960px;
+    margin: 1.5rem auto .5rem;
+    padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    align-items: center;
+  }
+  .search-wrap {
+    flex: 1 1 220px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: .55rem 1rem .55rem 2.4rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: .95rem;
+    background: var(--card-bg);
+    outline: none;
+    transition: border .2s;
+  }
+  .search-wrap input:focus { border-color: var(--primary); }
+  .search-wrap svg {
+    position: absolute;
+    left: .7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    pointer-events: none;
+  }
+
+  .filter-group { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .filter-btn {
+    padding: .45rem .9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    background: var(--card-bg);
+    font-size: .85rem;
+    cursor: pointer;
+    transition: all .15s;
+    color: var(--text);
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  select.sort-select {
+    padding: .48rem .8rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    font-size: .88rem;
+    cursor: pointer;
+    outline: none;
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    max-width: 960px;
+    margin: 0 auto .8rem;
+    padding: 0 1rem;
+    font-size: .85rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Grid ── */
+  .grid {
+    max-width: 960px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1rem;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    transition: transform .15s, box-shadow .15s;
+    border: 1.5px solid var(--border);
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; }
+  .card-title  { font-size: 1rem; font-weight: 700; line-height: 1.4; flex: 1; }
+
+  /* Status badge */
+  .badge {
+    flex-shrink: 0;
+    padding: .2rem .55rem;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-open         { background: #d1fae5; color: #065f46; }
+  .badge-closing_soon { background: #fef3c7; color: #92400e; }
+  .badge-closed       { background: #fee2e2; color: #991b1b; }
+  .badge-unknown      { background: #f3f4f6; color: #374151; }
+
+  .card-org  { font-size: .82rem; color: var(--text-muted); }
+  .card-desc { font-size: .85rem; line-height: 1.55; color: #374151; flex: 1; }
+
+  /* Meta row */
+  .meta-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .78rem;
+    color: var(--text-muted);
+  }
+  .meta-item svg { flex-shrink: 0; }
+
+  /* Category tags */
+  .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .tag {
+    padding: .18rem .55rem;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 500;
+    background: #eff6ff;
+    color: #1e40af;
+  }
+  .tag.insurance  { background: #f0fdf4; color: #166534; }
+  .tag.insurtech  { background: #ecfdf5; color: #065f46; }
+  .tag.startup    { background: #fdf4ff; color: #7e22ce; }
+  .tag.ai         { background: #fff7ed; color: #9a3412; }
+  .tag.digital    { background: #eff6ff; color: #1d4ed8; }
+  .tag.blockchain { background: #fefce8; color: #713f12; }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    margin-top: auto;
+    padding: .5rem 1rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+    transition: background .15s;
+    justify-content: center;
+  }
+  .card-link:hover { background: var(--primary-dark); }
+
+  /* Empty state */
+  .empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-muted);
+  }
+  .empty svg { width: 56px; height: 56px; opacity: .3; margin-bottom: 1rem; }
+
+  /* Prize highlight */
+  .prize-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .78rem;
+    font-weight: 600;
+    color: #92400e;
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-size: .9rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: .8rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>金融科技 &amp; 保險比賽查詢</h1>
+  <p>自動彙整金融科技、保險科技、智慧保單相關競賽與黑客松</p>
+  <div class="last-updated" id="lastUpdated">資料載入中…</div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="搜尋比賽名稱、主辦單位…" oninput="render()">
+  </div>
+
+  <div class="filter-group" id="statusFilters">
+    <button class="filter-btn active" data-status="all" onclick="setFilter('all',this)">全部</button>
+    <button class="filter-btn" data-status="open" onclick="setFilter('open',this)">報名中</button>
+    <button class="filter-btn" data-status="closing_soon" onclick="setFilter('closing_soon',this)">即將截止</button>
+    <button class="filter-btn" data-status="closed" onclick="setFilter('closed',this)">已截止</button>
+  </div>
+
+  <div class="filter-group" id="catFilters">
+    <button class="filter-btn active" data-cat="all" onclick="setCatFilter('all',this)">所有類別</button>
+    <button class="filter-btn" data-cat="fintech" onclick="setCatFilter('fintech',this)">金融科技</button>
+    <button class="filter-btn" data-cat="insurance" onclick="setCatFilter('insurance',this)">保險</button>
+    <button class="filter-btn" data-cat="insurtech" onclick="setCatFilter('insurtech',this)">保險科技</button>
+    <button class="filter-btn" data-cat="startup" onclick="setCatFilter('startup',this)">新創</button>
+    <button class="filter-btn" data-cat="ai" onclick="setCatFilter('ai',this)">AI</button>
+  </div>
+
+  <select class="sort-select" id="sortSelect" onchange="render()">
+    <option value="deadline">按截止日期</option>
+    <option value="title">按名稱</option>
+    <option value="status">按狀態</option>
+  </select>
+</div>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="grid" id="grid">
+  <div class="loading">載入比賽資料中…</div>
+</div>
+
+<footer>
+  資料每日自動更新 &bull; 如發現資訊有誤請自行至主辦網站確認 &bull; 僅供參考
+</footer>
+
+<script>
+let allData = [];
+let statusFilter = 'all';
+let catFilter = 'all';
+
+const STATUS_LABEL = {
+  open: '報名中',
+  closing_soon: '即將截止',
+  closed: '已截止',
+  unknown: '查看詳情',
+};
+const STATUS_CLASS = {
+  open: 'badge-open',
+  closing_soon: 'badge-closing_soon',
+  closed: 'badge-closed',
+  unknown: 'badge-unknown',
+};
+const CAT_LABEL = {
+  fintech: '金融科技',
+  insurance: '保險',
+  insurtech: '保險科技',
+  startup: '新創',
+  ai: 'AI',
+  digital: '數位金融',
+  blockchain: '區塊鏈',
+};
+
+async function loadData() {
+  try {
+    const res = await fetch('competitions.json?t=' + Date.now());
+    const data = await res.json();
+    allData = data.competitions || [];
+    document.getElementById('lastUpdated').textContent =
+      '資料更新時間：' + data.last_updated?.replace('T', ' ').slice(0, 16) || '未知';
+  } catch (e) {
+    document.getElementById('lastUpdated').textContent = '無法載入資料';
+    document.getElementById('grid').innerHTML =
+      '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.95 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg><p>無法載入比賽資料，請確認 competitions.json 存在</p></div>';
+  }
+  render();
+}
+
+function setFilter(val, btn) {
+  statusFilter = val;
+  document.querySelectorAll('#statusFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setCatFilter(val, btn) {
+  catFilter = val;
+  document.querySelectorAll('#catFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function daysLeft(deadline) {
+  if (!deadline) return null;
+  const diff = (new Date(deadline) - new Date()) / 86400000;
+  return Math.ceil(diff);
+}
+
+function render() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const sort  = document.getElementById('sortSelect').value;
+
+  let items = allData.filter(c => {
+    if (statusFilter !== 'all' && c.status !== statusFilter) return false;
+    if (catFilter !== 'all' && !(c.category || []).includes(catFilter)) return false;
+    if (query) {
+      const haystack = [c.title, c.organizer, c.description, ...(c.category||[])].join(' ').toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  });
+
+  if (sort === 'deadline') {
+    items.sort((a,b) => {
+      const da = a.deadline || '9999-99-99', db = b.deadline || '9999-99-99';
+      return da.localeCompare(db);
+    });
+  } else if (sort === 'title') {
+    items.sort((a,b) => a.title.localeCompare(b.title, 'zh-TW'));
+  } else if (sort === 'status') {
+    const order = { open:0, closing_soon:1, unknown:2, closed:3 };
+    items.sort((a,b) => (order[a.status]??9) - (order[b.status]??9));
+  }
+
+  document.getElementById('statsBar').textContent =
+    `顯示 ${items.length} 筆 / 共 ${allData.length} 筆比賽`;
+
+  const grid = document.getElementById('grid');
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0015.803 15.803z"/>
+      </svg>
+      <p>找不到符合條件的比賽</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(c => {
+    const status = c.status || 'unknown';
+    const days = daysLeft(c.deadline);
+    let deadlineText = '';
+    if (c.deadline) {
+      deadlineText = c.deadline;
+      if (days !== null && days >= 0) deadlineText += ` (還有 ${days} 天)`;
+      else if (days !== null && days < 0) deadlineText += ' (已截止)';
+    }
+
+    const tags = (c.category || []).map(cat =>
+      `<span class="tag ${cat}">${CAT_LABEL[cat] || cat}</span>`
+    ).join('');
+
+    const prize = c.prize
+      ? `<span class="prize-badge">🏆 ${c.prize}</span>`
+      : '';
+
+    return `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">${escHtml(c.title)}</div>
+        <span class="badge ${STATUS_CLASS[status]}">${STATUS_LABEL[status]}</span>
+      </div>
+      <div class="card-org">${escHtml(c.organizer || '')}</div>
+      ${c.description ? `<div class="card-desc">${escHtml(c.description)}</div>` : ''}
+      <div class="meta-row">
+        ${deadlineText ? `<span class="meta-item">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+          </svg>
+          ${escHtml(deadlineText)}
+        </span>` : ''}
+        ${prize}
+      </div>
+      <div class="tags">${tags}</div>
+      ${c.url ? `<a class="card-link" href="${escHtml(c.url)}" target="_blank" rel="noopener">
+        前往報名
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
+          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
+        </svg>
+      </a>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+loadData();
+</script>
+</body>
+</html>
