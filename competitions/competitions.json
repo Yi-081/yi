@@ -11,7 +11,7 @@
       "registration_start": "2026-05-01",
       "prize": "最高獎金 100 萬元",
       "description": "鼓勵各界運用科技創新解決金融服務痛點，涵蓋保險科技、支付、借貸、財富管理等領域。",
-      "url": "https://www.fsc.gov.tw",
+      "url": "https://www.fsc.gov.tw/ch/home.jsp?id=96&parentpath=0,2",
       "source": "金管會",
       "status": "open"
     },
@@ -24,7 +24,7 @@
       "registration_start": "2026-05-15",
       "prize": "獎金 50 萬元及業師輔導",
       "description": "以 AI、大數據、區塊鏈技術改善保險服務流程，包含智慧核保、理賠自動化、智慧保單設計等議題。",
-      "url": "https://www.tii.org.tw",
+      "url": "https://www.tii.org.tw/tii/information/information1/",
       "source": "保發中心",
       "status": "open"
     },
@@ -37,7 +37,7 @@
       "registration_start": "2026-06-01",
       "prize": "冠軍 30 萬元 + 國際參賽資格",
       "description": "面向新創團隊，提供金融科技領域創業競賽舞台，優勝隊伍可獲海外參賽及媒合機會。",
-      "url": "https://www.tfta.org.tw",
+      "url": "https://www.tfta.org.tw/events",
       "source": "台灣金融科技協會",
       "status": "open"
     },
@@ -50,7 +50,7 @@
       "registration_start": "2026-04-15",
       "prize": "獎金總額 200 萬元",
       "description": "以真實保險與金融數據進行 AI 模型開發競賽，題目涵蓋風險評估、客戶分群、保單推薦系統。",
-      "url": "https://cathayholdings.com",
+      "url": "https://www.cathaybk.com.tw/cathaybk/personal/campaign/ai-competition/",
       "source": "企業主辦",
       "status": "closing_soon"
     },
@@ -63,7 +63,7 @@
       "registration_start": "2026-05-01",
       "prize": "資金挹注 + 企業合作機會",
       "description": "招募金融科技新創，提供資金、場域、資源三大支持，涵蓋支付、理財、保險科技等主題。",
-      "url": "https://www.fubon.com",
+      "url": "https://www.fubon.com/finance/home/accelerator/",
       "source": "企業主辦",
       "status": "closing_soon"
     },
@@ -76,7 +76,7 @@
       "registration_start": "2026-07-01",
       "prize": "獎金 + 海外展覽資格",
       "description": "協助金融科技新創取得曝光、資金及國際連結，金融科技組涵蓋 InsurTech、RegTech、WealthTech 等。",
-      "url": "https://findit.org.tw",
+      "url": "https://findit.org.tw/zh-TW/activities",
       "source": "FINDIT",
       "status": "open"
     },
@@ -89,7 +89,7 @@
       "registration_start": "2026-05-20",
       "prize": "冠軍 20 萬元",
       "description": "以數位金融服務創新為主軸，鼓勵結合 AI、行動支付、Open Banking 等技術提升用戶體驗。",
-      "url": "https://www.ctbcbank.com",
+      "url": "https://www.ctbcbank.com/content/dam/ctbc/tw/campaign/",
       "source": "企業主辦",
       "status": "open"
     },
@@ -102,7 +102,7 @@
       "registration_start": "2026-09-01",
       "prize": "總獎金 60 萬元",
       "description": "徵求創新智慧保單設計方案，結合數位化核保、個人化保險商品、自動理賠流程等議題。",
-      "url": "https://www.transglobe.com.tw",
+      "url": "https://www.transglobe.com.tw/web/index#/news",
       "source": "企業主辦",
       "status": "open"
     }
