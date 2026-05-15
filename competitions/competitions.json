@@ -1,25 +1,175 @@
 {
-  "last_updated": "2026-05-14T10:00:00",
-  "count": 3,
+  "last_updated": "2026-05-15T02:55:08",
+  "count": 42,
   "competitions": [
     {
-      "id": "real_001",
-      "title": "2026 金融共創PoC實證徵選 — FINPOWER智慧營運與資產創新",
-      "organizer": "金融科技創新園區 FinTechSpace（金管會指導、資策會執行）",
-      "category": ["fintech", "ai", "insurance"],
-      "deadline": "2026-05-29",
-      "registration_start": "2026-03-01",
-      "prize": "入選團隊最高補助 NT$300,000，另可免費參展 2026 台北金融科技展",
-      "description": "以『FINPOWER — 智慧營運與資產創新實證』為主題，10 家金融機構釋出 16 項真實場景需求，涵蓋 AI 客服、LLM、信用卡 AI Agent、企業保障缺口辨識（保險）、虛擬資產服務等，邀請新創或技術團隊進行 PoC 實證合作，不限公司規模與國籍。",
-      "url": "https://contest.bhuntr.com/tw/x3neqcj6skqtkakkht/",
-      "source": "FinTechSpace",
-      "status": "open"
+      "id": "64522ae3075e",
+      "title": "115年3月份信用卡、現金卡及電子支付機構業務資訊",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-07",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605070002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "4c581a9658ab",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月7日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-07",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605070005&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "de0fa6811ee8",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月8日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-08",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605080002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "6000f7869cb1",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月11日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-11",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605110001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "4e83af43f941",
+      "title": "預告修正「保險業負責人應具備資格條件兼職限制及應遵行事項準則」，放寬保險......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-12",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605120002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "13472b64b6c7",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月12日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-12",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605120004&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "a1caab1c566e",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月13日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-13",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605130001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "66a74898dea0",
+      "title": "金管會提醒從事海域遊憩活動民眾相關保險保障",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-14",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605140003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "ab6873d240e6",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月14日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-14",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605140005&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "real_003",
+      "title": "Asian Hackathon for Green Future 2026",
+      "organizer": "Foundation for Green Future（Vingroup 旗下）",
+      "category": [
+        "fintech",
+        "startup"
+      ],
+      "deadline": "2026-05-17",
+      "registration_start": "2026-04-01",
+      "prize": "總獎金 USD $24,000：第1名 $8,000、第2名 $5,000、第3名 ×2 各 $3,000、佳作 ×5 各 $1,000",
+      "description": "面向亞洲各大學大學部及碩士生，徵集以科技驅動永續未來的解決方案，最多 4 人一組。通過初審後進入線上培訓（6/2–6/28），決賽黑客松於 VinUniversity（河內，7/2–7/5）。台灣學生可跨國報名。",
+      "url": "https://forms.gle/o3L5BVLExUYKQtGJA",
+      "source": "Asian Hackathon",
+      "status": "closing_soon"
     },
     {
       "id": "real_002",
       "title": "2026 International Quant Championship (IQC) 全球量化金融研究錦標賽",
       "organizer": "WorldQuant BRAIN",
-      "category": ["fintech", "ai"],
+      "category": [
+        "fintech",
+        "ai"
+      ],
       "deadline": "2026-05-18",
       "registration_start": "2026-03-17",
       "prize": "總獎金池最高 USD $100,000；冠軍另有 WorldQuant 研究顧問／實習機會；全球決賽 9 月於新加坡",
@@ -29,17 +179,501 @@
       "status": "closing_soon"
     },
     {
-      "id": "real_003",
-      "title": "Asian Hackathon for Green Future 2026",
-      "organizer": "Foundation for Green Future（Vingroup 旗下）",
-      "category": ["fintech", "startup"],
-      "deadline": "2026-05-17",
-      "registration_start": "2026-04-01",
-      "prize": "總獎金 USD $24,000：第1名 $8,000、第2名 $5,000、第3名 ×2 各 $3,000、佳作 ×5 各 $1,000",
-      "description": "面向亞洲各大學大學部及碩士生，徵集以科技驅動永續未來的解決方案，最多 4 人一組。通過初審後進入線上培訓（6/2–6/28），決賽黑客松於 VinUniversity（河內，7/2–7/5）。台灣學生可跨國報名。",
-      "url": "https://forms.gle/o3L5BVLExUYKQtGJA",
-      "source": "Asian Hackathon",
+      "id": "real_001",
+      "title": "2026 金融共創PoC實證徵選 — FINPOWER智慧營運與資產創新",
+      "organizer": "金融科技創新園區 FinTechSpace（金管會指導、資策會執行）",
+      "category": [
+        "fintech",
+        "ai",
+        "insurance"
+      ],
+      "deadline": "2026-05-29",
+      "registration_start": "2026-03-01",
+      "prize": "入選團隊最高補助 NT$300,000，另可免費參展 2026 台北金融科技展",
+      "description": "以『FINPOWER — 智慧營運與資產創新實證』為主題，10 家金融機構釋出 16 項真實場景需求，涵蓋 AI 客服、LLM、信用卡 AI Agent、企業保障缺口辨識（保險）、虛擬資產服務等，邀請新創或技術團隊進行 PoC 實證合作，不限公司規模與國籍。",
+      "url": "https://contest.bhuntr.com/tw/x3neqcj6skqtkakkht/",
+      "source": "FinTechSpace",
       "status": "closing_soon"
+    },
+    {
+      "id": "59e6182aae1a",
+      "title": "金融史料陳列室",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://history.fsc.gov.tw",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "89405fd2e2ef",
+      "title": "保險法規資料庫(外部連結)",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://law.tii.org.tw/Fn/Onews.asp",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "5ec1b99a6523",
+      "title": "金融業財務及業務資訊揭露與統計",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=924&parentpath=0,4",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "a4e8ff091f7b",
+      "title": "金融市場統計資訊系統",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://stat.fsc.gov.tw/FSCChartShow_Restore/CRPages/MS_Chart_Show.aspx",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "ac29f5f2c04c",
+      "title": "金融展望月刊",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=159&parentpath=0,4",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "6b47a8caef93",
+      "title": "金融教育成果專刊",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=1112&parentpath=0,4",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "77188cf48095",
+      "title": "兩岸金融",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=138&parentpath=0,4",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "c57dab9f90cf",
+      "title": "金融消保",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=950&parentpath=0,5",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "db1fd28f0677",
+      "title": "金融智慧網",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://moneywise.fsc.gov.tw",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "473ae3c900ac",
+      "title": "金融知識宣導專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=1092&parentpath=0,5",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "7b0777642342",
+      "title": "金融防詐騙宣導專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://moneywise.fsc.gov.tw/home.jsp?id=24&parentpath=0&type=1",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "ad155dc371e5",
+      "title": "金融業重大突發性金融事件24小時緊急通報專線",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=36&parentpath=0,6",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "c9f03fa0ef13",
+      "title": "1998金融服務專線",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=810&parentpath=0,6",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "98df5340d938",
+      "title": "偽冒金融網站公告專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fisac.tw/home",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "e45b8a32c756",
+      "title": "支付或接受之補助",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=1045&parentpath=0,7",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "3fff99aa4806",
+      "title": "金融資料開放專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=1223&parentpath=0,7",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "4a7a3588b796",
+      "title": "發展高齡化金融商品與服務",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=495&parentpath=0,7",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "95534d177834",
+      "title": "金融競爭力專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=8&parentpath=0",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "9c5a964bb8e8",
+      "title": "金融競爭力重要資訊",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=146&parentpath=0,8",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "43dbb93af302",
+      "title": "金融資訊網站",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=147&parentpath=0,9",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "fdecf5028025",
+      "title": "合法金融業網站連結",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=153&parentpath=0,9",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "a8e29ca9979e",
+      "title": "綠色及轉型金融行動方案",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.tw/ch/home.jsp?id=1213&parentpath=0,2",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "dfa38f9708d4",
+      "title": "綠色金融行動方案",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.tw/ch/home.jsp?id=616&parentpath=0,2",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "a3f7b23b1f06",
+      "title": "金融科技(含發展路徑圖)",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.tw/ch/home.jsp?id=478&parentpath=0,2",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "3d1e2e000629",
+      "title": "金融資安韌性發展藍圖",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.tw/ch/home.jsp?id=975&parentpath=0",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "983102b2fbcb",
+      "title": "保險業新一代清償能力制度",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.ib.gov.tw/ch/home.jsp?id=267&parentpath=0,8",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "3d697ec720e2",
+      "title": "普惠金融專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=847&parentpath=0%2C2%2C310",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "d427ef54a258",
+      "title": "保險局",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twjavascript:datasource('unitib');\n\t\tjavascript:selectA(``,`ou=367030000D,ou=organization,o=fsc,c=tw`,``,`chinese`,``);\n\t\tjavascript:selectB(``,`ou=367030000D,ou=organization,o=fsc,c=tw`,``,`chinese`,``);",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "8d9b2da84729",
+      "title": "金融智慧網",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://moneywise.fsc.gov.tw/",
+      "source": "金管會",
+      "status": "unknown"
+    },
+    {
+      "id": "49a3268ebe26",
+      "title": "金融防詐騙宣導專區",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://moneywise.fsc.gov.tw/home.jsp?id=24&parentpath=0",
+      "source": "金管會",
+      "status": "unknown"
     }
   ]
 }
