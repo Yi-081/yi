@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-15T02:55:08",
-  "count": 42,
+  "last_updated": "2026-05-16T02:41:01",
+  "count": 44,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -143,6 +143,38 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605140005&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "43f1080d6eae",
+      "title": "115年度金融教育貢獻獎甄選活動開始接受報名",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-15",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605150002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "9c45801b3e19",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月15日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-15",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605150001&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
