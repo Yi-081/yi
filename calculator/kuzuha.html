@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>葛葉・數值計算機</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+:root {
+  --ink: #1a0e2a;
+  --paper: #faf6ff;
+  --paper2: #f2ecfc;
+  --purple: #7a3ab8;
+  --purple-mid: #9a5ad0;
+  --purple-light: #f0e8ff;
+  --purple-dark: #4a1a80;
+  --purple-pale: #e8d8ff;
+  --red: #b02020;
+  --red-light: #fde8e8;
+  --teal: #1a7060;
+  --teal-light: #d0f0e8;
+  --amber: #a06010;
+  --amber-light: #fdeec8;
+  --green: #2d6e3a;
+  --green-light: #d4edda;
+  --blue: #2a5a9a;
+  --blue-light: #ddeeff;
+  --gold: #b07820;
+  --gold-light: #fff0c8;
+  --gray: #6a5a80;
+  --border: #d8c8f0;
+  --shadow: rgba(80,30,140,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper2);
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 16px;
+  background-image: radial-gradient(ellipse at 15% 15%, rgba(122,58,184,0.08) 0%, transparent 50%), radial-gradient(ellipse at 85% 85%, rgba(154,90,208,0.06) 0%, transparent 50%);
+}
+.container { max-width: 480px; margin: 0 auto; }
+
+.hero {
+  background: linear-gradient(160deg, #2a0e48 0%, #5a2a90 50%, #8a50c0 100%);
+  border-radius: 16px 16px 0 0;
+  padding: 28px 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '🦊';
+  position: absolute;
+  font-size: 90px;
+  opacity: 0.07;
+  right: -8px;
+  top: -8px;
+}
+.hero-title { font-family: 'Noto Serif TC','PingFang TC',serif; font-size: 24px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 4px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); position: relative; }
+.hero-subtitle { text-align: center; font-size: 11px; color: rgba(220,190,255,0.85); letter-spacing: 2px; margin-top: 4px; position: relative; }
+.hero-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; position: relative; }
+.hero-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(220,190,255,0.4), transparent); }
+.hero-divider em { color: rgba(220,190,255,0.7); font-style: normal; font-size: 14px; }
+.tabs { display: flex; background: rgba(0,0,0,0.25); position: relative; z-index: 1; }
+.tab-btn { flex: 1; padding: 10px 2px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.25s; font-family: 'Noto Sans TC','PingFang TC',sans-serif; }
+.tab-btn.active { color: #e0c8ff; border-bottom-color: #e0c8ff; }
+
+.body-wrap { background: var(--paper); border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px var(--shadow); }
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
+
+.section-title { font-family: 'Noto Serif TC','PingFang TC',serif; font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 2px; border-left: 3px solid var(--purple-mid); padding-left: 8px; margin-bottom: 12px; margin-top: 20px; }
+.section-title:first-child { margin-top: 0; }
+
+.input-group { margin-bottom: 12px; }
+.input-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px; }
+.badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; font-weight: 700; }
+.badge-atk  { background: #fde8e8; color: var(--red); }
+.badge-crit { background: var(--purple-light); color: var(--purple-dark); }
+.badge-illus{ background: var(--gold-light); color: var(--gold); }
+.badge-enemy{ background: #fde8f4; color: #a02060; }
+
+input[type=number], select {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 18px; font-weight: 700; font-family: 'Noto Sans TC','PingFang TC',sans-serif;
+  color: var(--ink); background: #fff; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s; -moz-appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number]:focus, select:focus { border-color: var(--purple-mid); box-shadow: 0 0 0 3px rgba(154,90,208,0.12); }
+select { font-size: 15px; cursor: pointer; }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* 幻化人數選擇器 */
+.illus-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.illus-btn {
+  padding: 10px 4px; border-radius: 10px; border: 2px solid var(--border);
+  background: #fff; font-size: 13px; font-weight: 700; color: var(--gray);
+  cursor: pointer; text-align: center; transition: all 0.2s;
+  font-family: 'Noto Sans TC','PingFang TC',sans-serif;
+}
+.illus-btn.active { background: var(--purple-light); border-color: var(--purple-mid); color: var(--purple-dark); }
+.illus-btn span { display: block; font-size: 9px; font-weight: 400; margin-top: 2px; color: var(--gray); }
+.illus-btn.active span { color: var(--purple-mid); }
+
+/* 大妖姿態面板展示 */
+.daiyou-panel {
+  background: linear-gradient(135deg, #2a0e48, #5a2a90);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.daiyou-panel::before {
+  content: '大妖姿態';
+  position: absolute;
+  font-family: 'Noto Serif TC','PingFang TC',serif;
+  font-size: 40px; font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  right: -8px; top: 4px;
+  letter-spacing: 2px;
+}
+.daiyou-title { font-family: 'Noto Serif TC','PingFang TC',serif; font-size: 13px; font-weight: 700; color: rgba(220,190,255,0.8); margin-bottom: 12px; letter-spacing: 2px; }
+.daiyou-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.daiyou-stat { background: rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 10px; }
+.daiyou-stat-label { font-size: 10px; color: rgba(220,190,255,0.6); margin-bottom: 2px; }
+.daiyou-stat-val { font-size: 18px; font-weight: 900; color: #e8d0ff; }
+.daiyou-stat-sub { font-size: 9px; color: rgba(220,190,255,0.5); margin-top: 1px; }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.result-card { border-radius: 10px; padding: 14px 12px; text-align: center; border: 1.5px solid transparent; position: relative; overflow: hidden; }
+.result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.result-card.purple { background: var(--purple-light); border-color: #c0a0e8; }
+.result-card.purple::before { background: var(--purple-mid); }
+.result-card.gold { background: var(--gold-light); border-color: #d4b060; }
+.result-card.gold::before { background: var(--gold); }
+.result-card.red { background: var(--red-light); border-color: #e09090; }
+.result-card.red::before { background: var(--red); }
+.result-card.green { background: var(--green-light); border-color: #80c090; }
+.result-card.green::before { background: var(--green); }
+.result-card.teal { background: var(--teal-light); border-color: #60b0a0; }
+.result-card.teal::before { background: var(--teal); }
+.result-card.amber { background: var(--amber-light); border-color: #d4a060; }
+.result-card.amber::before { background: var(--amber); }
+.result-card.dark { background: #2a0e48; border-color: #6a3a9a; }
+.result-card.dark::before { background: var(--purple-mid); }
+.card-label { font-size: 10px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-label-dark { font-size: 10px; font-weight: 700; color: rgba(220,190,255,0.7); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-value { font-size: 22px; font-weight: 900; line-height: 1.1; }
+.card-value.purple { color: var(--purple-dark); }
+.card-value.gold { color: var(--gold); }
+.card-value.red { color: var(--red); }
+.card-value.green { color: var(--green); }
+.card-value.teal { color: var(--teal); }
+.card-value.amber { color: var(--amber); }
+.card-value.dark { color: #e0c8ff; }
+.card-formula { font-size: 9px; color: var(--gray); margin-top: 3px; opacity: 0.8; }
+.card-formula-dark { font-size: 9px; color: rgba(220,190,255,0.6); margin-top: 3px; }
+
+/* 終式破空分段 */
+.hasou-stack { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.hasou-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--purple-light); border: 1.5px solid #c0a0e8; border-radius: 8px; }
+.hasou-row.total { background: #2a0e48; border-color: #6a3a9a; }
+.hasou-label { font-size: 11px; font-weight: 700; color: var(--purple-dark); width: 40px; flex-shrink: 0; text-align: center; }
+.hasou-label-dark { font-size: 11px; font-weight: 700; color: rgba(220,190,255,0.8); width: 40px; flex-shrink: 0; text-align: center; }
+.hasou-bar-wrap { flex: 1; }
+.hasou-bar-track { height: 5px; background: rgba(0,0,0,0.08); border-radius: 99px; overflow: hidden; margin-bottom: 3px; }
+.hasou-bar-fill { height: 100%; border-radius: 99px; background: var(--purple-mid); transition: width 0.4s; }
+.hasou-note { font-size: 9px; color: var(--gray); }
+.hasou-note-dark { font-size: 9px; color: rgba(220,190,255,0.5); }
+.hasou-val { font-size: 13px; font-weight: 700; color: var(--purple-dark); min-width: 60px; text-align: right; }
+.hasou-val-dark { font-size: 13px; font-weight: 700; color: #e0c8ff; min-width: 60px; text-align: right; }
+
+.divider { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
+.divider span { flex: 1; height: 1px; background: var(--border); }
+.divider em { font-style: normal; font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+
+.alert { border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; display: flex; gap: 10px; font-size: 12px; line-height: 1.6; }
+.alert-icon { flex-shrink: 0; font-size: 16px; }
+.alert-body strong { font-size: 13px; display: block; margin-bottom: 2px; }
+.alert.info { background: var(--amber-light); border: 1.5px solid #d4a060; }
+.alert.info strong { color: var(--amber); }
+.alert.tip { background: var(--purple-light); border: 1.5px solid #c0a0e8; }
+.alert.tip strong { color: var(--purple-dark); }
+
+/* 技能說明 */
+.skill-card { border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 10px; overflow: hidden; }
+.skill-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(90deg, rgba(122,58,184,0.08), transparent); border-bottom: 1px solid var(--border); }
+.skill-num { width: 26px; height: 26px; border-radius: 50%; background: var(--purple-mid); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.skill-num.gold-num { background: linear-gradient(135deg, var(--gold), #d09030); }
+.skill-name-zh { font-family: 'Noto Serif TC','PingFang TC',serif; font-weight: 700; font-size: 14px; }
+.skill-name-en { font-size: 10px; color: var(--gray); margin-top: 1px; }
+.skill-body { padding: 12px 14px; }
+.skill-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
+.skill-key { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 99px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+.key-dmg  { background: var(--red-light); color: var(--red); border: 1px solid #e0b0b0; }
+.key-buff { background: var(--purple-light); color: var(--purple-dark); border: 1px solid #c0a0e8; }
+.key-heal { background: var(--green-light); color: var(--green); border: 1px solid #80c090; }
+.key-illus{ background: var(--gold-light); color: var(--gold); border: 1px solid #d4b060; }
+.key-cond { background: var(--amber-light); color: var(--amber); border: 1px solid #d4a060; }
+.key-tip  { background: var(--paper2); color: var(--gray); border: 1px solid var(--border); }
+.key-daiyou { background: #2a0e48; color: #e0c8ff; border: 1px solid #6a3a9a; }
+.hv { font-weight: 700; color: var(--red); }
+.hp { font-weight: 700; color: var(--purple-dark); }
+.hg { font-weight: 700; color: var(--green); }
+.ha { font-weight: 700; color: var(--amber); }
+.hgold { font-weight: 700; color: var(--gold); }
+
+.footer { text-align: center; padding: 14px; font-size: 10px; color: var(--gray); opacity: 0.6; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-title">🦊 葛葉 數值計算機</div>
+    <div class="hero-subtitle">狐言・渡靈・歸源術・大妖姿態</div>
+    <div class="hero-divider"><span></span><em>◆</em><span></span></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('main')">🦊 大妖試算</button>
+      <button class="tab-btn" onclick="switchTab('normal')">⚔️ 普通技能</button>
+      <button class="tab-btn" onclick="switchTab('skill')">📖 技能說明</button>
+    </div>
+  </div>
+
+  <div class="body-wrap">
+
+    <!-- ══ 大妖試算 ══ -->
+    <div id="tab-main" class="tab-content active">
+
+      <div class="section-title">葛葉面板輸入（初始值・含御魂）</div>
+      <div class="input-row">
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-atk">攻擊</span>初始攻擊力</div>
+          <input type="number" id="m-atk" placeholder="例：7158" oninput="calcMain()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-crit">暴擊</span>暴擊率%</div>
+          <input type="number" id="m-crit" placeholder="例：17" oninput="calcMain()">
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-enemy">敵方</span>敵方減少人數（0-5）</div>
+        <select id="m-enemy" onchange="calcMain()">
+          <option value="0">少0人（共6人）</option>
+          <option value="1">少1人（剩5人・-12%）</option>
+          <option value="2">少2人（剩4人・-24%）</option>
+          <option value="3">少3人（剩3人・-36%）</option>
+          <option value="4">少4人（剩2人・-48%）</option>
+          <option value="5">少5人（剩1人陰陽師・-60%）</option>
+        </select>
+      </div>
+
+      <!-- 幻化人數選擇 -->
+      <div class="section-title">幻化人數</div>
+      <div class="illus-selector">
+        <button class="illus-btn active" onclick="setIllus(0)" id="illus-0">0人<span>普通形態</span></button>
+        <button class="illus-btn" onclick="setIllus(1)" id="illus-1">1人<span>+20%各項</span></button>
+        <button class="illus-btn" onclick="setIllus(2)" id="illus-2">2人<span>+40%各項</span></button>
+        <button class="illus-btn" onclick="setIllus(3)" id="illus-3">3人<span>+60%各項</span></button>
+      </div>
+
+      <!-- 大妖姿態面板 -->
+      <div class="daiyou-panel" id="daiyou-panel">
+        <div class="daiyou-title">大妖姿態・合體面板</div>
+        <div class="daiyou-grid">
+          <div class="daiyou-stat">
+            <div class="daiyou-stat-label">生命上限</div>
+            <div class="daiyou-stat-val" id="dy-hp">─</div>
+            <div class="daiyou-stat-sub">初始攻擊 × 225%</div>
+          </div>
+          <div class="daiyou-stat">
+            <div class="daiyou-stat-label">攻擊加成</div>
+            <div class="daiyou-stat-val" id="dy-atk-bonus">─</div>
+            <div class="daiyou-stat-sub" id="dy-atk-sub">幻化人數 × 20%</div>
+          </div>
+          <div class="daiyou-stat">
+            <div class="daiyou-stat-label">防禦加成</div>
+            <div class="daiyou-stat-val" id="dy-def-bonus">─</div>
+            <div class="daiyou-stat-sub" id="dy-def-sub">幻化人數 × 20%</div>
+          </div>
+          <div class="daiyou-stat">
+            <div class="daiyou-stat-label">暴擊率</div>
+            <div class="daiyou-stat-val" id="dy-crit">─</div>
+            <div class="daiyou-stat-sub" id="dy-crit-sub">面板 + 幻化×10%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 回血 -->
+      <div class="result-grid">
+        <div class="result-card green">
+          <div class="card-label">大妖姿態生命上限</div>
+          <div class="card-value green" id="r-dy-hp">─</div>
+          <div class="card-formula">初始攻擊 × 225%</div>
+        </div>
+        <div class="result-card teal">
+          <div class="card-label">終式・破空回血</div>
+          <div class="card-value teal" id="r-dy-heal">─</div>
+          <div class="card-formula">初始攻擊 × 100%</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><em>終式・破空</em><span></span></div>
+
+      <!-- 終式破空 -->
+      <div class="section-title">終式・破空（大妖姿態專用・3段300%）</div>
+      <div class="hasou-stack" id="hasou-stack"></div>
+
+      <div class="result-grid">
+        <div class="result-card dark">
+          <div class="card-label-dark">第1、2段傷害</div>
+          <div class="card-value dark" id="r-hasou-per">─</div>
+          <div class="card-formula-dark">攻擊×(1+幻化×20%)×300%×衰減</div>
+        </div>
+        <div class="result-card dark">
+          <div class="card-label-dark">3段合計</div>
+          <div class="card-value dark" id="r-hasou-total">─</div>
+          <div class="card-formula-dark">第3段含幻化傷害係數</div>
+        </div>
+      </div>
+
+      <div class="alert tip">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body"><strong>幻化加成說明</strong>0人：無加成 ／ 1人：+100% ／ 2人：+200% ／ 3人：+360%。衰減：敵方每少1人 -12%。</div>
+      </div>
+
+    </div>
+
+    <!-- ══ 普通技能 ══ -->
+    <div id="tab-normal" class="tab-content">
+
+      <div class="section-title">面板輸入</div>
+      <div class="input-row">
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-atk">攻擊</span>攻擊力</div>
+          <input type="number" id="n-atk" placeholder="例：7158" oninput="calcNormal()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害%</div>
+          <input type="number" id="n-cdmg" placeholder="例：157" oninput="calcNormal()">
+        </div>
+      </div>
+
+      <!-- 一技 -->
+      <div class="section-title">一技：狐言（Lv.5・125%）</div>
+      <div class="result-grid">
+        <div class="result-card amber">
+          <div class="card-label">基礎傷害</div>
+          <div class="card-value amber" id="r-q1-base">─</div>
+          <div class="card-formula">攻擊 × 125%</div>
+        </div>
+        <div class="result-card amber">
+          <div class="card-label">暴擊傷害</div>
+          <div class="card-value amber" id="r-q1-crit">─</div>
+          <div class="card-formula">基礎 × 暴傷%</div>
+        </div>
+      </div>
+
+      <!-- 狐影陣 -->
+      <div class="section-title">三技：狐影陣（Lv.5・240%・攻擊全體）</div>
+      <div class="result-grid">
+        <div class="result-card purple">
+          <div class="card-label">基礎傷害（全體）</div>
+          <div class="card-value purple" id="r-q3-base">─</div>
+          <div class="card-formula">攻擊 × 240%</div>
+        </div>
+        <div class="result-card purple">
+          <div class="card-label">暴擊傷害（全體）</div>
+          <div class="card-value purple" id="r-q3-crit">─</div>
+          <div class="card-formula">基礎 × 暴傷%</div>
+        </div>
+      </div>
+
+      <div class="alert info">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body"><strong>進入大妖姿態後</strong>狐影陣會被替換為「終式・破空」，請切換到「大妖試算」頁籤計算大招傷害。</div>
+      </div>
+    </div>
+
+    <!-- ══ 技能說明 ══ -->
+    <div id="tab-skill" class="tab-content">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">1</div>
+          <div><div class="skill-name-zh">狐言</div><div class="skill-name-en">Lv.5</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>對敵方目標造成攻擊 <span class="hv">125%</span> 傷害。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">2</div>
+          <div><div class="skill-name-zh">渡靈</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-buff">被動</span><span>葛葉施放「歸源術」外的妖術時，其他非召喚物友方獲得1層<span class="hp">九尾之力</span>，並獲得技能「<span class="hgold">合守</span>」。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">主動</span><span>使指定友方目標提升 <span class="hv">40%</span> 行動條，並獲得2層<span class="hp">狐族庇佑</span>（持續1回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>使友方獲得 <span class="hv">3層</span>狐族庇佑。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>友方獲得狐族庇佑時，提升葛葉 <span class="hv">75點速度</span>（最多3次，持續1回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>施放使自身獲得1層狐族庇佑（持續1回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>戰鬥開始時，獲得1層狐族庇佑（持續1回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">九尾</span><span>【印記，最多3層】攜帶時開啟「歸源術」，可幻化對應層數的友方。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">狐族</span><span>【印記，上限3層】受到傷害、控制效果或放逐時，免疫並移除1層。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">合守</span><span>【被動技能】獲得3層狐族庇佑，持續1回合。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">3</div>
+          <div><div class="skill-name-zh">歸源術</div><div class="skill-name-en">Lv.5</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>選擇友方式神，移除其所有減益，使其進入<span class="hgold">幻化</span>效果，與葛葉合體為<span class="hp">大妖姿態</span>並獲得新回合；或選擇友方式神解除幻化效果。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%生命</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%攻擊</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%防禦</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">10%暴擊</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>被葛葉守護，為葛葉提升15%速度。無法動作，不可被選中，行動條位置被鎖定；免疫傷害、治療、增益和減益效果。</span></div>
+          <div class="skill-row"><span class="skill-key key-daiyou">大妖</span><span>生命為葛葉初始攻擊的 <span class="hv">225%</span>。生命比例高於50%時，免疫減益和放逐，行動前獲得與幻化人數相等的鬼火。移除九尾之力外的所有狀態和印記，將「狐影陣」替換為「終式・破空」。受到致命傷害或所有被幻化的式神解除幻化時，回到普通形態。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num gold-num">☆</div>
+          <div><div class="skill-name-zh">狐影陣</div><div class="skill-name-en">Lv.5・普通形態大招</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>使用狐妖之術，攻擊敵方全體，造成攻擊 <span class="hv">240%</span> 傷害。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num gold-num">★</div>
+          <div><div class="skill-name-zh">終式・破空</div><div class="skill-name-en">大妖姿態專用大招</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-heal">回血</span><span>恢復自身初始攻擊 <span class="hg">100%</span> 的生命。</span></div>
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>攻擊敵方全體3次，每次造成攻擊 <span class="hv">300%</span> 傷害，傷害平均分配給全體敵方。</span></div>
+          <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>每幻化1名式神，未次傷害提升：1人 <span class="hv">+100%</span>、2人 <span class="hv">+200%</span>、3人 <span class="hv">+360%</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-cond">衰減</span><span>敵方人數每比友方初始人數減少1人，傷害衰減 <span class="hv">12%</span>（最多衰減60%）。</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer">葛葉・數值計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+</div>
+
+<script>
+function el(id) { return document.getElementById(id); }
+function val(id) { var e = el(id); return e ? (parseFloat(e.value) || 0) : 0; }
+function fmt(n) { return Math.floor(n).toLocaleString(); }
+function setText(id, txt) { var e = el(id); if (e) e.textContent = txt; }
+
+var illusCount = 0;
+
+function setIllus(n) {
+  illusCount = n;
+  for (var i = 0; i <= 3; i++) {
+    var btn = el('illus-' + i);
+    if (btn) btn.className = 'illus-btn' + (i === n ? ' active' : '');
+  }
+  calcMain();
+}
+
+function switchTab(name) {
+  var names = ['main','normal','skill'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var t = el('tab-' + name);
+  if (t) t.classList.add('active');
+  if (name === 'normal') {
+    var atkEl = el('m-atk'), cdmgEl = el('m-cdmg');
+    var nAtk = el('n-atk'), nCdmg = el('n-cdmg');
+    if (atkEl && nAtk && atkEl.value) nAtk.value = atkEl.value;
+    if (cdmgEl && nCdmg && cdmgEl.value) nCdmg.value = cdmgEl.value;
+    calcNormal();
+  }
+}
+
+function calcMain() {
+  var atk = val('m-atk');
+  var crit = val('m-crit');
+  var enemyLess = parseInt((el('m-enemy') || {value:'0'}).value) || 0;
+  var n = illusCount;
+
+  if (!atk) {
+    ['r-dy-hp','r-dy-heal','r-hasou-per','r-hasou-total','dy-hp','dy-atk-bonus','dy-def-bonus','dy-crit'].forEach(function(id) { setText(id, '─'); });
+    el('hasou-stack').innerHTML = '';
+    return;
+  }
+
+  // 大妖姿態面板
+  var dyHp   = atk * 2.25 * (1 + n * 0.20);
+  var atkBonus = n * 20;
+  var defBonus = n * 20;
+  var critTotal = crit + n * 10;
+
+  var PANEL_ATK_MULT = [1.0, 1.2, 1.4, 1.6];
+  var PANEL_DMG_MULT = [1.0, 2.0, 3.0, 4.6];
+  setText('dy-hp',        fmt(dyHp));
+  setText('dy-atk-bonus', n > 0 ? '+' + (n*20) + '%' : '無加成');
+  setText('dy-def-bonus', defBonus > 0 ? '+' + defBonus + '%' : '無加成');
+  setText('dy-crit',      critTotal.toFixed(0) + '%');
+  setText('dy-atk-sub',   n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
+  setText('dy-def-sub',   n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
+  setText('dy-crit-sub',  n > 0 ? '面板' + crit + '% + 幻化' + (n*10) + '%' : '面板暴擊率');
+
+  setText('r-dy-hp',   fmt(dyHp));
+  setText('r-dy-heal', fmt(atk * 1.0));
+
+  // 終式破空
+  var ILLUS_ATK_MULT = [1.0, 1.2, 1.4, 1.6];
+  var ILLUS_DMG_MULT = [1.0, 2.0, 3.0, 4.6];
+  var enemyCount = Math.max(1, 6 - enemyLess);
+  var decayRate  = enemyLess * 0.12;
+  var enemyMult  = 1 - decayRate;
+  var atkBoosted = atk * ILLUS_ATK_MULT[n];
+  var hit12  = atkBoosted * 3.0 * enemyMult / 6;
+  var hit3   = atkBoosted * 3.0 * ILLUS_DMG_MULT[n] * enemyMult / 6;
+  var total3 = hit12 * 2 + hit3;
+
+  setText('r-hasou-per',   fmt(hit12));
+  setText('r-hasou-total', fmt(total3));
+
+  var maxVal = Math.max(hit3, 1);
+  var html = '';
+  for (var i = 1; i <= 2; i++) {
+    var w = Math.min((hit12 / maxVal) * 100, 100);
+    html += '<div class="hasou-row">' +
+      '<div class="hasou-label">第' + i + '段</div>' +
+      '<div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:' + w + '%"></div></div>' +
+      '<div class="hasou-note">每個敵人受到・攻擊×(1+幻化×20%)×300%×(1-' + (decayRate*100).toFixed(0) + '%)÷6人</div></div>' +
+      '<div class="hasou-val">' + fmt(hit12) + '</div>' +
+      '</div>';
+  }
+  var w3 = 100;
+  html += '<div class="hasou-row" style="background:var(--purple-pale);border-color:var(--purple-mid);">' +
+    '<div class="hasou-label" style="color:var(--purple-dark)">第3段</div>' +
+    '<div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:' + w3 + '%;background:var(--purple-mid)"></div></div>' +
+    '<div class="hasou-note">每個敵人受到・×幻化係數（' + ILLUS_DMG_MULT[n].toFixed(1) + '×）×(1-' + (decayRate*100).toFixed(0) + '%)÷6人</div></div>' +
+    '<div class="hasou-val" style="color:var(--purple-dark)">' + fmt(hit3) + '</div>' +
+    '</div>';
+  html += '<div class="hasou-row total">' +
+    '<div class="hasou-label-dark">合計</div>' +
+    '<div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:100%;background:#c090ff"></div></div>' +
+    '<div class="hasou-note-dark">每人受到・幻化' + n + '人・衰減' + (decayRate*100).toFixed(0) + '%・剩' + enemyCount + '人</div></div>' +
+    '<div class="hasou-val-dark">' + fmt(total3) + '</div>' +
+    '</div>';
+  el('hasou-stack').innerHTML = html;
+}
+
+function calcNormal() {
+  var atk = val('n-atk');
+  var cdmg = val('n-cdmg') || 150;
+  if (!atk) {
+    ['r-q1-base','r-q1-crit','r-q3-base','r-q3-crit'].forEach(function(id) { setText(id, '─'); });
+    return;
+  }
+  setText('r-q1-base', fmt(atk * 1.25));
+  setText('r-q1-crit', fmt(atk * 1.25 * (cdmg / 100)));
+  setText('r-q3-base', fmt(atk * 2.40));
+  setText('r-q3-crit', fmt(atk * 2.40 * (cdmg / 100)));
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  setIllus(0);
+});
+</script>
+</body>
+</html>
