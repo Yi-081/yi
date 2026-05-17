@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陰陽師・式神計算機</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1008;
+  --paper: #fdf6ec;
+  --paper2: #f0e8d8;
+  --gold: #c9922a;
+  --gold-light: #fdeec8;
+  --border: #d4c4a8;
+  --gray: #7a6a58;
+  --shadow: rgba(100,70,20,0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper2);
+  font-family: 'Noto Sans TC', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 20px 16px 40px;
+  background-image:
+    radial-gradient(ellipse at 10% 10%, rgba(201,146,42,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, rgba(139,48,32,0.06) 0%, transparent 50%);
+}
+.container { max-width: 480px; margin: 0 auto; }
+
+/* ── 頁頭 ── */
+.hero {
+  text-align: center;
+  padding: 36px 16px 28px;
+  position: relative;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 3px 12px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+}
+.hero-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 4px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-size: 12px;
+  color: var(--gray);
+  letter-spacing: 2px;
+}
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 28px;
+}
+.hero-divider span { flex: 1; height: 1px; background: var(--border); }
+.hero-divider em { font-style: normal; font-size: 16px; color: var(--gold); }
+
+/* ── 式神卡片 ── */
+.card-grid { display: flex; flex-direction: column; gap: 14px; }
+
+.shiki-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.shiki-card:active { transform: scale(0.98); }
+
+.card-banner {
+  height: 8px;
+}
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--paper);
+}
+.card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+.card-info { flex: 1; }
+.card-rarity {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 3px;
+}
+.card-name {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.card-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid;
+}
+.card-arrow {
+  font-size: 18px;
+  color: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── 平將門 ── */
+.card-taira .card-banner { background: linear-gradient(90deg, #2c1810, #8b3020, #c05040); }
+.card-taira .card-icon { background: linear-gradient(135deg, #5a2010, #8b3020); }
+.card-taira .card-rarity { color: #b02020; }
+.card-taira .card-name { color: #2c1810; }
+.card-taira .tag { background: #fde8e8; border-color: #e0b0b0; color: #b02020; }
+
+/* ── SP桃花妖 ── */
+.card-momohana .card-banner { background: linear-gradient(90deg, #4a1030, #c05080, #e090b0); }
+.card-momohana .card-icon { background: linear-gradient(135deg, #8a2060, #c05080); }
+.card-momohana .card-rarity { color: #c0407a; }
+.card-momohana .card-name { color: #4a1030; }
+.card-momohana .tag { background: #fce4f0; border-color: #e0a0c0; color: #c0407a; }
+
+/* ── 即將推出 ── */
+.card-coming {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow);
+  opacity: 0.6;
+}
+.card-coming .card-body { background: #f5f0e8; }
+.card-coming .card-icon { background: #e0d8c8; }
+.card-coming .card-name { color: var(--gray); }
+.card-coming .card-rarity { color: var(--gray); }
+.card-coming .tag { background: #f0ebe0; border-color: var(--border); color: var(--gray); }
+.coming-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--gold-light);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 1px;
+}
+
+/* ── 頁尾 ── */
+.footer {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 10px;
+  color: var(--gray);
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-badge">ONMYOJI TOOLS</div>
+    <div class="hero-title">式神<span>・</span>數值計算機</div>
+    <div class="hero-subtitle">選擇式神，開始計算</div>
+    <div class="hero-divider"><span></span><em>⛩</em><span></span></div>
+  </div>
+
+  <div class="card-grid">
+
+    <!-- 平將門 -->
+    <a href="taira_calculator.html" class="shiki-card card-taira">
+      <div class="card-banner"></div>
+      <div class="card-body">
+        <div class="card-icon">⚔️</div>
+        <div class="card-info">
+          <div class="card-rarity">SSR</div>
+          <div class="card-name">平將門</div>
+          <div class="card-tags">
+            <span class="tag">架勢判定</span>
+            <span class="tag">受擊回血</span>
+            <span class="tag">騎陽長明</span>
+            <span class="tag">目標逆推</span>
+          </div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+    </a>
+
+    <!-- SP桃花妖 -->
+    <a href="sp-momohana.html" class="shiki-card card-momohana">
+      <div class="card-banner"></div>
+      <div class="card-body">
+        <div class="card-icon">🌸</div>
+        <div class="card-info">
+          <div class="card-rarity">SP</div>
+          <div class="card-name">灼華桃花妖</div>
+          <div class="card-tags">
+            <span class="tag">治療試算</span>
+            <span class="tag">新蕊回血</span>
+            <span class="tag">復活回血</span>
+            <span class="tag">傷害降低</span>
+          </div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+    </a>
+
+    <!-- 葛葉 (即將推出) -->
+    <div class="card-coming">
+      <div class="card-banner" style="background: linear-gradient(90deg,#1a2a1a,#2a4a2a,#406040);"></div>
+      <div class="card-body">
+        <div class="card-icon" style="font-size:22px;">🦊</div>
+        <div class="card-info">
+          <div class="card-rarity">SSR</div>
+          <div class="card-name">葛葉</div>
+          <div class="card-tags">
+            <span class="tag">即將推出</span>
+          </div>
+        </div>
+      </div>
+      <div class="coming-badge">即將推出</div>
+    </div>
+
+    <!-- 禍津神 (即將推出) -->
+    <div class="card-coming">
+      <div class="card-banner" style="background: linear-gradient(90deg,#1a0a2a,#3a1a5a,#6030a0);"></div>
+      <div class="card-body">
+        <div class="card-icon" style="font-size:22px;">⚡</div>
+        <div class="card-info">
+          <div class="card-rarity">SSR</div>
+          <div class="card-name">禍津神</div>
+          <div class="card-tags">
+            <span class="tag">即將推出</span>
+          </div>
+        </div>
+      </div>
+      <div class="coming-badge">即將推出</div>
+    </div>
+
+  </div>
+
+  <div class="footer">陰陽師・式神數值計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+</div>
+</body>
+</html>

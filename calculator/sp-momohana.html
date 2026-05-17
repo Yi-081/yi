@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SP灼華桃花妖・數值計算機</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a0810;
+  --paper: #fdf6f9;
+  --paper2: #f8eaf2;
+  --pink: #c0407a;
+  --pink-light: #fce4f0;
+  --pink-dark: #8a1a50;
+  --rose: #e06090;
+  --green: #2d7a4a;
+  --green-light: #d4f0e0;
+  --teal: #1a7060;
+  --teal-light: #d0f0e8;
+  --amber: #a06010;
+  --amber-light: #fdeec8;
+  --blue: #2a5a8f;
+  --blue-light: #d6e8f5;
+  --purple: #6030a0;
+  --purple-light: #ede0ff;
+  --gray: #7a6070;
+  --border: #e0c8d4;
+  --shadow: rgba(150,60,100,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper2);
+  font-family: 'Noto Sans TC', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 16px;
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(192,64,122,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(224,96,144,0.05) 0%, transparent 50%);
+}
+.container { max-width: 480px; margin: 0 auto; }
+
+.hero {
+  background: linear-gradient(160deg, #4a1030 0%, #8a2060 40%, #c05080 100%);
+  border-radius: 16px 16px 0 0;
+  padding: 28px 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '🌸';
+  position: absolute;
+  font-size: 120px;
+  opacity: 0.06;
+  right: -20px;
+  top: -20px;
+}
+.hero-title { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 3px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); position: relative; }
+.hero-subtitle { text-align: center; font-size: 11px; color: rgba(255,220,230,0.85); letter-spacing: 2px; margin-top: 4px; position: relative; }
+.hero-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; position: relative; }
+.hero-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,220,0.4), transparent); }
+.hero-divider em { color: rgba(255,200,220,0.7); font-style: normal; font-size: 14px; }
+
+.tabs { display: flex; background: rgba(0,0,0,0.25); position: relative; z-index: 1; }
+.tab-btn { flex: 1; padding: 10px 2px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.55); background: none; border: none; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.25s; font-family: 'Noto Sans TC', sans-serif; }
+.tab-btn.active { color: #ffd0e8; border-bottom-color: #ffd0e8; }
+
+.body-wrap { background: var(--paper); border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px var(--shadow); }
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
+
+.section-title { font-family: 'Noto Serif TC', serif; font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 2px; border-left: 3px solid var(--pink); padding-left: 8px; margin-bottom: 12px; margin-top: 20px; }
+.section-title:first-child { margin-top: 0; }
+
+.input-group { margin-bottom: 12px; }
+.input-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px; }
+.badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; font-weight: 700; }
+.badge-hp  { background: #fde8f0; color: var(--pink); }
+.badge-atk { background: #fde8e8; color: #b02020; }
+.badge-crit{ background: #f5e8ff; color: var(--purple); }
+input[type=number] { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 18px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; color: var(--ink); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -moz-appearance: textfield; }
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(192,64,122,0.1); }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* 暴擊條件提示 */
+.crit-check {
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  border: 1.5px solid var(--border);
+  background: #fafaf8;
+  transition: all 0.3s;
+}
+.crit-check.met { background: var(--green-light); border-color: #80c090; }
+.crit-check.unmet { background: #fdeaea; border-color: #e09090; }
+.crit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.crit-label { font-weight: 700; font-size: 13px; }
+.crit-note { font-size: 11px; color: var(--gray); }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.result-card { border-radius: 10px; padding: 14px 12px; text-align: center; border: 1.5px solid transparent; position: relative; overflow: hidden; }
+.result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.result-card.pink { background: var(--pink-light); border-color: #e0a0c0; }
+.result-card.pink::before { background: var(--pink); }
+.result-card.green { background: var(--green-light); border-color: #80c090; }
+.result-card.green::before { background: var(--green); }
+.result-card.teal { background: var(--teal-light); border-color: #60b0a0; }
+.result-card.teal::before { background: var(--teal); }
+.result-card.amber { background: var(--amber-light); border-color: #d4a060; }
+.result-card.amber::before { background: var(--amber); }
+.result-card.purple { background: var(--purple-light); border-color: #b090d8; }
+.result-card.purple::before { background: var(--purple); }
+.result-card.blue { background: var(--blue-light); border-color: #90b8e0; }
+.result-card.blue::before { background: var(--blue); }
+.card-label { font-size: 10px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-value { font-size: 24px; font-weight: 900; line-height: 1.1; transition: all 0.3s; }
+.card-value.pink { color: var(--pink-dark); }
+.card-value.green { color: var(--green); }
+.card-value.teal { color: var(--teal); }
+.card-value.amber { color: var(--amber); }
+.card-value.purple { color: var(--purple); }
+.card-value.blue { color: var(--blue); }
+.card-formula { font-size: 9px; color: var(--gray); margin-top: 3px; opacity: 0.8; }
+
+.full-card { border-radius: 10px; padding: 14px 16px; border: 1.5px solid transparent; position: relative; overflow: hidden; margin-bottom: 10px; }
+.full-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.full-card.pink { background: var(--pink-light); border-color: #e0a0c0; }
+.full-card.pink::before { background: var(--pink); }
+.full-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.full-card-label { font-size: 11px; font-weight: 700; color: var(--gray); }
+.full-card-value { font-size: 28px; font-weight: 900; color: var(--pink-dark); }
+.full-card-formula { font-size: 10px; color: var(--gray); }
+
+.divider { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
+.divider span { flex: 1; height: 1px; background: var(--border); }
+.divider em { font-style: normal; font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+
+.alert { border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; display: none; font-size: 12px; line-height: 1.6; }
+.alert.show { display: flex; gap: 10px; }
+.alert-icon { flex-shrink: 0; font-size: 16px; }
+.alert-body strong { font-size: 13px; display: block; margin-bottom: 2px; }
+.alert.info { background: var(--amber-light); border: 1.5px solid #d4a060; }
+.alert.info strong { color: var(--amber); }
+.alert.success { background: var(--green-light); border: 1.5px solid #80c090; }
+.alert.success strong { color: var(--green); }
+
+/* 新蕊流程圖 */
+.xinrui-flow { display: flex; align-items: center; gap: 6px; margin: 10px 0 16px; }
+.flow-step { flex: 1; text-align: center; background: var(--pink-light); border: 1.5px solid #e0a0c0; border-radius: 8px; padding: 8px 4px; font-size: 10px; font-weight: 700; color: var(--pink-dark); }
+.flow-arrow { color: var(--pink); font-size: 14px; flex-shrink: 0; }
+.flow-step.gold { background: var(--amber-light); border-color: #d4a060; color: var(--amber); }
+
+/* 技能說明 */
+.skill-card { border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 10px; overflow: hidden; }
+.skill-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(90deg, rgba(192,64,122,0.08), transparent); border-bottom: 1px solid var(--border); }
+.skill-num { width: 26px; height: 26px; border-radius: 50%; background: var(--pink); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.skill-name-zh { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 14px; }
+.skill-name-en { font-size: 10px; color: var(--gray); margin-top: 1px; }
+.skill-body { padding: 12px 14px; }
+.skill-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
+.skill-key { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 99px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+.key-dmg  { background: #fde8e8; color: #b02020; border: 1px solid #e0b0b0; }
+.key-heal { background: var(--pink-light); color: var(--pink-dark); border: 1px solid #e0a0c0; }
+.key-buff { background: var(--green-light); color: var(--green); border: 1px solid #80c090; }
+.key-rev  { background: var(--purple-light); color: var(--purple); border: 1px solid #b090d8; }
+.key-cond { background: var(--amber-light); color: var(--amber); border: 1px solid #d4a060; }
+.key-tip  { background: var(--paper2); color: var(--gray); border: 1px solid var(--border); }
+.hv { font-weight: 700; color: #b02020; }
+.hp { font-weight: 700; color: var(--pink-dark); }
+.hg { font-weight: 700; color: var(--green); }
+.ha { font-weight: 700; color: var(--amber); }
+.hu { font-weight: 700; color: var(--purple); }
+
+.footer { text-align: center; padding: 14px; font-size: 10px; color: var(--gray); opacity: 0.6; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-title">🌸 SP灼華桃花妖 計算機</div>
+    <div class="hero-subtitle">回春舞・擷芳意・醒時花</div>
+    <div class="hero-divider"><span></span><em>✿</em><span></span></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('heal')">💗 治療試算</button>
+      <button class="tab-btn" onclick="switchTab('atk')">⚔️ 傷害試算</button>
+      <button class="tab-btn" onclick="switchTab('skill')">📖 技能說明</button>
+    </div>
+  </div>
+
+  <div class="body-wrap">
+
+    <!-- ══ 治療試算 ══ -->
+    <div id="tab-heal" class="tab-content active">
+
+      <div class="section-title">面板輸入</div>
+      <div class="input-row">
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-hp">生命</span>SP桃花妖生命上限</div>
+          <input type="number" id="h-hp" placeholder="例：26884" oninput="calcHeal()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害倍率（%）</div>
+          <input type="number" id="h-cdmg" placeholder="例：168" oninput="calcHeal()">
+        </div>
+      </div>
+
+      <!-- 三技被動條件 -->
+      <div class="section-title">三技被動：傷害降低條件</div>
+      <div class="crit-check" id="crit-check">
+        <div class="crit-header">
+          <span class="crit-label" id="crit-label">─ 輸入暴擊率確認 ─</span>
+          <span class="crit-note" id="crit-note"></span>
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <div class="input-label"><span class="badge badge-crit">暴擊</span>面板暴擊率（%）</div>
+          <input type="number" id="h-crit" placeholder="例：107" oninput="calcHeal()">
+        </div>
+      </div>
+
+      <!-- 二技治療 -->
+      <div class="section-title">二技：擷芳意（Lv.5）・治療量</div>
+
+      <div class="full-card pink">
+        <div class="full-card-header">
+          <span class="full-card-label">友方目標治療量（基礎）</span>
+          <span class="full-card-value" id="r-heal-base">─</span>
+        </div>
+        <div class="full-card-formula">生命上限 × 15%</div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card pink">
+          <div class="card-label">治療暴擊量</div>
+          <div class="card-value pink" id="r-heal-crit">─</div>
+          <div class="card-formula">基礎治療 × 暴傷%</div>
+        </div>
+        <div class="result-card teal">
+          <div class="card-label">Lv.4 額外治療</div>
+          <div class="card-value teal" id="r-heal-extra">─</div>
+          <div class="card-formula">治療暴擊時，額外治療1人</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><em>新蕊效果</em><span></span></div>
+
+      <!-- 新蕊流程 -->
+      <div class="xinrui-flow">
+        <div class="flow-step">施加<br>新蕊</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">每回合<br>回血×3次</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step gold">觸發<br>盛放✨</div>
+      </div>
+
+      <div class="section-title">新蕊：每回合回血量</div>
+      <div class="result-grid">
+        <div class="result-card green">
+          <div class="card-label">新蕊回血（基礎）</div>
+          <div class="card-value green" id="r-xinrui-base">─</div>
+          <div class="card-formula">生命上限 × 10%</div>
+        </div>
+        <div class="result-card green">
+          <div class="card-label">新蕊回血（暴擊）</div>
+          <div class="card-value green" id="r-xinrui-crit">─</div>
+          <div class="card-formula">基礎 × 暴傷%</div>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-card green">
+          <div class="card-label">新蕊3次總回血（基礎）</div>
+          <div class="card-value green" id="r-xinrui-total">─</div>
+          <div class="card-formula">每回合回血 × 3次</div>
+        </div>
+        <div class="result-card amber">
+          <div class="card-label">盛放觸發後增益</div>
+          <div class="card-value amber" style="font-size:18px">攻/防/速<br>+50%</div>
+          <div class="card-formula">持續3回合</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><em>三技復活回血</em><span></span></div>
+
+      <div class="section-title">三技：醒時花（Lv.5）・復活後回血</div>
+      <div class="result-grid">
+        <div class="result-card purple">
+          <div class="card-label">友方復活後回血（基礎）</div>
+          <div class="card-value purple" id="r-revive-base">─</div>
+          <div class="card-formula">生命上限 × 10%（Lv.2）</div>
+        </div>
+        <div class="result-card purple">
+          <div class="card-label">友方復活後回血（暴擊）</div>
+          <div class="card-value purple" id="r-revive-crit">─</div>
+          <div class="card-formula">基礎 × 暴傷%</div>
+        </div>
+      </div>
+
+      <div class="alert info show">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body"><strong>復活附加新蕊</strong>醒時花復活友方後，會為其施加新蕊，復活後立刻開始每回合持續回血，並在3次後觸發盛放。</div>
+      </div>
+
+    </div>
+
+    <!-- ══ 傷害試算 ══ -->
+    <div id="tab-atk" class="tab-content">
+
+      <div class="section-title">面板輸入</div>
+      <div class="input-row">
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-atk">攻擊</span>面板攻擊力</div>
+          <input type="number" id="a-atk" placeholder="例：2884" oninput="calcAtk()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害倍率（%）</div>
+          <input type="number" id="a-cdmg" placeholder="例：168" oninput="calcAtk()">
+        </div>
+      </div>
+
+      <div class="section-title">一技：回春舞（Lv.5・125%）</div>
+      <div class="result-grid">
+        <div class="result-card amber">
+          <div class="card-label">基礎傷害</div>
+          <div class="card-value amber" id="r-atk-base">─</div>
+          <div class="card-formula">攻擊 × 125%</div>
+        </div>
+        <div class="result-card amber">
+          <div class="card-label">暴擊傷害</div>
+          <div class="card-value amber" id="r-atk-crit">─</div>
+          <div class="card-formula">基礎 × 暴傷%</div>
+        </div>
+      </div>
+
+      <div class="alert info show" style="margin-top:8px">
+        <div class="alert-icon">💡</div>
+        <div class="alert-body"><strong>SP桃花妖定位</strong>一技傷害偏低，她的核心價值在於治療、新蕊持續回血與復活。攻擊力通常不是配裝重點。</div>
+      </div>
+    </div>
+
+    <!-- ══ 技能說明 ══ -->
+    <div id="tab-skill" class="tab-content">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">1</div>
+          <div><div class="skill-name-zh">回春舞</div><div class="skill-name-en">Lv.5</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>飛出桃花枝攻擊<strong>單體</strong>，造成攻擊 <span class="hv">125%</span> 傷害。可吃暴擊。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">2</div>
+          <div><div class="skill-name-zh">擷芳意</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-heal">治療</span><span>為友方目標治療生命上限 <span class="hp">15%</span> 的生命，並施加<span class="hg">新蕊</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>治療<span class="hu">暴擊</span>時，額外治療1個生命比例最低的非召喚物友方。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>先機：為生命最低的友方施加新蕊（不影響治療數值）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">新蕊</span><span>【印記】攜帶者行動開始時，治療灼華桃花妖生命上限 <span class="hp">10%</span> 的生命；治療暴擊時將治療全體友方。觸發 <span class="hv">3次</span>後移除，並使攜帶者獲得<span class="ha">盛放</span>（持續3回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">盛放</span><span>【印記】攻擊、防禦與速度提升 <span class="ha">50%</span>。持續3回合。</span></div>
+          <div class="skill-row"><span class="skill-key key-tip">唯一</span><span>多個同名式神上場，此技能只有一個生效。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">3</div>
+          <div><div class="skill-name-zh">醒時花</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-cond">被動</span><span>自身初始暴擊達 <span class="hu">100%</span> 時，受到的傷害降低 <span class="hv">35%</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">觸發</span><span>友方被復活時，獲得<span class="ha">盛放</span>（持續3回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-rev">主動</span><span>復活友方目標並為其施加<span class="hg">新蕊</span>（消耗3鬼火）。</span></div>
+          <div class="skill-row"><span class="skill-key key-heal">Lv.2</span><span>友方目標被復活時，額外治療灼華桃花妖生命上限 <span class="hp">10%</span> 的生命。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>被「醒時花」復活的友方提升 <span class="hv">50%</span> 行動條。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>盛放持續回合增至 <span class="hv">3回合</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-rev">Lv.5</span><span>敵方行動結束後，若友方目標被擊敗，<strong>無消耗自動施放</strong>（單次戰鬥最多觸發3次）。</span></div>
+          <div class="skill-row"><span class="skill-key key-tip">唯一</span><span>多個同名式神上場，此技能只有一個生效。</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="footer">SP灼華桃花妖・計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+</div>
+
+<script>
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function el(id) { return document.getElementById(id); }
+function fmt(n) { return Math.floor(n).toLocaleString(); }
+
+function switchTab(name) {
+  const names = ['heal','atk','skill'];
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i]===name));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  el('tab-'+name).classList.add('active');
+}
+
+function calcHeal() {
+  const hp = v('h-hp');
+  const cdmg = v('h-cdmg') || 150;
+  const crit = v('h-crit');
+
+  // 三技被動條件
+  const critBox = el('crit-check');
+  const critLabel = el('crit-label');
+  const critNote = el('crit-note');
+  if (crit) {
+    if (crit >= 100) {
+      critBox.className = 'crit-check met';
+      critLabel.textContent = '✅ 傷害降低 35% 已觸發';
+      critLabel.style.color = 'var(--green)';
+      critNote.textContent = `暴擊率 ${crit}% ≥ 100%`;
+    } else {
+      critBox.className = 'crit-check unmet';
+      critLabel.textContent = `❌ 未達條件（差 ${(100-crit).toFixed(0)}%）`;
+      critLabel.style.color = '#b02020';
+      critNote.textContent = `暴擊率 ${crit}% < 100%`;
+    }
+  } else {
+    critBox.className = 'crit-check';
+    critLabel.textContent = '─ 輸入暴擊率確認 ─';
+    critLabel.style.color = 'var(--ink)';
+    critNote.textContent = '';
+  }
+
+  if (!hp) {
+    ['r-heal-base','r-heal-crit','r-heal-extra','r-xinrui-base','r-xinrui-crit','r-xinrui-total','r-revive-base','r-revive-crit'].forEach(id => el(id).textContent = '─');
+    return;
+  }
+
+  // 二技治療
+  const healBase = hp * 0.15;
+  const healCrit = healBase * (cdmg/100);
+  el('r-heal-base').textContent = fmt(healBase);
+  el('r-heal-crit').textContent = fmt(healCrit);
+  el('r-heal-extra').textContent = fmt(healCrit); // 額外治療量與暴擊治療相同
+
+  // 新蕊
+  const xinruiBase = hp * 0.10;
+  const xinruiCrit = xinruiBase * (cdmg/100);
+  el('r-xinrui-base').textContent = fmt(xinruiBase);
+  el('r-xinrui-crit').textContent = fmt(xinruiCrit);
+  el('r-xinrui-total').textContent = fmt(xinruiBase * 3);
+
+  // 三技復活回血
+  const reviveBase = hp * 0.10;
+  const reviveCrit = reviveBase * (cdmg/100);
+  el('r-revive-base').textContent = fmt(reviveBase);
+  el('r-revive-crit').textContent = fmt(reviveCrit);
+}
+
+function calcAtk() {
+  const atk = v('a-atk');
+  const cdmg = v('a-cdmg') || 150;
+  if (!atk) {
+    el('r-atk-base').textContent = '─';
+    el('r-atk-crit').textContent = '─';
+    return;
+  }
+  el('r-atk-base').textContent = fmt(atk * 1.25);
+  el('r-atk-crit').textContent = fmt(atk * 1.25 * (cdmg/100));
+}
+</script>
+</body>
+</html>
