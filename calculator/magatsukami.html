@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>禍津神・數值計算機</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+:root {
+  --ink: #081428;
+  --paper: #f4f8ff;
+  --paper2: #e8f0fc;
+  --blue: #1a4a9a;
+  --blue-mid: #2a6abf;
+  --blue-light: #d6e8ff;
+  --blue-dark: #0a2a6a;
+  --blue-deep: #061830;
+  --red: #b02020;
+  --red-light: #fde8e8;
+  --teal: #1a7060;
+  --teal-light: #d0f0e8;
+  --amber: #a06010;
+  --amber-light: #fdeec8;
+  --green: #2d6e3a;
+  --green-light: #d4edda;
+  --gray: #4a6080;
+  --border: #b8d0f0;
+  --shadow: rgba(20,60,140,0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper2);
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 16px;
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(26,74,154,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(26,112,96,0.05) 0%, transparent 50%);
+}
+.container { max-width: 480px; margin: 0 auto; }
+
+.hero {
+  background: linear-gradient(160deg, #061830 0%, #0a2a6a 40%, #1a4a9a 100%);
+  border-radius: 16px 16px 0 0;
+  padding: 28px 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '⚡';
+  position: absolute;
+  font-size: 100px;
+  opacity: 0.05;
+  right: -10px;
+  top: -10px;
+}
+.hero-title { font-family: 'Noto Serif TC', 'PingFang TC', serif; font-size: 22px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 3px; text-shadow: 0 2px 8px rgba(0,0,0,0.5); position: relative; }
+.hero-subtitle { text-align: center; font-size: 11px; color: rgba(160,200,255,0.85); letter-spacing: 2px; margin-top: 4px; position: relative; }
+.hero-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; position: relative; }
+.hero-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(160,200,255,0.4), transparent); }
+.hero-divider em { color: rgba(160,200,255,0.7); font-style: normal; font-size: 14px; }
+.tabs { display: flex; background: rgba(0,0,0,0.3); position: relative; z-index: 1; }
+.tab-btn { flex: 1; padding: 10px 2px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.25s; font-family: 'Noto Sans TC', 'PingFang TC', sans-serif; }
+.tab-btn.active { color: #a0d0ff; border-bottom-color: #a0d0ff; }
+
+.body-wrap { background: var(--paper); border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px var(--shadow); }
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
+
+.section-title { font-family: 'Noto Serif TC', 'PingFang TC', serif; font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 2px; border-left: 3px solid var(--blue-mid); padding-left: 8px; margin-bottom: 12px; margin-top: 20px; }
+.section-title:first-child { margin-top: 0; }
+
+.input-group { margin-bottom: 12px; }
+.input-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px; }
+.badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; font-weight: 700; }
+.badge-hp   { background: var(--blue-light); color: var(--blue-dark); }
+.badge-atk  { background: #fde8e8; color: var(--red); }
+.badge-crit { background: #e8f4ff; color: var(--blue); }
+input[type=number] { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 18px; font-weight: 700; font-family: 'Noto Sans TC', 'PingFang TC', sans-serif; color: var(--ink); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -moz-appearance: textfield; }
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number]:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(42,106,191,0.12); }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.input-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.result-card { border-radius: 10px; padding: 14px 12px; text-align: center; border: 1.5px solid transparent; position: relative; overflow: hidden; }
+.result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.result-card.blue { background: var(--blue-light); border-color: #90b8e8; }
+.result-card.blue::before { background: var(--blue-mid); }
+.result-card.teal { background: var(--teal-light); border-color: #60b0a0; }
+.result-card.teal::before { background: var(--teal); }
+.result-card.green { background: var(--green-light); border-color: #80c090; }
+.result-card.green::before { background: var(--green); }
+.result-card.red { background: var(--red-light); border-color: #e09090; }
+.result-card.red::before { background: var(--red); }
+.result-card.amber { background: var(--amber-light); border-color: #d4a060; }
+.result-card.amber::before { background: var(--amber); }
+.result-card.dark { background: var(--blue-deep); border-color: #2a4a8a; }
+.result-card.dark::before { background: var(--blue-mid); }
+.card-label { font-size: 10px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-label-dark { font-size: 10px; font-weight: 700; color: rgba(160,200,255,0.7); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-value { font-size: 24px; font-weight: 900; line-height: 1.1; }
+.card-value.blue { color: var(--blue-dark); }
+.card-value.teal { color: var(--teal); }
+.card-value.green { color: var(--green); }
+.card-value.red { color: var(--red); }
+.card-value.amber { color: var(--amber); }
+.card-value.dark { color: #a0d0ff; }
+.card-formula { font-size: 9px; color: var(--gray); margin-top: 3px; opacity: 0.8; }
+.card-formula-dark { font-size: 9px; color: rgba(160,200,255,0.6); margin-top: 3px; }
+
+.full-card { border-radius: 10px; padding: 14px 16px; border: 1.5px solid transparent; position: relative; overflow: hidden; margin-bottom: 10px; }
+.full-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.full-card.dark { background: var(--blue-deep); border-color: #2a4a8a; }
+.full-card.dark::before { background: var(--blue-mid); }
+.full-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.full-card-label-dark { font-size: 11px; font-weight: 700; color: rgba(160,200,255,0.8); }
+.full-card-value-dark { font-size: 28px; font-weight: 900; color: #a0d0ff; }
+.full-card-formula-dark { font-size: 10px; color: rgba(160,200,255,0.6); }
+
+.divider { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
+.divider span { flex: 1; height: 1px; background: var(--border); }
+.divider em { font-style: normal; font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+
+.alert { border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; display: none; font-size: 12px; line-height: 1.6; }
+.alert.show { display: flex; gap: 10px; }
+.alert-icon { flex-shrink: 0; font-size: 16px; }
+.alert-body strong { font-size: 13px; display: block; margin-bottom: 2px; }
+.alert.info { background: var(--amber-light); border: 1.5px solid #d4a060; }
+.alert.info strong { color: var(--amber); }
+
+/* 逆推 */
+.req-card { display: flex; align-items: center; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 8px; gap: 12px; }
+.req-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; flex-shrink: 0; }
+.req-icon.hp  { background: var(--blue-light); color: var(--blue-dark); }
+.req-icon.atk { background: var(--red-light); color: var(--red); }
+.req-info { flex: 1; }
+.req-label { font-size: 11px; color: var(--gray); font-weight: 700; }
+.req-formula { font-size: 9px; color: var(--gray); opacity: 0.7; }
+.req-val { font-size: 22px; font-weight: 900; }
+.req-val.hp  { color: var(--blue-dark); }
+.req-val.atk { color: var(--red); }
+.req-diff { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-top: 3px; display: inline-block; }
+.diff-need  { background: var(--red-light); color: var(--red); border: 1px solid #e0b0b0; }
+.diff-ok    { background: var(--green-light); color: var(--green); border: 1px solid #90c890; }
+.diff-exact { background: var(--blue-light); color: var(--blue-dark); border: 1px solid #90b8e0; }
+.safety-tip { background: var(--amber-light); border: 1.5px solid #d4a060; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--amber); line-height: 1.6; margin-top: 14px; }
+
+/* 技能說明 */
+.skill-card { border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 10px; overflow: hidden; }
+.skill-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(90deg, rgba(26,74,154,0.08), transparent); border-bottom: 1px solid var(--border); }
+.skill-num { width: 26px; height: 26px; border-radius: 50%; background: var(--blue-mid); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.skill-name-zh { font-family: 'Noto Serif TC', 'PingFang TC', serif; font-weight: 700; font-size: 14px; }
+.skill-name-en { font-size: 10px; color: var(--gray); margin-top: 1px; }
+.skill-body { padding: 12px 14px; }
+.skill-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
+.skill-key { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 99px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+.key-dmg   { background: var(--red-light); color: var(--red); border: 1px solid #e0b0b0; }
+.key-shld  { background: var(--blue-light); color: var(--blue-dark); border: 1px solid #90b8e0; }
+.key-heal  { background: var(--green-light); color: var(--green); border: 1px solid #80c090; }
+.key-buff  { background: #e8f4ff; color: var(--blue); border: 1px solid #90c0f0; }
+.key-cond  { background: var(--amber-light); color: var(--amber); border: 1px solid #d4a060; }
+.key-tip   { background: var(--paper2); color: var(--gray); border: 1px solid var(--border); }
+.key-curse { background: var(--blue-deep); color: #a0d0ff; border: 1px solid #2a4a8a; }
+.hv { font-weight: 700; color: var(--red); }
+.hb { font-weight: 700; color: var(--blue-dark); }
+.hg { font-weight: 700; color: var(--green); }
+.ha { font-weight: 700; color: var(--amber); }
+
+.footer { text-align: center; padding: 14px; font-size: 10px; color: var(--gray); opacity: 0.6; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-title">⚡ 禍津神 數值計算機</div>
+    <div class="hero-subtitle">低語・禱言・禍咒・咒紗</div>
+    <div class="hero-divider"><span></span><em>◈</em><span></span></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('main')">🛡 核心試算</button>
+      <button class="tab-btn" onclick="switchTab('reverse')">🎯 面板逆推</button>
+      <button class="tab-btn" onclick="switchTab('skill')">📖 技能說明</button>
+    </div>
+  </div>
+
+  <div class="body-wrap">
+
+    <!-- ══ 核心試算 ══ -->
+    <div id="tab-main" class="tab-content active">
+
+      <div class="section-title">面板輸入</div>
+      <div class="input-row-3">
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-hp">生命</span>生命上限</div>
+          <input type="number" id="m-hp" placeholder="37733" oninput="calcMain()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-atk">攻擊</span>攻擊力</div>
+          <input type="number" id="m-atk" placeholder="3892" oninput="calcMain()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴傷%</div>
+          <input type="number" id="m-cdmg" placeholder="180" oninput="calcMain()">
+        </div>
+      </div>
+
+      <!-- 二技護盾 -->
+      <div class="section-title">二技：禱言（Lv.5）・護盾量</div>
+      <div class="result-grid">
+        <div class="result-card blue">
+          <div class="card-label">一般護盾</div>
+          <div class="card-value blue" id="r-shield-normal">─</div>
+          <div class="card-formula">生命上限 × 10%</div>
+        </div>
+        <div class="result-card blue">
+          <div class="card-label">自身回合加倍護盾</div>
+          <div class="card-value blue" id="r-shield-double">─</div>
+          <div class="card-formula">生命上限 × 20%</div>
+        </div>
+      </div>
+      <div class="alert info show">
+        <div class="alert-icon">✨</div>
+        <div class="alert-body"><strong>Lv.4 暴擊傷害加成</strong>咒紗存在時，擁有護盾的友方提升 27% 暴擊傷害。</div>
+      </div>
+
+      <div class="divider"><span></span><em>三技・禍咒</em><span></span></div>
+
+      <!-- 三技 -->
+      <div class="section-title">三技：禍咒（Lv.5）・傷害與回血</div>
+      <div class="result-grid">
+        <div class="result-card green">
+          <div class="card-label">解鎖回血（7層咒紗消耗完）</div>
+          <div class="card-value green" id="r-heal">─</div>
+          <div class="card-formula">生命上限 × 25%</div>
+        </div>
+        <div class="result-card teal">
+          <div class="card-label">全體傷害（Lv.5）</div>
+          <div class="card-value teal" id="r-dmg-hp">─</div>
+          <div class="card-formula">生命上限 × 20%</div>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-card red">
+          <div class="card-label">Lv.5 被動反擊</div>
+          <div class="card-value red" id="r-counter">─</div>
+          <div class="card-formula">生命上限 × 10%（係數減半）</div>
+        </div>
+        <div class="result-card dark">
+          <div class="card-label-dark">敵我雙方失去生命/次</div>
+          <div class="card-value dark" id="r-drain">─</div>
+          <div class="card-formula-dark">生命上限 × 10%</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><em>傷害上限</em><span></span></div>
+
+      <!-- 900%上限 -->
+      <div class="section-title">生命降低效果・傷害天花板（攻擊×900%）</div>
+      <div class="full-card dark">
+        <div class="full-card-header">
+          <span class="full-card-label-dark">900% 攻擊力上限</span>
+          <span class="full-card-value-dark" id="r-cap">─</span>
+        </div>
+        <div class="full-card-formula-dark">超過此值後，生命降低效果不再生效</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-card amber">
+          <div class="card-label">每次三技消耗上限量</div>
+          <div class="card-value amber" id="r-cap-per">─</div>
+          <div class="card-formula">生命上限 × 20%</div>
+        </div>
+        <div class="result-card amber">
+          <div class="card-label">理論最多施放次數</div>
+          <div class="card-value amber" id="r-cap-times">─</div>
+          <div class="card-formula">上限 ÷ 每次三技消耗</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><em>咒紗反傷</em><span></span></div>
+
+      <!-- 咒紗反傷 -->
+      <div class="section-title">咒紗・受到單體攻擊後反傷（45%）</div>
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-atk">敵方</span>敵方對你造成的單次傷害</div>
+        <input type="number" id="m-incoming" placeholder="輸入敵方傷害值" oninput="calcMain()">
+      </div>
+      <div class="result-grid">
+        <div class="result-card red">
+          <div class="card-label">咒紗反傷（真實傷害）</div>
+          <div class="card-value red" id="r-curse-reflect">─</div>
+          <div class="card-formula">敵方傷害 × 45%（全體・無視防禦）</div>
+        </div>
+        <div class="result-card dark">
+          <div class="card-label-dark">觸發後咒紗</div>
+          <div class="card-value dark" style="font-size:16px;">每次受單體 -1層<br>歸零→禍咒解鎖</div>
+          <div class="card-formula-dark">上限7層</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ 面板逆推 ══ -->
+    <div id="tab-reverse" class="tab-content">
+
+      <div class="section-title">設定目標數值</div>
+
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-hp">護盾</span>目標護盾量（一般）</div>
+        <input type="number" id="r-target-shield" placeholder="例：5000" oninput="calcReverse()">
+      </div>
+      <div class="req-card">
+        <div class="req-icon hp">生命</div>
+        <div class="req-info">
+          <div class="req-label">需求最低生命上限</div>
+          <div class="req-formula">目標護盾 ÷ 10%</div>
+        </div>
+        <div>
+          <div class="req-val hp" id="rev-hp-shield">—</div>
+          <div id="rev-diff-hp-shield"></div>
+        </div>
+      </div>
+
+      <div class="input-group" style="margin-top:16px">
+        <div class="input-label"><span class="badge badge-atk">三技</span>目標三技全體傷害</div>
+        <input type="number" id="r-target-dmg" placeholder="例：8000" oninput="calcReverse()">
+      </div>
+      <div class="req-card">
+        <div class="req-icon hp">生命</div>
+        <div class="req-info">
+          <div class="req-label">需求最低生命上限</div>
+          <div class="req-formula">目標傷害 ÷ 20%</div>
+        </div>
+        <div>
+          <div class="req-val hp" id="rev-hp-dmg">—</div>
+          <div id="rev-diff-hp-dmg"></div>
+        </div>
+      </div>
+
+      <div style="background:#fafaf8;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin:16px 0;">
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:8px;">🔗 當前面板對比（選填）</div>
+        <div class="input-row">
+          <div class="input-group">
+            <div class="input-label"><span class="badge badge-hp">生命</span>當前生命</div>
+            <input type="number" id="r-cur-hp" placeholder="生命上限" oninput="calcReverse()" style="font-size:15px">
+          </div>
+          <div class="input-group">
+            <div class="input-label"><span class="badge badge-atk">攻擊</span>當前攻擊</div>
+            <input type="number" id="r-cur-atk" placeholder="攻擊力" oninput="calcReverse()" style="font-size:15px">
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-atk">上限</span>目標 900% 傷害天花板</div>
+        <input type="number" id="r-target-cap" placeholder="例：35000" oninput="calcReverse()">
+      </div>
+      <div class="req-card">
+        <div class="req-icon atk">攻擊</div>
+        <div class="req-info">
+          <div class="req-label">需求最低攻擊力</div>
+          <div class="req-formula">目標上限 ÷ 900%</div>
+        </div>
+        <div>
+          <div class="req-val atk" id="rev-atk-cap">—</div>
+          <div id="rev-diff-atk-cap"></div>
+        </div>
+      </div>
+
+      <div class="safety-tip">
+        💡 <strong>配裝重點：</strong>禍津神護盾與大招傷害均來自生命上限，優先堆生命。攻擊力影響 900% 傷害天花板，建議至少讓上限 ≥ 三技傷害 × 預期施放次數。
+      </div>
+    </div>
+
+    <!-- ══ 技能說明 ══ -->
+    <div id="tab-skill" class="tab-content">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">1</div>
+          <div><div class="skill-name-zh">低語</div><div class="skill-name-en">Lv.5</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>凝聚神力攻擊<strong>單體</strong>，造成攻擊 <span class="hv">125%</span> 傷害。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">2</div>
+          <div><div class="skill-name-zh">禱言</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-curse">咒紗</span><span>戰鬥開始時獲得 <span class="hb">7層咒紗</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-shld">主動</span><span>減少1層咒紗，使友方目標獲得不可驅散護盾（吸收生命上限 <span class="hb">10%</span> 的傷害，持續2回合）。自身回合內施放時，額外減1層咒紗並使護盾量<span class="hv">加倍（20%）</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>咒紗高於3層時，自身免疫控制效果與放逐。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>施放時額外提升友方全體 <span class="hv">40%</span> 傷害，持續2回合。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>咒紗存在時，擁有護盾的友方提升 <span class="hv">27%</span> 暴擊傷害。</span></div>
+          <div class="skill-row"><span class="skill-key key-shld">Lv.5</span><span>任意非召喚物友方受到超過最大生命 <span class="hv">10%</span> 的傷害時，立即無消耗對其施放「禱言」（每次行動限1次）。</span></div>
+          <div class="skill-row"><span class="skill-key key-curse">咒紗</span><span>【印記，上限7層】受到單體傷害時，減少1層並對<strong>全體敵方</strong>造成此傷害 <span class="hv">45%</span> 的真實傷害。層數歸零後，效果抵抗提升100%並提升 <span class="hv">50%</span> 行動條。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">3</div>
+          <div><div class="skill-name-zh">禍咒</div><div class="skill-name-en">Lv.5・傷害＋反傷</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-curse">解鎖</span><span>咒紗7層消耗完後解鎖；解鎖時恢復自身生命上限 <span class="hg">25%</span> 的生命。</span></div>
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>攻擊<strong>全體</strong>敵方，造成自身生命上限 <span class="hv">20%</span> 的傷害，並對指定目標施加<span class="hb">咒蝕</span>（維持1回合）。</span></div>
+          <div class="skill-row"><span class="skill-key key-dmg">消耗</span><span>每次施放時，敵我雙方全體失去生命上限 <span class="hv">10%</span> 的生命（生命降低效果不超過初始攻擊的900%）。</span></div>
+          <div class="skill-row"><span class="skill-key key-dmg">Lv.5</span><span>受到敵方攻擊後，立即對攻擊者無消耗施放傷害係數減半（<span class="hv">10%</span>）的「禍咒」，不觸發敵方御魂與被動，自身回合開始前限1次。</span></div>
+          <div class="skill-row"><span class="skill-key key-curse">咒蝕</span><span>【印記，減益】每當禍津神受到傷害與失去生命時，攜帶者受到等量真實傷害。</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer">禍津神・數值計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+</div>
+
+<script>
+function el(id) { return document.getElementById(id); }
+function val(id) { var e = el(id); return e ? (parseFloat(e.value) || 0) : 0; }
+function fmt(n) { return Math.floor(n).toLocaleString(); }
+function setText(id, txt) { var e = el(id); if (e) e.textContent = txt; }
+
+function switchTab(name) {
+  var names = ['main','reverse','skill'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var t = el('tab-' + name);
+  if (t) t.classList.add('active');
+  if (name === 'reverse') {
+    var hpEl = el('m-hp'), atkEl = el('m-atk');
+    var rHp = el('r-cur-hp'), rAtk = el('r-cur-atk');
+    if (hpEl && rHp && hpEl.value) rHp.value = hpEl.value;
+    if (atkEl && rAtk && atkEl.value) rAtk.value = atkEl.value;
+    calcReverse();
+  }
+}
+
+function calcMain() {
+  var hp = val('m-hp');
+  var atk = val('m-atk');
+  var incoming = val('m-incoming');
+
+  if (!hp) {
+    ['r-shield-normal','r-shield-double','r-heal','r-dmg-hp','r-counter','r-drain','r-cap','r-cap-per','r-cap-times','r-curse-reflect'].forEach(function(id) { setText(id, '─'); });
+    return;
+  }
+
+  setText('r-shield-normal', fmt(hp * 0.10));
+  setText('r-shield-double', fmt(hp * 0.20));
+  setText('r-heal',   fmt(hp * 0.25));
+  setText('r-dmg-hp', fmt(hp * 0.20));
+  setText('r-counter', fmt(hp * 0.10));
+  setText('r-drain',   fmt(hp * 0.10));
+
+  if (atk) {
+    var cap = atk * 9;
+    setText('r-cap', fmt(cap));
+    setText('r-cap-per', fmt(hp * 0.20));
+    setText('r-cap-times', Math.floor(cap / (hp * 0.20)) + ' 次');
+  } else {
+    setText('r-cap', '─');
+    setText('r-cap-per', fmt(hp * 0.20));
+    setText('r-cap-times', '輸入攻擊力');
+  }
+
+  setText('r-curse-reflect', incoming ? fmt(incoming * 0.45) : '─');
+
+  var rHp = el('r-cur-hp'), rAtk = el('r-cur-atk');
+  if (rHp && hp) rHp.value = hp;
+  if (rAtk && atk) rAtk.value = atk;
+  calcReverse();
+}
+
+function calcReverse() {
+  var targetShield = val('r-target-shield');
+  var targetDmg    = val('r-target-dmg');
+  var targetCap    = val('r-target-cap');
+  var curHp  = val('r-cur-hp');
+  var curAtk = val('r-cur-atk');
+
+  function diffHtml(req, cur) {
+    if (!cur) return '';
+    var d = req - cur;
+    if (d > 0)  return '<div class="req-diff diff-need">需再 +' + Math.ceil(d).toLocaleString() + '</div>';
+    if (d === 0) return '<div class="req-diff diff-exact">✅ 剛好達標</div>';
+    return '<div class="req-diff diff-ok">✅ 溢出 ' + Math.floor(Math.abs(d)).toLocaleString() + '</div>';
+  }
+
+  if (targetShield) {
+    var req = targetShield / 0.10;
+    setText('rev-hp-shield', Math.ceil(req).toLocaleString());
+    var d = el('rev-diff-hp-shield'); if (d) d.innerHTML = diffHtml(req, curHp);
+  } else {
+    setText('rev-hp-shield', '—');
+    var d = el('rev-diff-hp-shield'); if (d) d.innerHTML = '';
+  }
+
+  if (targetDmg) {
+    var req2 = targetDmg / 0.20;
+    setText('rev-hp-dmg', Math.ceil(req2).toLocaleString());
+    var d2 = el('rev-diff-hp-dmg'); if (d2) d2.innerHTML = diffHtml(req2, curHp);
+  } else {
+    setText('rev-hp-dmg', '—');
+    var d2 = el('rev-diff-hp-dmg'); if (d2) d2.innerHTML = '';
+  }
+
+  if (targetCap) {
+    var req3 = targetCap / 9;
+    setText('rev-atk-cap', Math.ceil(req3).toLocaleString());
+    var d3 = el('rev-diff-atk-cap'); if (d3) d3.innerHTML = diffHtml(req3, curAtk);
+  } else {
+    setText('rev-atk-cap', '—');
+    var d3 = el('rev-diff-atk-cap'); if (d3) d3.innerHTML = '';
+  }
+}
+</script>
+</body>
+</html>
