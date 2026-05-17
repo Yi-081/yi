@@ -186,7 +186,7 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
     <div class="hero-divider"><span></span><em>✿</em><span></span></div>
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('heal')">💗 治療試算</button>
-      <button class="tab-btn" onclick="switchTab('atk')">⚔️ 傷害試算</button>
+      <button class="tab-btn" onclick="switchTab('reverse')">🎯 治療逆推</button>
       <button class="tab-btn" onclick="switchTab('skill')">📖 技能說明</button>
     </div>
   </div>
@@ -305,38 +305,67 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
 
     </div>
 
-    <!-- ══ 傷害試算 ══ -->
-    <div id="tab-atk" class="tab-content">
+    <!-- ══ 治療逆推 ══ -->
+    <div id="tab-reverse" class="tab-content">
 
-      <div class="section-title">面板輸入</div>
-      <div class="input-row">
-        <div class="input-group">
-          <div class="input-label"><span class="badge badge-atk">攻擊</span>面板攻擊力</div>
-          <input type="number" id="a-atk" placeholder="例：2884" oninput="calcAtk()">
-        </div>
-        <div class="input-group">
-          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害倍率（%）</div>
-          <input type="number" id="a-cdmg" placeholder="例：168" oninput="calcAtk()">
+      <div class="section-title">設定目標治療量</div>
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-hp">二技</span>目標二技治療量（基礎）</div>
+        <input type="number" id="r-target-heal" placeholder="例：4000" oninput="calcReverse()">
+      </div>
+      <div style="text-align:center;font-size:12px;color:var(--gray);margin-bottom:16px;">
+        治療暴擊量將達到：<strong id="r-target-heal-crit" style="color:var(--pink-dark);font-size:15px">—</strong>
+      </div>
+
+      <div style="background:#fafaf8;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:8px;">🔗 當前面板對比（選填）</div>
+        <div class="input-row">
+          <div class="input-group">
+            <div class="input-label"><span class="badge badge-hp">生命</span>當前生命上限</div>
+            <input type="number" id="r-cur-hp" placeholder="生命上限" oninput="calcReverse()" style="font-size:15px">
+          </div>
+          <div class="input-group">
+            <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害%</div>
+            <input type="number" id="r-cur-cdmg" placeholder="例：168" oninput="calcReverse()" style="font-size:15px">
+          </div>
         </div>
       </div>
 
-      <div class="section-title">一技：回春舞（Lv.5・125%）</div>
-      <div class="result-grid">
-        <div class="result-card amber">
-          <div class="card-label">基礎傷害</div>
-          <div class="card-value amber" id="r-atk-base">─</div>
-          <div class="card-formula">攻擊 × 125%</div>
+      <div class="section-title">最低面板需求</div>
+
+      <!-- 逆推：基礎治療需求生命 -->
+      <div style="display:flex;align-items:center;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:#fff;margin-bottom:8px;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--pink-light);color:var(--pink-dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">生命</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--gray);font-weight:700;">最低生命上限需求</div>
+          <div style="font-size:9px;color:var(--gray);opacity:0.7;">目標治療 ÷ 15%</div>
         </div>
-        <div class="result-card amber">
-          <div class="card-label">暴擊傷害</div>
-          <div class="card-value amber" id="r-atk-crit">─</div>
-          <div class="card-formula">基礎 × 暴傷%</div>
+        <div>
+          <div style="font-size:22px;font-weight:900;color:var(--pink-dark);" id="req-hp">—</div>
+          <div id="diff-hp"></div>
         </div>
       </div>
 
-      <div class="alert info show" style="margin-top:8px">
-        <div class="alert-icon">💡</div>
-        <div class="alert-body"><strong>SP桃花妖定位</strong>一技傷害偏低，她的核心價值在於治療、新蕊持續回血與復活。攻擊力通常不是配裝重點。</div>
+      <!-- 逆推：目標新蕊回血需求 -->
+      <div class="section-title" style="margin-top:20px;">目標新蕊回血量</div>
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-hp">新蕊</span>目標每回合新蕊回血（基礎）</div>
+        <input type="number" id="r-target-xinrui" placeholder="例：2500" oninput="calcReverse()">
+      </div>
+      <div style="display:flex;align-items:center;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:#fff;margin-bottom:8px;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">生命</div>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--gray);font-weight:700;">最低生命上限需求</div>
+          <div style="font-size:9px;color:var(--gray);opacity:0.7;">目標新蕊回血 ÷ 10%</div>
+        </div>
+        <div>
+          <div style="font-size:22px;font-weight:900;color:var(--green);" id="req-hp-xinrui">—</div>
+          <div id="diff-hp-xinrui"></div>
+        </div>
+      </div>
+
+      <div style="background:var(--amber-light);border:1.5px solid #d4a060;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--amber);line-height:1.6;margin-top:14px;">
+        💡 <strong>配裝重點：</strong>桃花妖的治療量完全來自生命上限，生命越高治療越強。暴擊傷害%同步提升治療暴擊量，建議優先堆生命，其次暴傷。
       </div>
     </div>
 
@@ -392,37 +421,49 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
 </div>
 
 <script>
-function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
 function el(id) { return document.getElementById(id); }
+function val(id) { var e = el(id); return e ? (parseFloat(e.value) || 0) : 0; }
 function fmt(n) { return Math.floor(n).toLocaleString(); }
+function setText(id, txt) { var e = el(id); if (e) e.textContent = txt; }
 
 function switchTab(name) {
-  const names = ['heal','atk','skill'];
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i]===name));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  el('tab-'+name).classList.add('active');
+  var names = ['heal','reverse','skill'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(c) {
+    c.classList.remove('active');
+  });
+  var t = el('tab-' + name);
+  if (t) t.classList.add('active');
+  if (name === 'reverse') {
+    var hpEl = el('h-hp'), cdmgEl = el('h-cdmg');
+    var rHpEl = el('r-cur-hp'), rCdmgEl = el('r-cur-cdmg');
+    if (hpEl && rHpEl && hpEl.value) rHpEl.value = hpEl.value;
+    if (cdmgEl && rCdmgEl && cdmgEl.value) rCdmgEl.value = cdmgEl.value;
+    calcReverse();
+  }
 }
 
 function calcHeal() {
-  const hp = v('h-hp');
-  const cdmg = v('h-cdmg') || 150;
-  const crit = v('h-crit');
+  var hp = val('h-hp');
+  var cdmg = val('h-cdmg') || 150;
+  var crit = val('h-crit');
 
-  // 三技被動條件
-  const critBox = el('crit-check');
-  const critLabel = el('crit-label');
-  const critNote = el('crit-note');
+  var critBox = el('crit-check');
+  var critLabel = el('crit-label');
+  var critNote = el('crit-note');
   if (crit) {
     if (crit >= 100) {
       critBox.className = 'crit-check met';
       critLabel.textContent = '✅ 傷害降低 35% 已觸發';
       critLabel.style.color = 'var(--green)';
-      critNote.textContent = `暴擊率 ${crit}% ≥ 100%`;
+      critNote.textContent = '暴擊率 ' + crit + '% ≥ 100%';
     } else {
       critBox.className = 'crit-check unmet';
-      critLabel.textContent = `❌ 未達條件（差 ${(100-crit).toFixed(0)}%）`;
+      critLabel.textContent = '❌ 未達條件（差 ' + (100 - crit).toFixed(0) + '%）';
       critLabel.style.color = '#b02020';
-      critNote.textContent = `暴擊率 ${crit}% < 100%`;
+      critNote.textContent = '暴擊率 ' + crit + '% < 100%';
     }
   } else {
     critBox.className = 'crit-check';
@@ -432,41 +473,73 @@ function calcHeal() {
   }
 
   if (!hp) {
-    ['r-heal-base','r-heal-crit','r-heal-extra','r-xinrui-base','r-xinrui-crit','r-xinrui-total','r-revive-base','r-revive-crit'].forEach(id => el(id).textContent = '─');
+    ['r-heal-base','r-heal-crit','r-heal-extra','r-xinrui-base','r-xinrui-crit','r-xinrui-total','r-revive-base','r-revive-crit'].forEach(function(id) { setText(id, '─'); });
     return;
   }
 
-  // 二技治療
-  const healBase = hp * 0.15;
-  const healCrit = healBase * (cdmg/100);
-  el('r-heal-base').textContent = fmt(healBase);
-  el('r-heal-crit').textContent = fmt(healCrit);
-  el('r-heal-extra').textContent = fmt(healCrit); // 額外治療量與暴擊治療相同
+  var healBase = hp * 0.15;
+  var healCrit = healBase * (cdmg / 100);
+  setText('r-heal-base', fmt(healBase));
+  setText('r-heal-crit', fmt(healCrit));
+  setText('r-heal-extra', fmt(healCrit));
 
-  // 新蕊
-  const xinruiBase = hp * 0.10;
-  const xinruiCrit = xinruiBase * (cdmg/100);
-  el('r-xinrui-base').textContent = fmt(xinruiBase);
-  el('r-xinrui-crit').textContent = fmt(xinruiCrit);
-  el('r-xinrui-total').textContent = fmt(xinruiBase * 3);
+  var xinruiBase = hp * 0.10;
+  var xinruiCrit = xinruiBase * (cdmg / 100);
+  setText('r-xinrui-base', fmt(xinruiBase));
+  setText('r-xinrui-crit', fmt(xinruiCrit));
+  setText('r-xinrui-total', fmt(xinruiBase * 3));
 
-  // 三技復活回血
-  const reviveBase = hp * 0.10;
-  const reviveCrit = reviveBase * (cdmg/100);
-  el('r-revive-base').textContent = fmt(reviveBase);
-  el('r-revive-crit').textContent = fmt(reviveCrit);
+  var reviveBase = hp * 0.10;
+  setText('r-revive-base', fmt(reviveBase));
+  setText('r-revive-crit', fmt(reviveBase * (cdmg / 100)));
+
+  // 同步到逆推
+  var rHp = el('r-cur-hp'), rCdmg = el('r-cur-cdmg');
+  if (rHp && hp) rHp.value = hp;
+  if (rCdmg && cdmg) rCdmg.value = cdmg;
+  calcReverse();
 }
 
-function calcAtk() {
-  const atk = v('a-atk');
-  const cdmg = v('a-cdmg') || 150;
-  if (!atk) {
-    el('r-atk-base').textContent = '─';
-    el('r-atk-crit').textContent = '─';
-    return;
+function calcReverse() {
+  var targetHeal = val('r-target-heal');
+  var targetXinrui = val('r-target-xinrui');
+  var curHp = val('r-cur-hp');
+  var curCdmg = val('r-cur-cdmg') || 150;
+
+  function diffHtml(req, cur) {
+    if (!cur) return '';
+    var d = req - cur;
+    if (d > 0) return '<div style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:3px;display:inline-block;background:#fde8f0;color:var(--pink-dark);border:1px solid #e0a0c0;">需再 +' + Math.ceil(d).toLocaleString() + '</div>';
+    if (d === 0) return '<div style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:3px;display:inline-block;background:var(--purple-light);color:var(--purple);border:1px solid #b090d8;">✅ 剛好達標</div>';
+    return '<div style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:3px;display:inline-block;background:var(--green-light);color:var(--green);border:1px solid #90c890;">✅ 溢出 ' + Math.floor(Math.abs(d)).toLocaleString() + '</div>';
   }
-  el('r-atk-base').textContent = fmt(atk * 1.25);
-  el('r-atk-crit').textContent = fmt(atk * 1.25 * (cdmg/100));
+
+  // 二技治療逆推
+  if (targetHeal) {
+    var reqHp = targetHeal / 0.15;
+    var critAmt = targetHeal * (curCdmg / 100);
+    setText('req-hp', Math.ceil(reqHp).toLocaleString());
+    setText('r-target-heal-crit', fmt(critAmt));
+    var d = el('diff-hp');
+    if (d) d.innerHTML = diffHtml(reqHp, curHp);
+  } else {
+    setText('req-hp', '—');
+    setText('r-target-heal-crit', '—');
+    var d = el('diff-hp');
+    if (d) d.innerHTML = '';
+  }
+
+  // 新蕊逆推
+  if (targetXinrui) {
+    var reqHpX = targetXinrui / 0.10;
+    setText('req-hp-xinrui', Math.ceil(reqHpX).toLocaleString());
+    var dx = el('diff-hp-xinrui');
+    if (dx) dx.innerHTML = diffHtml(reqHpX, curHp);
+  } else {
+    setText('req-hp-xinrui', '—');
+    var dx = el('diff-hp-xinrui');
+    if (dx) dx.innerHTML = '';
+  }
 }
 </script>
 </body>
