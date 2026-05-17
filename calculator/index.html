@@ -3,28 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>平將門・數值計算機</title>
+<title>陰陽師・式神計算機</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #1a1008;
   --paper: #fdf6ec;
-  --paper2: #f5ead8;
+  --paper2: #f0e8d8;
   --gold: #c9922a;
-  --red: #b02020;
-  --red-light: #e05040;
-  --blue-dark: #1e3a5f;
-  --blue: #2a5a8f;
-  --blue-light: #d6e8f5;
-  --teal: #1a6060;
-  --teal-light: #d0eeee;
-  --green: #2d6e3a;
-  --green-light: #d4edda;
-  --amber: #a06010;
-  --amber-light: #fdeec8;
-  --gray: #7a6a58;
+  --gold-light: #fdeec8;
   --border: #d4c4a8;
+  --gray: #7a6a58;
   --shadow: rgba(100,70,20,0.15);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,634 +23,257 @@ body {
   font-family: 'Noto Sans TC', sans-serif;
   color: var(--ink);
   min-height: 100vh;
-  padding: 16px;
-  background-image: radial-gradient(ellipse at 20% 20%, rgba(201,146,42,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(176,32,32,0.05) 0%, transparent 50%);
+  padding: 20px 16px 40px;
+  background-image:
+    radial-gradient(ellipse at 10% 10%, rgba(201,146,42,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, rgba(139,48,32,0.06) 0%, transparent 50%);
 }
 .container { max-width: 480px; margin: 0 auto; }
 
+/* ── 頁頭 ── */
 .hero {
-  background: linear-gradient(160deg, #2c1810 0%, #5a2010 40%, #8b3020 100%);
-  border-radius: 16px 16px 0 0;
-  padding: 28px 24px 0;
+  text-align: center;
+  padding: 36px 16px 28px;
   position: relative;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 3px 12px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+}
+.hero-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 4px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-size: 12px;
+  color: var(--gray);
+  letter-spacing: 2px;
+}
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 28px;
+}
+.hero-divider span { flex: 1; height: 1px; background: var(--border); }
+.hero-divider em { font-style: normal; font-size: 16px; color: var(--gold); }
+
+/* ── 式神卡片 ── */
+.card-grid { display: flex; flex-direction: column; gap: 14px; }
+
+.shiki-card {
+  display: block;
+  text-decoration: none;
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
-.hero::before {
-  content: '';
+.shiki-card:active { transform: scale(0.98); }
+
+.card-banner {
+  height: 8px;
+}
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--paper);
+}
+.card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+.card-info { flex: 1; }
+.card-rarity {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 3px;
+}
+.card-name {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.card-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid;
+}
+.card-arrow {
+  font-size: 18px;
+  color: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── 平將門 ── */
+.card-taira .card-banner { background: linear-gradient(90deg, #2c1810, #8b3020, #c05040); }
+.card-taira .card-icon { background: linear-gradient(135deg, #5a2010, #8b3020); }
+.card-taira .card-rarity { color: #b02020; }
+.card-taira .card-name { color: #2c1810; }
+.card-taira .tag { background: #fde8e8; border-color: #e0b0b0; color: #b02020; }
+
+/* ── SP桃花妖 ── */
+.card-momohana .card-banner { background: linear-gradient(90deg, #4a1030, #c05080, #e090b0); }
+.card-momohana .card-icon { background: linear-gradient(135deg, #8a2060, #c05080); }
+.card-momohana .card-rarity { color: #c0407a; }
+.card-momohana .card-name { color: #4a1030; }
+.card-momohana .tag { background: #fce4f0; border-color: #e0a0c0; color: #c0407a; }
+
+/* ── 即將推出 ── */
+.card-coming {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px var(--shadow);
+  opacity: 0.6;
+}
+.card-coming .card-body { background: #f5f0e8; }
+.card-coming .card-icon { background: #e0d8c8; }
+.card-coming .card-name { color: var(--gray); }
+.card-coming .card-rarity { color: var(--gray); }
+.card-coming .tag { background: #f0ebe0; border-color: var(--border); color: var(--gray); }
+.coming-badge {
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  top: 16px;
+  right: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--gold-light);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 1px;
 }
-.hero-title { font-family: 'Noto Serif TC', serif; font-size: 24px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 4px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); position: relative; }
-.hero-subtitle { text-align: center; font-size: 11px; color: rgba(255,220,150,0.85); letter-spacing: 2px; margin-top: 4px; position: relative; }
-.hero-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; position: relative; }
-.hero-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,100,0.4), transparent); }
-.hero-divider em { color: rgba(255,200,100,0.6); font-style: normal; font-size: 14px; }
 
-.tabs { display: flex; background: rgba(0,0,0,0.3); position: relative; z-index: 1; }
-.tab-btn { flex: 1; padding: 10px 2px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.55); background: none; border: none; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.25s; font-family: 'Noto Sans TC', sans-serif; }
-.tab-btn.active { color: #ffd880; border-bottom-color: #ffd880; }
-
-.body-wrap { background: var(--paper); border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px var(--shadow); }
-.tab-content { display: none; padding: 20px; }
-.tab-content.active { display: block; }
-
-.section-title { font-family: 'Noto Serif TC', serif; font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 2px; border-left: 3px solid var(--gold); padding-left: 8px; margin-bottom: 12px; margin-top: 20px; }
-.section-title:first-child { margin-top: 0; }
-
-.input-group { margin-bottom: 12px; }
-.input-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px; }
-.badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; font-weight: 700; }
-.badge-atk { background: #fde8e8; color: var(--red); }
-.badge-def { background: #ddeeff; color: var(--blue); }
-.badge-crit { background: #f5e8ff; color: #7030b0; }
-input[type=number] { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 18px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; color: var(--ink); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -moz-appearance: textfield; }
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-input[type=number]:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,146,42,0.12); }
-.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-.stance-box { border-radius: 10px; padding: 14px 16px; border: 1.5px solid var(--border); background: #fafaf8; margin-bottom: 16px; transition: all 0.3s; }
-.stance-box.defense-mode { border-color: #90b8e0; background: var(--blue-light); }
-.stance-box.attack-mode { border-color: #e09090; background: #fdeaea; }
-.stance-box.optimal-mode { border-color: #9080d0; background: #f0ecff; }
-.stance-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.stance-label { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 700; }
-.stance-pct { font-size: 11px; color: var(--gray); font-weight: 600; }
-.bar-track { height: 6px; background: rgba(0,0,0,0.08); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
-.bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1), background 0.3s; background: var(--blue); }
-.stance-note { font-size: 11px; color: var(--gray); text-align: center; }
-
-.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.result-card { border-radius: 10px; padding: 14px 12px; text-align: center; border: 1.5px solid transparent; position: relative; overflow: hidden; }
-.result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.result-card.blue { background: var(--blue-light); border-color: #a0c8e8; }
-.result-card.blue::before { background: var(--blue); }
-.result-card.green { background: var(--green-light); border-color: #90c890; }
-.result-card.green::before { background: var(--green); }
-.result-card.amber { background: var(--amber-light); border-color: #d4a060; }
-.result-card.amber::before { background: var(--amber); }
-.result-card.red { background: #fdeaea; border-color: #e09090; }
-.result-card.red::before { background: var(--red); }
-.result-card.purple { background: #f0ecff; border-color: #c0a8e8; }
-.result-card.purple::before { background: #7030b0; }
-.result-card.teal { background: var(--teal-light); border-color: #60b0b0; }
-.result-card.teal::before { background: var(--teal); }
-.card-label { font-size: 10px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; margin-bottom: 4px; }
-.card-value { font-size: 24px; font-weight: 900; line-height: 1.1; transition: all 0.3s; }
-.card-value.blue { color: var(--blue-dark); }
-.card-value.green { color: var(--green); }
-.card-value.amber { color: var(--amber); }
-.card-value.red { color: var(--red); }
-.card-value.purple { color: #5020a0; }
-.card-value.teal { color: var(--teal); }
-.card-formula { font-size: 9px; color: var(--gray); margin-top: 3px; opacity: 0.8; }
-.card-value.dimmed { opacity: 0.3; }
-
-.skill3-stack { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.skill3-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fafaf8; border: 1.5px solid var(--border); border-radius: 8px; }
-.skill3-row.highlight { background: var(--amber-light); border-color: #d4a060; }
-.skill3-hit-label { font-size: 11px; font-weight: 700; color: var(--gray); width: 36px; flex-shrink: 0; text-align: center; }
-.skill3-bar-wrap { flex: 1; }
-.skill3-bar-track { height: 5px; background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden; margin-bottom: 3px; }
-.skill3-bar-fill { height: 100%; border-radius: 99px; background: var(--amber); transition: width 0.4s; }
-.skill3-val { font-size: 13px; font-weight: 700; color: var(--amber); min-width: 56px; text-align: right; }
-
-.budo-track { display: flex; gap: 8px; margin: 10px 0; justify-content: center; }
-.budo-orb { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--border); background: #f0ebe0; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.3s; }
-.budo-orb.filled { background: linear-gradient(135deg, #e06020, #c03010); border-color: #c05020; box-shadow: 0 2px 8px rgba(192,48,16,0.4); }
-.budo-orb.ready { background: linear-gradient(135deg, #f0c020, #d09010); border-color: #c09000; box-shadow: 0 0 12px rgba(240,180,20,0.6); animation: pulse 1s infinite; }
-@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-
-.alert { border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; display: none; font-size: 12px; line-height: 1.6; }
-.alert.show { display: flex; gap: 10px; }
-.alert-icon { flex-shrink: 0; font-size: 16px; }
-.alert-body strong { font-size: 13px; display: block; margin-bottom: 2px; }
-.alert.warning { background: #fdeaea; border: 1.5px solid #e09090; }
-.alert.warning strong { color: var(--red); }
-.alert.success { background: #f0ecff; border: 1.5px solid #b090e0; }
-.alert.success strong { color: #5020a0; }
-.alert.info { background: var(--amber-light); border: 1.5px solid #d4a060; }
-.alert.info strong { color: var(--amber); }
-
-.divider { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
-.divider span { flex: 1; height: 1px; background: var(--border); }
-.divider em { font-style: normal; font-size: 12px; color: var(--gray); letter-spacing: 1px; }
-
-/* 逆推 */
-.target-input-wrap { position: relative; margin-bottom: 6px; }
-.target-input-wrap input { font-size: 24px; text-align: center; border-color: var(--teal); color: var(--teal); }
-.target-ally-line { text-align: center; font-size: 12px; color: var(--gray); margin-bottom: 16px; }
-.target-ally-line strong { color: var(--green); font-size: 15px; }
-.rev-panel { background: #fafaf8; border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
-.rev-panel-title { font-size: 11px; font-weight: 700; color: var(--gray); margin-bottom: 8px; }
-.req-card { display: flex; align-items: center; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 8px; gap: 12px; }
-.req-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; flex-shrink: 0; }
-.req-icon.atk { background: #fde8e8; color: var(--red); }
-.req-icon.def { background: var(--blue-light); color: var(--blue-dark); }
-.req-info { flex: 1; }
-.req-label { font-size: 11px; color: var(--gray); font-weight: 700; }
-.req-formula { font-size: 9px; color: var(--gray); opacity: 0.7; }
-.req-val { font-size: 22px; font-weight: 900; }
-.req-val.atk { color: var(--red); }
-.req-val.def { color: var(--blue-dark); }
-.req-diff { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-top: 3px; display: inline-block; }
-.diff-need { background: #fde8e8; color: var(--red); border: 1px solid #e0b0b0; }
-.diff-ok { background: var(--green-light); color: var(--green); border: 1px solid #90c890; }
-.diff-exact { background: #f0ecff; color: #5020a0; border: 1px solid #b090e0; }
-.safety-tip { background: var(--amber-light); border: 1.5px solid #d4a060; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--amber); line-height: 1.6; margin-top: 14px; }
-
-/* 技能手冊 */
-.skill-card { border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 10px; overflow: hidden; }
-.skill-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(90deg, rgba(180,50,20,0.08), transparent); border-bottom: 1px solid var(--border); }
-.skill-num { width: 26px; height: 26px; border-radius: 50%; background: var(--red); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.skill-name-zh { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 14px; }
-.skill-name-en { font-size: 10px; color: var(--gray); margin-top: 1px; }
-.skill-body { padding: 12px 14px; }
-.skill-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
-.skill-key { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 99px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
-.key-dmg { background: #fde8e8; color: var(--red); border: 1px solid #e0b0b0; }
-.key-heal { background: var(--blue-light); color: var(--blue-dark); border: 1px solid #90b8e0; }
-.key-cond { background: var(--amber-light); color: var(--amber); border: 1px solid #d4a060; }
-.key-buff { background: var(--green-light); color: var(--green); border: 1px solid #90c890; }
-.key-fix { background: #f0ecff; color: #5020a0; border: 1px solid #b090e0; }
-.key-tip { background: var(--paper2); color: var(--gray); border: 1px solid var(--border); }
-.hv { font-weight: 700; color: var(--red); }
-.hb { font-weight: 700; color: var(--blue-dark); }
-.hg { font-weight: 700; color: var(--gold); }
-
-/* 御魂推薦 */
-.onmyo-cards { display: flex; flex-direction: column; gap: 10px; }
-.onmyo-card { border-radius: 10px; border: 1.5px solid var(--border); background: #fff; overflow: hidden; }
-.onmyo-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(90deg, rgba(201,146,42,0.1), transparent); border-bottom: 1px solid var(--border); }
-.onmyo-tier { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 99px; letter-spacing: 1px; }
-.tier-s { background: linear-gradient(90deg,#ffd700,#ffaa00); color: #5a3000; }
-.tier-a { background: linear-gradient(90deg,#c0c0ff,#9090e0); color: #1a0060; }
-.tier-b { background: linear-gradient(90deg,#c0e0c0,#80b080); color: #0a3010; }
-.onmyo-name { font-weight: 700; font-size: 14px; font-family: 'Noto Serif TC', serif; }
-.onmyo-stance { margin-left: auto; font-size: 10px; color: var(--gray); border: 1px solid var(--border); padding: 1px 6px; border-radius: 99px; white-space: nowrap; }
-.onmyo-body { padding: 10px 14px 12px; }
-.onmyo-set { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
-.set-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: var(--paper2); border: 1px solid var(--border); color: var(--ink); }
-.onmyo-desc { font-size: 12px; color: var(--gray); line-height: 1.6; }
-.onmyo-stats { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.stat-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: #f0ebe0; color: var(--gray); border: 1px solid var(--border); }
-
-.footer { text-align: center; padding: 14px; font-size: 10px; color: var(--gray); opacity: 0.6; letter-spacing: 1px; }
+/* ── 頁尾 ── */
+.footer {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 10px;
+  color: var(--gray);
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
 </style>
 </head>
 <body>
 <div class="container">
 
   <div class="hero">
-    <div class="hero-title">⚔ 平將門 數值計算機</div>
-    <div class="hero-subtitle">時隴輪轉・布都御魂・騎陽長明</div>
-    <div class="hero-divider"><span></span><em>◆</em><span></span></div>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('forward')">🛡 面板試算</button>
-      <button class="tab-btn" onclick="switchTab('reverse')">🎯 目標逆推</button>
-      <button class="tab-btn" onclick="switchTab('skill')">📖 技能說明</button>
-      <button class="tab-btn" onclick="switchTab('onmyo')">🪬 御魂推薦</button>
-    </div>
+    <div class="hero-badge">ONMYOJI TOOLS</div>
+    <div class="hero-title">式神<span>・</span>數值計算機</div>
+    <div class="hero-subtitle">選擇式神，開始計算</div>
+    <div class="hero-divider"><span></span><em>⛩</em><span></span></div>
   </div>
 
-  <div class="body-wrap">
+  <div class="card-grid">
 
-    <!-- ══ 面板試算 ══ -->
-    <div id="tab-forward" class="tab-content active">
+    <!-- 平將門 -->
+    <a href="taira_calculator.html" class="shiki-card card-taira">
+      <div class="card-banner"></div>
+      <div class="card-body">
+        <div class="card-icon">⚔️</div>
+        <div class="card-info">
+          <div class="card-rarity">SSR</div>
+          <div class="card-name">平將門</div>
+          <div class="card-tags">
+            <span class="tag">架勢判定</span>
+            <span class="tag">受擊回血</span>
+            <span class="tag">騎陽長明</span>
+            <span class="tag">目標逆推</span>
+          </div>
+        </div>
+        <div class="card-arrow">›</div>
+      </div>
+    </a>
 
-      <div class="section-title">面板輸入（含御魂加成）</div>
-      <div class="input-row">
-        <div class="input-group">
-          <div class="input-label"><span class="badge badge-atk">攻擊</span>面板攻擊力</div>
-          <input type="number" id="f-atk" placeholder="例：7964" oninput="calcForward()">
+    <!-- SP桃花妖 -->
+    <a href="sp-momohana.html" class="shiki-card card-momohana">
+      <div class="card-banner"></div>
+      <div class="card-body">
+        <div class="card-icon">🌸</div>
+        <div class="card-info">
+          <div class="card-rarity">SP</div>
+          <div class="card-name">灼華桃花妖</div>
+          <div class="card-tags">
+            <span class="tag">治療試算</span>
+            <span class="tag">新蕊回血</span>
+            <span class="tag">復活回血</span>
+            <span class="tag">傷害降低</span>
+          </div>
         </div>
-        <div class="input-group">
-          <div class="input-label"><span class="badge badge-def">防禦</span>面板防禦力</div>
-          <input type="number" id="f-def" placeholder="例：1243" oninput="calcForward()">
-        </div>
+        <div class="card-arrow">›</div>
       </div>
+    </a>
 
-      <div class="section-title">架勢判定</div>
-      <div class="stance-box" id="stance-box">
-        <div class="stance-header">
-          <span class="stance-label" id="stance-label" style="color:var(--gray)">─ 尚未判定 ─</span>
-          <span class="stance-pct" id="stance-pct"></span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" id="stance-bar" style="width:0%"></div></div>
-        <div class="stance-note" id="stance-note">輸入攻防數值後自動判定</div>
-      </div>
-
-      <div class="alert warning" id="alert-attack">
-        <div class="alert-icon">⚠️</div>
-        <div class="alert-body"><strong>已進入攻擊架勢！</strong>受擊回血完全失效。需讓攻擊力 ≤ 防禦力 × 700%。</div>
-      </div>
-      <div class="alert success" id="alert-optimal">
-        <div class="alert-icon">✨</div>
-        <div class="alert-body"><strong>完美配裝區間！</strong>攻擊已達 70% 回血上限，防守架勢效益最大化。</div>
-      </div>
-
-      <div class="section-title">受擊回血 ——「時隴輪轉」Lv.4</div>
-      <div class="result-grid">
-        <div class="result-card blue">
-          <div class="card-label">平將門 自身回血</div>
-          <div class="card-value blue" id="r-self">─</div>
-          <div class="card-formula">min(防禦×500%, 攻擊×70%)</div>
-        </div>
-        <div class="result-card green">
-          <div class="card-label">隊友同步回血</div>
-          <div class="card-value green" id="r-ally">─</div>
-          <div class="card-formula">自身回血 × 70%</div>
+    <!-- 葛葉 (即將推出) -->
+    <div class="card-coming">
+      <div class="card-banner" style="background: linear-gradient(90deg,#1a2a1a,#2a4a2a,#406040);"></div>
+      <div class="card-body">
+        <div class="card-icon" style="font-size:22px;">🦊</div>
+        <div class="card-info">
+          <div class="card-rarity">SSR</div>
+          <div class="card-name">葛葉</div>
+          <div class="card-tags">
+            <span class="tag">即將推出</span>
+          </div>
         </div>
       </div>
-
-      <div class="divider"><span></span><em>主動技傷害</em><span></span></div>
-
-      <div class="section-title">一技：凌空一擊（Lv.4・115%）</div>
-      <div class="input-group">
-        <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害倍率（%，不含%符號）</div>
-        <input type="number" id="f-cdmg" placeholder="例：199" oninput="calcForward()">
-      </div>
-      <div class="result-grid">
-        <div class="result-card amber">
-          <div class="card-label">基礎傷害</div>
-          <div class="card-value amber" id="r-q1-base">─</div>
-          <div class="card-formula">攻擊 × 115%</div>
-        </div>
-        <div class="result-card amber">
-          <div class="card-label">暴擊傷害</div>
-          <div class="card-value amber" id="r-q1-crit">─</div>
-          <div class="card-formula">基礎 × 暴擊傷害%</div>
-        </div>
-      </div>
-
-      <div class="section-title">三技：騎陽長明（Lv.5・80%×3擊）</div>
-      <div class="input-group">
-        <div class="input-label"><span class="badge badge-atk">擊敗</span>已擊敗敵方式神數（0 ～ 5）</div>
-        <input type="number" id="f-kills" placeholder="0" min="0" max="5" oninput="calcForward()">
-      </div>
-      <div class="skill3-stack" id="skill3-stack"></div>
-      <div class="result-grid">
-        <div class="result-card red">
-          <div class="card-label">三技總傷害</div>
-          <div class="card-value red" id="r-q3-total">─</div>
-          <div class="card-formula">3段合計（80%×3）</div>
-        </div>
-        <div class="result-card purple">
-          <div class="card-label">固定傷害追加</div>
-          <div class="card-value purple" id="r-q3-fixed">─</div>
-          <div class="card-formula">總傷 × 固定係數（無視防禦）</div>
-        </div>
-      </div>
-      <div class="result-grid">
-        <div class="result-card teal">
-          <div class="card-label">固定傷害係數</div>
-          <div class="card-value teal" id="r-fix-pct">18%</div>
-          <div class="card-formula">+5%/擊敗（Lv.5・至多5次）</div>
-        </div>
-        <div class="result-card teal">
-          <div class="card-label">受傷降低</div>
-          <div class="card-value teal" id="r-dmg-reduce">0%</div>
-          <div class="card-formula">+7%/擊敗（至多5次）</div>
-        </div>
-      </div>
-
-      <div class="divider"><span></span><em>布都御魂</em><span></span></div>
-      <div class="section-title">布都御魂進度（每3次 → 時之隴）</div>
-      <div class="input-group">
-        <div class="input-label">本回合已強化次數（0 ～ 2）</div>
-        <input type="number" id="f-budo" placeholder="0" min="0" max="2" oninput="calcForward()">
-      </div>
-      <div class="budo-track" id="budo-track"></div>
-      <div class="alert info" id="alert-budo">
-        <div class="alert-icon">⚡</div>
-        <div class="alert-body"><strong>即將觸發時之隴！</strong>再強化1次布都御魂，平將門將立即進入時之隴（回合外追加行動）。</div>
-      </div>
+      <div class="coming-badge">即將推出</div>
     </div>
 
-    <!-- ══ 目標逆推 ══ -->
-    <div id="tab-reverse" class="tab-content">
-      <div class="section-title">設定目標回血量</div>
-      <div class="target-input-wrap">
-        <input type="number" id="r-target" placeholder="例：5000" oninput="calcReverse()">
-      </div>
-      <div class="target-ally-line">隊友同步回血將達到：<strong id="r-ally-preview">—</strong> HP</div>
-
-      <div class="rev-panel">
-        <div class="rev-panel-title">🔗 當前面板對比（選填）</div>
-        <div class="input-row">
-          <div class="input-group">
-            <div class="input-label"><span class="badge badge-atk">攻擊</span>當前攻擊</div>
-            <input type="number" id="r-cur-atk" placeholder="攻擊力" oninput="calcReverse()" style="font-size:15px">
-          </div>
-          <div class="input-group">
-            <div class="input-label"><span class="badge badge-def">防禦</span>當前防禦</div>
-            <input type="number" id="r-cur-def" placeholder="防禦力" oninput="calcReverse()" style="font-size:15px">
+    <!-- 禍津神 (即將推出) -->
+    <div class="card-coming">
+      <div class="card-banner" style="background: linear-gradient(90deg,#1a0a2a,#3a1a5a,#6030a0);"></div>
+      <div class="card-body">
+        <div class="card-icon" style="font-size:22px;">⚡</div>
+        <div class="card-info">
+          <div class="card-rarity">SSR</div>
+          <div class="card-name">禍津神</div>
+          <div class="card-tags">
+            <span class="tag">即將推出</span>
           </div>
         </div>
       </div>
-
-      <div class="section-title">最低面板需求</div>
-      <div class="req-card">
-        <div class="req-icon atk">攻</div>
-        <div class="req-info">
-          <div class="req-label">最低攻擊力需求</div>
-          <div class="req-formula">目標回血 ÷ 70%</div>
-        </div>
-        <div>
-          <div class="req-val atk" id="req-atk">—</div>
-          <div id="diff-atk"></div>
-        </div>
-      </div>
-      <div class="req-card">
-        <div class="req-icon def">防</div>
-        <div class="req-info">
-          <div class="req-label">最低防禦力需求</div>
-          <div class="req-formula">需求攻擊 ÷ 700%（維持防守架勢）</div>
-        </div>
-        <div>
-          <div class="req-val def" id="req-def">—</div>
-          <div id="diff-def"></div>
-        </div>
-      </div>
-      <div class="safety-tip">
-        💡 <strong>實戰建議：</strong>御魂副詞條帶有小數進位，建議算出的最低防禦再多備 <strong>15～25 點</strong>緩衝，避免意外觸發攻擊架勢。
-      </div>
-    </div>
-
-    <!-- ══ 技能說明 ══ -->
-    <div id="tab-skill" class="tab-content">
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num">1</div>
-          <div><div class="skill-name-zh">凌空一擊</div><div class="skill-name-en">Lv.4 已解鎖</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>對<strong>單體</strong>造成攻擊力 <span class="hv">115%</span> 傷害。</span></div>
-          <div class="skill-row"><span class="skill-key key-tip">說明</span><span>可吃<span class="hb">暴擊</span>；使用後不強化布都御魂，也不消耗鬼火。</span></div>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num">2</div>
-          <div><div class="skill-name-zh">時隴輪轉</div><div class="skill-name-en">Lv.5 核心被動＋主動</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-cond">架勢</span><span>戰鬥開始：<span class="hv">攻擊 &gt; 防禦 × 700%</span> → <strong>攻擊架勢</strong>；否則 → <strong>防守架勢</strong>。</span></div>
-          <div class="skill-row"><span class="skill-key key-heal">防守</span><span>受到攻擊時：恢復 <span class="hb">防禦 × 500%</span> 生命，上限為 <span class="hv">攻擊 × 70%</span>。每回合最多觸發1次。同時強化1次<span class="hg">布都御魂</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>防守架勢回血對<strong>全體友方</strong>同步生效，為自身的 <span class="hb">70%</span>（受傳導傷害不觸發）。</span></div>
-          <div class="skill-row"><span class="skill-key key-dmg">攻擊</span><span>攻擊架勢時，自身施放「騎陽長明」可強化1次布都御魂。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>攻擊架勢中，每強化1次布都御魂，「騎陽長明」群體係數 <span class="hv">+5%</span>（至多+15%）。</span></div>
-          <div class="skill-row"><span class="skill-key key-tip">主動</span><span>主動施放（消耗1鬼火）：切換架勢 + 提升自身 <span class="hg">50% 行動條</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">布都</span><span><span class="hg">布都御魂強化3次</span> → 立即進入<strong>時之隴</strong>（回合外行動，不計回合統計）。</span></div>
-          <div class="skill-row"><span class="skill-key key-tip">恢復</span><span>此機制為「<strong>恢復</strong>」類型：不受減療影響、不觸發治療效果、不會暴擊。</span></div>
-          <div class="skill-row"><span class="skill-key key-tip">唯一</span><span>多個平將門同時上場，此效果只有其中一個生效。</span></div>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num">3</div>
-          <div><div class="skill-name-zh">騎陽長明</div><div class="skill-name-en">Lv.5 大招</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>攻擊<strong>全體</strong>敵方 3 次，每次 <span class="hv">80%</span> 攻擊傷害。</span></div>
-          <div class="skill-row"><span class="skill-key key-fix">固定</span><span>隨後對指定目標造成本次攻擊<strong>總傷害（含被吸收）</strong> × <span class="hv">18%</span> 的<strong>固定傷害</strong>（無視防禦、不暴擊）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">觸發</span><span>造成擊敗時，獲得 <span class="hg">3點鬼火</span> 並強化1次布都御魂。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>每擊敗1位敵方（至多5次）：自身<span class="hb">受傷害降低 7%</span>，固定傷害係數 <span class="hv">+5%</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-tip">提示</span><span>固定傷害計算基準包含護盾吸收量，對有護盾的目標傷害更高。</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ 御魂推薦 ══ -->
-    <div id="tab-onmyo" class="tab-content">
-
-      <div class="alert info show" style="margin-bottom:16px">
-        <div class="alert-icon">💡</div>
-        <div class="alert-body"><strong>配裝核心邏輯</strong>防守路線：攻防均衡（攻 ≤ 防×7），受擊回血肉坦。攻擊路線：全堆攻擊傷害，放棄回血機制。</div>
-      </div>
-
-      <div class="section-title">防守架勢 推薦配裝</div>
-      <div class="onmyo-cards">
-        <div class="onmyo-card">
-          <div class="onmyo-card-header">
-            <span class="onmyo-tier tier-s">S 主流</span>
-            <span class="onmyo-name">火山 ×4 ＋ 破勢 ×2</span>
-            <span class="onmyo-stance">🛡 防守</span>
-          </div>
-          <div class="onmyo-body">
-            <div class="onmyo-set"><span class="set-tag">火山 ×4</span><span class="set-tag">破勢 ×2</span></div>
-            <div class="onmyo-desc">火山4件回合結束時大量回血，疊加受擊回血幾乎打不死。破勢2件補攻擊力，確保回血不被70%上限卡死。斗技後手掛機T0選擇。</div>
-            <div class="onmyo-stats"><span class="stat-chip">主6：防禦%</span><span class="stat-chip">副詞條：防禦＋攻擊均衡</span></div>
-          </div>
-        </div>
-        <div class="onmyo-card">
-          <div class="onmyo-card-header">
-            <span class="onmyo-tier tier-s">S 反擊流</span>
-            <span class="onmyo-name">歲饋 ×4 ＋ 山兔 ×2</span>
-            <span class="onmyo-stance">🛡 防守</span>
-          </div>
-          <div class="onmyo-body">
-            <div class="onmyo-set"><span class="set-tag">歲饋 ×4</span><span class="set-tag">山兔 ×2</span></div>
-            <div class="onmyo-desc">歲饋4件受到攻擊後有機率反擊，大量觸發布都御魂強化，讓時之隴更頻繁出現。山兔2件拉高攻擊上限。</div>
-            <div class="onmyo-stats"><span class="stat-chip">主6：攻擊%</span><span class="stat-chip">副詞條：攻擊＋防禦均衡</span></div>
-          </div>
-        </div>
-        <div class="onmyo-card">
-          <div class="onmyo-card-header">
-            <span class="onmyo-tier tier-a">A 節奏流</span>
-            <span class="onmyo-name">祓魂 ×4 ＋ 山兔 ×2</span>
-            <span class="onmyo-stance">🛡 防守</span>
-          </div>
-          <div class="onmyo-body">
-            <div class="onmyo-set"><span class="set-tag">祓魂 ×4</span><span class="set-tag">山兔 ×2</span></div>
-            <div class="onmyo-desc">祓魂4件每回合為友方強化，同時計入布都御魂進度，適合以平將門作為隊伍節奏核心的指揮型打法。</div>
-            <div class="onmyo-stats"><span class="stat-chip">主6：攻擊%</span><span class="stat-chip">副詞條：速度＋效果命中</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title" style="margin-top:20px">攻擊架勢 推薦配裝</div>
-      <div class="onmyo-cards">
-        <div class="onmyo-card">
-          <div class="onmyo-card-header">
-            <span class="onmyo-tier tier-s">S 爆發</span>
-            <span class="onmyo-name">神樂 ×4 ＋ 破勢 ×2</span>
-            <span class="onmyo-stance">⚔️ 攻擊</span>
-          </div>
-          <div class="onmyo-body">
-            <div class="onmyo-set"><span class="set-tag">神樂 ×4</span><span class="set-tag">破勢 ×2</span></div>
-            <div class="onmyo-desc">神樂4件受擊後疊加攻擊力buff，與攻擊架勢高攻路線完美配合；破勢2件讓騎陽長明的傷害進一步突破防禦上限。</div>
-            <div class="onmyo-stats"><span class="stat-chip">主6：攻擊%</span><span class="stat-chip">副詞條：暴擊率＋暴擊傷害</span></div>
-          </div>
-        </div>
-        <div class="onmyo-card">
-          <div class="onmyo-card-header">
-            <span class="onmyo-tier tier-b">B 速攻</span>
-            <span class="onmyo-name">荒骷髏 ×4 ＋ 鬼王 ×2</span>
-            <span class="onmyo-stance">⚔️ 攻擊</span>
-          </div>
-          <div class="onmyo-body">
-            <div class="onmyo-set"><span class="set-tag">荒骷髏 ×4</span><span class="set-tag">鬼王 ×2</span></div>
-            <div class="onmyo-desc">荒骷髏4件以速度差換取超高傷害加成，讓平將門搶先開大；鬼王2件補足暴擊率。適合先手速攻擊殺體系。</div>
-            <div class="onmyo-stats"><span class="stat-chip">主6：攻擊%</span><span class="stat-chip">副詞條：速度＋暴擊率</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title" style="margin-top:20px">副詞條優先級</div>
-      <div class="onmyo-card">
-        <div class="onmyo-body" style="padding-top:12px">
-          <div class="skill-row"><span class="skill-key key-heal">防守路</span><span>攻擊% ≈ 防禦% &gt; 生命% &gt; 速度 &gt; 效果命中</span></div>
-          <div class="skill-row"><span class="skill-key key-dmg">攻擊路</span><span>攻擊% &gt; 暴擊傷害 &gt; 暴擊率 &gt; 速度</span></div>
-          <div class="skill-row"><span class="skill-key key-tip">注意</span><span>防守路線中，攻擊力超過防禦×7就進入攻擊架勢失去回血——溢出的攻擊毫無意義。</span></div>
-        </div>
-      </div>
+      <div class="coming-badge">即將推出</div>
     </div>
 
   </div>
-  <div class="footer">平將門・時隴輪轉計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+
+  <div class="footer">陰陽師・式神數值計算機 ◆ 資料來源：遊戲內技能說明實測</div>
 </div>
-
-<script>
-function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
-function el(id) { return document.getElementById(id); }
-function fmt(n) { return Math.floor(n).toLocaleString(); }
-function showAlert(id, show) {
-  const e = el(id);
-  e.style.display = show ? 'flex' : 'none';
-  e.classList.toggle('show', show);
-}
-
-function switchTab(name) {
-  const names = ['forward','reverse','skill','onmyo'];
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i]===name));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  el('tab-'+name).classList.add('active');
-}
-
-function calcForward() {
-  const atk = v('f-atk'), def = v('f-def');
-  const cdmg = v('f-cdmg') || 150;
-  const kills = Math.min(5, Math.max(0, Math.floor(v('f-kills'))));
-  const budo = Math.min(2, Math.max(0, Math.floor(v('f-budo'))));
-
-  if (!atk || !def) {
-    el('stance-box').className = 'stance-box';
-    el('stance-bar').style.width = '0%';
-    el('stance-label').textContent = '─ 尚未判定 ─';
-    el('stance-label').style.color = 'var(--gray)';
-    el('stance-pct').textContent = '';
-    el('stance-note').textContent = '輸入攻防數值後自動判定';
-    ['r-self','r-ally','r-q1-base','r-q1-crit','r-q3-total','r-q3-fixed'].forEach(id => el(id).textContent = '─');
-    el('r-fix-pct').textContent = '18%'; el('r-dmg-reduce').textContent = '0%';
-    showAlert('alert-attack',false); showAlert('alert-optimal',false);
-    el('skill3-stack').innerHTML = '';
-    renderBudo(0);
-    return;
-  }
-
-  const limitAtk = def * 7;
-  const isAttack = atk > limitAtk;
-  const ratio = atk / limitAtk;
-  const pct = (ratio*100).toFixed(1) + '%';
-  const barW = Math.min(ratio/1.2*100, 100);
-
-  el('stance-pct').textContent = '攻擊/上限：' + pct;
-  el('stance-bar').style.width = barW + '%';
-
-  if (isAttack) {
-    el('stance-box').className = 'stance-box attack-mode';
-    el('stance-label').textContent = '⚔️ 攻擊架勢';
-    el('stance-label').style.color = 'var(--red)';
-    el('stance-bar').style.background = 'var(--red-light)';
-    el('stance-note').innerHTML = '超過上限 <strong style="color:var(--red)">' + fmt(atk - limitAtk) + '</strong> 點攻擊';
-    showAlert('alert-attack',true); showAlert('alert-optimal',false);
-    el('r-self').textContent = '0'; el('r-self').className = 'card-value blue dimmed';
-    el('r-ally').textContent = '0'; el('r-ally').className = 'card-value green dimmed';
-  } else {
-    const isOpt = ratio >= 0.929;
-    el('stance-box').className = 'stance-box ' + (isOpt ? 'optimal-mode' : 'defense-mode');
-    el('stance-label').textContent = isOpt ? '✨ 防守架勢（完美區間）' : '🛡️ 防守架勢';
-    el('stance-label').style.color = isOpt ? '#5020a0' : 'var(--blue-dark)';
-    el('stance-bar').style.background = isOpt ? '#9060d0' : 'var(--blue)';
-    el('stance-note').innerHTML = '距攻擊上限還差 <strong style="color:' + (isOpt?'#5020a0':'var(--blue-dark)') + '">' + fmt(limitAtk-atk) + '</strong> 點';
-    showAlert('alert-attack',false); showAlert('alert-optimal',isOpt);
-    const selfHeal = Math.min(def*5, atk*0.7);
-    el('r-self').textContent = fmt(selfHeal); el('r-self').className = 'card-value blue';
-    el('r-ally').textContent = fmt(selfHeal*0.7); el('r-ally').className = 'card-value green';
-  }
-
-  // 一技
-  el('r-q1-base').textContent = fmt(atk*1.15);
-  el('r-q1-crit').textContent = fmt(atk*1.15*(cdmg/100));
-
-  // 三技
-  const fixPct = 0.18 + kills*0.05;
-  const dmgRed = kills*0.07;
-  el('r-fix-pct').textContent = (fixPct*100).toFixed(0)+'%';
-  el('r-dmg-reduce').textContent = (dmgRed*100).toFixed(0)+'%';
-  const hitDmg = atk*0.80, totalDmg = hitDmg*3, fixedDmg = totalDmg*fixPct;
-  el('r-q3-total').textContent = fmt(totalDmg);
-  el('r-q3-fixed').textContent = fmt(fixedDmg);
-  renderSkill3(hitDmg, fixedDmg, Math.max(totalDmg, fixedDmg, 1));
-
-  // 布都御魂
-  renderBudo(budo);
-}
-
-function renderSkill3(hit, fixed, max) {
-  const s = el('skill3-stack');
-  let html = '';
-  for (let i=1;i<=3;i++) {
-    const w = Math.min((hit/max)*100, 100);
-    html += `<div class="skill3-row"><div class="skill3-hit-label">第${i}擊</div><div class="skill3-bar-wrap"><div class="skill3-bar-track"><div class="skill3-bar-fill" style="width:${w}%"></div></div><div style="font-size:9px;color:var(--gray)">攻擊 × 80%</div></div><div class="skill3-val">${fmt(hit)}</div></div>`;
-  }
-  const fw = Math.min((fixed/max)*100, 100);
-  html += `<div class="skill3-row highlight"><div class="skill3-hit-label" style="color:var(--amber);font-size:9px">固定<br>追加</div><div class="skill3-bar-wrap"><div class="skill3-bar-track"><div class="skill3-bar-fill" style="width:${fw}%;background:#7030b0"></div></div><div style="font-size:9px;color:var(--gray)">總傷 × 固定係數（無視防禦）</div></div><div class="skill3-val" style="color:#5020a0">${fmt(fixed)}</div></div>`;
-  s.innerHTML = html;
-}
-
-function renderBudo(n) {
-  let html = '';
-  for (let i=0;i<3;i++) {
-    if (i < n) html += '<div class="budo-orb filled">🔥</div>';
-    else if (i === n && n===2) html += '<div class="budo-orb ready">○</div>';
-    else html += '<div class="budo-orb">○</div>';
-  }
-  el('budo-track').innerHTML = html;
-  showAlert('alert-budo', n===2);
-}
-
-function calcReverse() {
-  const target = v('r-target'), curAtk = v('r-cur-atk'), curDef = v('r-cur-def');
-  if (!target) {
-    el('r-ally-preview').textContent='—'; el('req-atk').textContent='—'; el('req-def').textContent='—';
-    el('diff-atk').innerHTML=''; el('diff-def').innerHTML=''; return;
-  }
-  el('r-ally-preview').textContent = fmt(target*0.7);
-  const reqAtk = Math.ceil(target/0.7), reqDef = Math.ceil(reqAtk/7);
-  el('req-atk').textContent = reqAtk.toLocaleString();
-  el('req-def').textContent = reqDef.toLocaleString();
-  function diffHtml(req, cur) {
-    if (!cur) return '';
-    const d = req-cur;
-    if (d>0) return `<div class="req-diff diff-need">需再 +${d.toLocaleString()}</div>`;
-    if (d===0) return `<div class="req-diff diff-exact">✅ 剛好達標</div>`;
-    return `<div class="req-diff diff-ok">✅ 溢出 ${Math.abs(d).toLocaleString()}</div>`;
-  }
-  el('diff-atk').innerHTML = diffHtml(reqAtk, curAtk);
-  el('diff-def').innerHTML = diffHtml(reqDef, curDef);
-}
-
-// 初始化
-renderSkill3(0,0,1);
-renderBudo(0);
-showAlert('alert-budo',false);
-showAlert('alert-attack',false);
-showAlert('alert-optimal',false);
-</script>
 </body>
 </html>
