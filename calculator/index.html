@@ -105,6 +105,13 @@ body {
   font-size: 26px;
   flex-shrink: 0;
   border: 2px solid rgba(255,255,255,0.6);
+  overflow: hidden;
+}
+.card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 .card-info { flex: 1; }
 .card-rarity {
@@ -216,7 +223,7 @@ body {
     <a href="taira_calculator.html" class="shiki-card card-taira">
       <div class="card-banner"></div>
       <div class="card-body">
-        <div class="card-icon">⚔️</div>
+        <div class="card-icon"><img src="images/平將門.jpg" alt="平將門"></div>
         <div class="card-info">
           <div class="card-rarity">SSR</div>
           <div class="card-name">平將門</div>
@@ -235,7 +242,7 @@ body {
     <a href="sp-momohana.html" class="shiki-card card-momohana">
       <div class="card-banner"></div>
       <div class="card-body">
-        <div class="card-icon">🌸</div>
+        <div class="card-icon"><img src="images/桃花妖.jpg" alt="灼華桃花妖"></div>
         <div class="card-info">
           <div class="card-rarity">SP</div>
           <div class="card-name">灼華桃花妖</div>
@@ -254,7 +261,7 @@ body {
     <a href="kuzuha.html" class="shiki-card card-kuzuha">
       <div class="card-banner"></div>
       <div class="card-body">
-        <div class="card-icon">🦊</div>
+        <div class="card-icon"><img src="images/葛葉.jpg" alt="葛葉"></div>
         <div class="card-info">
           <div class="card-rarity">SSR</div>
           <div class="card-name">葛葉</div>
@@ -273,7 +280,7 @@ body {
     <a href="magatsukami.html" class="shiki-card card-magatsu">
       <div class="card-banner"></div>
       <div class="card-body">
-        <div class="card-icon">⚡</div>
+        <div class="card-icon"><img src="images/禍津神.jpg" alt="禍津神"></div>
         <div class="card-info">
           <div class="card-rarity">SSR</div>
           <div class="card-name">禍津神</div>
