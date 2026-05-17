@@ -5,6 +5,7 @@ on:
     branches: [main, master]
     paths:
       - 'competitions/**'
+      - 'calculator/**'
   workflow_run:
     workflows: ["每日更新比賽資料"]
     types: [completed]
@@ -37,10 +38,16 @@ jobs:
         with:
           enablement: true
 
+      - name: Assemble site
+        run: |
+          mkdir -p _site/calculator
+          cp -r competitions/. _site/
+          cp -r calculator/. _site/calculator/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: competitions/
+          path: _site/
 
       - name: Deploy to GitHub Pages
         id: deployment
