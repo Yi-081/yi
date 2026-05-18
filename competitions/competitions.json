@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-16T02:41:01",
+  "last_updated": "2026-05-18T02:59:45",
   "count": 44,
   "competitions": [
     {
@@ -192,7 +192,7 @@
       "description": "面向亞洲各大學大學部及碩士生，徵集以科技驅動永續未來的解決方案，最多 4 人一組。通過初審後進入線上培訓（6/2–6/28），決賽黑客松於 VinUniversity（河內，7/2–7/5）。台灣學生可跨國報名。",
       "url": "https://forms.gle/o3L5BVLExUYKQtGJA",
       "source": "Asian Hackathon",
-      "status": "closing_soon"
+      "status": "closed"
     },
     {
       "id": "real_002",
