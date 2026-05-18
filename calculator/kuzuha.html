@@ -237,8 +237,8 @@ select { font-size: 15px; cursor: pointer; }
           <input type="number" id="m-atk" placeholder="例：7158" oninput="calcMain()">
         </div>
         <div class="input-group">
-          <div class="input-label"><span class="badge badge-crit">暴擊</span>暴擊率%</div>
-          <input type="number" id="m-crit" placeholder="例：17" oninput="calcMain()">
+          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害%</div>
+          <input type="number" id="m-cdmg" placeholder="例：157" oninput="calcMain()">
         </div>
       </div>
       <div class="input-group">
@@ -282,9 +282,9 @@ select { font-size: 15px; cursor: pointer; }
             <div class="daiyou-stat-sub" id="dy-def-sub">幻化人數 × 20%</div>
           </div>
           <div class="daiyou-stat">
-            <div class="daiyou-stat-label">暴擊率</div>
+            <div class="daiyou-stat-label">暴傷加成（Lv.5）</div>
             <div class="daiyou-stat-val" id="dy-crit">─</div>
-            <div class="daiyou-stat-sub" id="dy-crit-sub">面板 + 幻化×10%</div>
+            <div class="daiyou-stat-sub" id="dy-crit-sub">幻化人數 × 10%暴傷</div>
           </div>
         </div>
       </div>
@@ -421,7 +421,7 @@ select { font-size: 15px; cursor: pointer; }
           <div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%生命</span>。</span></div>
           <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%攻擊</span>。</span></div>
           <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%防禦</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">10%暴擊</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">+10%暴擊傷害</span>（至多+30%）。</span></div>
           <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>被葛葉守護，為葛葉提升15%速度。無法動作，不可被選中，行動條位置被鎖定；免疫傷害、治療、增益和減益效果。</span></div>
           <div class="skill-row"><span class="skill-key key-daiyou">大妖</span><span>生命為葛葉初始攻擊的 <span class="hv">225%</span>。生命比例高於50%時，免疫減益和放逐，行動前獲得與幻化人數相等的鬼火。移除九尾之力外的所有狀態和印記，將「狐影陣」替換為「終式・破空」。受到致命傷害或所有被幻化的式神解除幻化時，回到普通形態。</span></div>
         </div>
@@ -491,7 +491,7 @@ function switchTab(name) {
 
 function calcMain() {
   var atk = val('m-atk');
-  var crit = val('m-crit');
+  var cdmg = val('m-cdmg') || 150;
   var enemyLess = parseInt((el('m-enemy') || {value:'0'}).value) || 0;
   var n = illusCount;
 
@@ -502,20 +502,21 @@ function calcMain() {
   }
 
   // 大妖姿態面板
+  var cdmg = val('m-cdmg') || 150;
   var dyHp   = atk * 2.25 * (1 + n * 0.20);
   var atkBonus = n * 20;
   var defBonus = n * 20;
-  var critTotal = crit + n * 10;
+  var cdmgBonus = n * 10; // Lv.5：每幻化+10%暴傷
 
   var PANEL_ATK_MULT = [1.0, 1.2, 1.4, 1.6];
   var PANEL_DMG_MULT = [1.0, 2.0, 3.0, 4.6];
   setText('dy-hp',        fmt(dyHp));
   setText('dy-atk-bonus', n > 0 ? '+' + (n*20) + '%' : '無加成');
   setText('dy-def-bonus', defBonus > 0 ? '+' + defBonus + '%' : '無加成');
-  setText('dy-crit',      critTotal.toFixed(0) + '%');
+  setText('dy-crit',      cdmgBonus > 0 ? '+' + cdmgBonus + '%暴傷' : '無加成');
   setText('dy-atk-sub',   n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
   setText('dy-def-sub',   n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
-  setText('dy-crit-sub',  n > 0 ? '面板' + crit + '% + 幻化' + (n*10) + '%' : '面板暴擊率');
+  setText('dy-crit-sub',  n > 0 ? '幻化' + n + '人 × 10%暴傷（Lv.5）' : '未幻化');
 
   setText('r-dy-hp',   fmt(dyHp));
   setText('r-dy-heal', fmt(atk * 1.0));

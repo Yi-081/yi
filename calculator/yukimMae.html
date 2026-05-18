@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雪御前・數值計算機</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+:root {
+  --ink: #0a1828;
+  --paper: #f4f8ff;
+  --paper2: #e8f2ff;
+  --ice: #2a7ab8;
+  --ice-mid: #4a9ad8;
+  --ice-light: #d8eeff;
+  --ice-dark: #0a3a6a;
+  --ice-pale: #eef6ff;
+  --white: #f0f8ff;
+  --crystal: #8ac8f0;
+  --red: #b02020;
+  --red-light: #fde8e8;
+  --teal: #1a7060;
+  --teal-light: #d0f0e8;
+  --amber: #a06010;
+  --amber-light: #fdeec8;
+  --green: #2d6e3a;
+  --green-light: #d4edda;
+  --purple: #6a3ab0;
+  --purple-light: #ede0ff;
+  --gray: #4a6880;
+  --border: #b8d8f0;
+  --shadow: rgba(20,80,140,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper2);
+  font-family: 'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 16px;
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(42,122,184,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(138,200,240,0.06) 0%, transparent 50%);
+}
+.container { max-width: 480px; margin: 0 auto; }
+
+.hero {
+  background: linear-gradient(160deg, #0a1828 0%, #0a3a6a 45%, #2a7ab8 100%);
+  border-radius: 16px 16px 0 0;
+  padding: 28px 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '❄';
+  position: absolute;
+  font-size: 110px;
+  opacity: 0.06;
+  right: -10px;
+  top: -10px;
+}
+.hero::after {
+  content: '❄';
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.04;
+  left: 10px;
+  bottom: 10px;
+}
+.hero-title { font-family: 'Noto Serif TC','PingFang TC',serif; font-size: 22px; font-weight: 900; color: #fff; text-align: center; letter-spacing: 4px; text-shadow: 0 2px 12px rgba(138,200,240,0.4); position: relative; }
+.hero-subtitle { text-align: center; font-size: 11px; color: rgba(180,220,255,0.85); letter-spacing: 2px; margin-top: 4px; position: relative; }
+.hero-divider { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; position: relative; }
+.hero-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(138,200,240,0.5), transparent); }
+.hero-divider em { color: rgba(180,220,255,0.7); font-style: normal; font-size: 14px; }
+.tabs { display: flex; background: rgba(0,0,0,0.3); position: relative; z-index: 1; }
+.tab-btn { flex: 1; padding: 10px 2px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; letter-spacing: 0.5px; border-bottom: 3px solid transparent; transition: all 0.25s; font-family: 'Noto Sans TC','PingFang TC',sans-serif; }
+.tab-btn.active { color: #a0d8ff; border-bottom-color: #a0d8ff; }
+
+.body-wrap { background: var(--paper); border-radius: 0 0 16px 16px; box-shadow: 0 8px 32px var(--shadow); }
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
+
+.section-title { font-family: 'Noto Serif TC','PingFang TC',serif; font-size: 12px; font-weight: 700; color: var(--gray); letter-spacing: 2px; border-left: 3px solid var(--ice-mid); padding-left: 8px; margin-bottom: 12px; margin-top: 20px; }
+.section-title:first-child { margin-top: 0; }
+
+.input-group { margin-bottom: 12px; }
+.input-label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 6px; }
+.badge { font-size: 10px; padding: 1px 6px; border-radius: 99px; font-weight: 700; }
+.badge-atk  { background: #fde8e8; color: var(--red); }
+.badge-crit { background: var(--ice-light); color: var(--ice-dark); }
+.badge-sum  { background: var(--purple-light); color: var(--purple); }
+input[type=number] { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 18px; font-weight: 700; font-family: 'Noto Sans TC','PingFang TC',sans-serif; color: var(--ink); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -moz-appearance: textfield; }
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number]:focus { border-color: var(--ice-mid); box-shadow: 0 0 0 3px rgba(74,154,216,0.12); }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* 重複召喚選擇器 */
+.summon-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.summon-btn { padding: 10px 4px; border-radius: 10px; border: 2px solid var(--border); background: #fff; font-size: 13px; font-weight: 700; color: var(--gray); cursor: pointer; text-align: center; transition: all 0.2s; font-family: 'Noto Sans TC','PingFang TC',sans-serif; }
+.summon-btn span { display: block; font-size: 9px; font-weight: 400; margin-top: 2px; color: var(--gray); }
+.summon-btn.active { background: var(--ice-light); border-color: var(--ice-mid); color: var(--ice-dark); }
+.summon-btn.active span { color: var(--ice-mid); }
+
+/* 龍膽藍璃面板 */
+.crystal-panel {
+  background: linear-gradient(135deg, #0a1828, #0a3a6a, #1a5a9a);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.crystal-panel::before {
+  content: '龍膽藍璃';
+  position: absolute;
+  font-family: 'Noto Serif TC','PingFang TC',serif;
+  font-size: 36px; font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  right: -4px; top: 6px;
+  letter-spacing: 2px;
+}
+.crystal-title { font-family: 'Noto Serif TC','PingFang TC',serif; font-size: 13px; font-weight: 700; color: rgba(180,220,255,0.8); margin-bottom: 12px; letter-spacing: 2px; }
+.crystal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.crystal-stat { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 8px 10px; }
+.crystal-stat-label { font-size: 10px; color: rgba(180,220,255,0.6); margin-bottom: 2px; }
+.crystal-stat-val { font-size: 18px; font-weight: 900; color: #c8e8ff; }
+.crystal-stat-sub { font-size: 9px; color: rgba(180,220,255,0.5); margin-top: 1px; }
+
+/* 結果卡 */
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.result-card { border-radius: 10px; padding: 14px 12px; text-align: center; border: 1.5px solid transparent; position: relative; overflow: hidden; }
+.result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.result-card.ice { background: var(--ice-light); border-color: #90c8f0; }
+.result-card.ice::before { background: var(--ice-mid); }
+.result-card.crystal { background: #e0f4ff; border-color: #70b8e8; }
+.result-card.crystal::before { background: var(--crystal); }
+.result-card.red { background: var(--red-light); border-color: #e09090; }
+.result-card.red::before { background: var(--red); }
+.result-card.green { background: var(--green-light); border-color: #80c090; }
+.result-card.green::before { background: var(--green); }
+.result-card.amber { background: var(--amber-light); border-color: #d4a060; }
+.result-card.amber::before { background: var(--amber); }
+.result-card.purple { background: var(--purple-light); border-color: #b090d8; }
+.result-card.purple::before { background: var(--purple); }
+.result-card.dark { background: #0a1828; border-color: #2a5a8a; }
+.result-card.dark::before { background: var(--ice-mid); }
+.card-label { font-size: 10px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-label-dark { font-size: 10px; font-weight: 700; color: rgba(180,220,255,0.7); letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-value { font-size: 22px; font-weight: 900; line-height: 1.1; }
+.card-value.ice { color: var(--ice-dark); }
+.card-value.crystal { color: #1a6090; }
+.card-value.red { color: var(--red); }
+.card-value.green { color: var(--green); }
+.card-value.amber { color: var(--amber); }
+.card-value.purple { color: var(--purple); }
+.card-value.dark { color: #a0d8ff; }
+.card-formula { font-size: 9px; color: var(--gray); margin-top: 3px; opacity: 0.8; }
+.card-formula-dark { font-size: 9px; color: rgba(180,220,255,0.6); margin-top: 3px; }
+
+/* 千雪斬分段 */
+.slash-stack { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.slash-row { display: flex; align-items: center; gap: 8px; padding: 7px 12px; background: var(--ice-pale); border: 1.5px solid var(--border); border-radius: 8px; }
+.slash-row.snowburst { background: #e0f4ff; border-color: #70b8e8; }
+.slash-row.snowburst-target { background: var(--ice-light); border-color: #4a9ad8; }
+.slash-row.total { background: #0a1828; border-color: #2a5a8a; }
+.slash-label { font-size: 11px; font-weight: 700; color: var(--ice-dark); width: 44px; flex-shrink: 0; text-align: center; }
+.slash-label-dark { font-size: 11px; font-weight: 700; color: rgba(180,220,255,0.8); width: 44px; flex-shrink: 0; text-align: center; }
+.slash-bar-wrap { flex: 1; }
+.slash-bar-track { height: 4px; background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden; margin-bottom: 2px; }
+.slash-bar-fill { height: 100%; border-radius: 99px; background: var(--ice-mid); transition: width 0.4s; }
+.slash-note { font-size: 9px; color: var(--gray); }
+.slash-note-dark { font-size: 9px; color: rgba(180,220,255,0.5); }
+.slash-val { font-size: 13px; font-weight: 700; color: var(--ice-dark); min-width: 60px; text-align: right; }
+.slash-val-dark { font-size: 13px; font-weight: 700; color: #a0d8ff; min-width: 60px; text-align: right; }
+
+.divider { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
+.divider span { flex: 1; height: 1px; background: var(--border); }
+.divider em { font-style: normal; font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+
+.alert { border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; display: flex; gap: 10px; font-size: 12px; line-height: 1.6; }
+.alert-icon { flex-shrink: 0; font-size: 16px; }
+.alert-body strong { font-size: 13px; display: block; margin-bottom: 2px; }
+.alert.info { background: var(--amber-light); border: 1.5px solid #d4a060; }
+.alert.info strong { color: var(--amber); }
+.alert.tip { background: var(--ice-light); border: 1.5px solid #90c8f0; }
+.alert.tip strong { color: var(--ice-dark); }
+
+/* 技能說明 */
+.skill-card { border-radius: 10px; border: 1.5px solid var(--border); background: #fff; margin-bottom: 10px; overflow: hidden; }
+.skill-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(90deg, rgba(42,122,184,0.08), transparent); border-bottom: 1px solid var(--border); }
+.skill-num { width: 26px; height: 26px; border-radius: 50%; background: var(--ice-mid); color: #fff; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.skill-name-zh { font-family: 'Noto Serif TC','PingFang TC',serif; font-weight: 700; font-size: 14px; }
+.skill-name-en { font-size: 10px; color: var(--gray); margin-top: 1px; }
+.skill-body { padding: 12px 14px; }
+.skill-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
+.skill-key { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 99px; flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+.key-dmg  { background: var(--red-light); color: var(--red); border: 1px solid #e0b0b0; }
+.key-sum  { background: var(--purple-light); color: var(--purple); border: 1px solid #b090d8; }
+.key-buff { background: var(--ice-light); color: var(--ice-dark); border: 1px solid #90c8f0; }
+.key-cond { background: var(--amber-light); color: var(--amber); border: 1px solid #d4a060; }
+.key-tip  { background: var(--paper2); color: var(--gray); border: 1px solid var(--border); }
+.key-crystal { background: #0a1828; color: #a0d8ff; border: 1px solid #2a5a8a; }
+.hv { font-weight: 700; color: var(--red); }
+.hb { font-weight: 700; color: var(--ice-dark); }
+.hg { font-weight: 700; color: var(--green); }
+.ha { font-weight: 700; color: var(--amber); }
+.hp { font-weight: 700; color: var(--purple); }
+
+.footer { text-align: center; padding: 14px; font-size: 10px; color: var(--gray); opacity: 0.6; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-title">❄ 雪御前 數值計算機</div>
+    <div class="hero-subtitle">雪立裁・龍膽綻・千雪斬・巫靈雪刃</div>
+    <div class="hero-divider"><span></span><em>◆</em><span></span></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('slash')">⚔️ 千雪・斬</button>
+      <button class="tab-btn" onclick="switchTab('crystal')">💎 龍膽藍璃</button>
+      <button class="tab-btn" onclick="switchTab('skill')">📖 技能說明</button>
+    </div>
+  </div>
+
+  <div class="body-wrap">
+
+    <!-- ══ 千雪・斬 ══ -->
+    <div id="tab-slash" class="tab-content active">
+
+      <div class="section-title">面板輸入</div>
+      <div class="input-row">
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-atk">攻擊</span>面板攻擊力</div>
+          <input type="number" id="s-atk" placeholder="例：10579" oninput="calcSlash()">
+        </div>
+        <div class="input-group">
+          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害%</div>
+          <input type="number" id="s-cdmg" placeholder="例：220" oninput="calcSlash()">
+        </div>
+      </div>
+
+      <div class="alert tip">
+        <div class="alert-icon">❄️</div>
+        <div class="alert-body"><strong>千雪・斬循環機制</strong>9段刀光中，每3段疊滿2層巫靈雪刃後觸發1次雪爆，第3、6、9段各進化為雪爆（共3次）。因此實際是 <strong>6段普通刀光＋3次全體雪爆</strong>，指定目標同時承受雪爆+50%增傷。</div>
+      </div>
+
+      <!-- 千雪斬分段 -->
+      <div class="section-title">千雪・斬（Lv.5）・9段27%・暴擊必發</div>
+      <div class="slash-stack" id="slash-stack"></div>
+
+      <div class="result-grid">
+        <div class="result-card ice">
+          <div class="card-label">6段普通刀光合計</div>
+          <div class="card-value ice" id="r-slash-total">─</div>
+          <div class="card-formula">攻擊×27%×暴傷×6段</div>
+        </div>
+        <div class="result-card crystal">
+          <div class="card-label">3次雪爆（全體合計）</div>
+          <div class="card-value crystal" id="r-snowburst">─</div>
+          <div class="card-formula">攻擊×108%×暴傷×3次</div>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-card crystal">
+          <div class="card-label">3次雪爆對指定目標（+50%）</div>
+          <div class="card-value crystal" id="r-snowburst-target">─</div>
+          <div class="card-formula">攻擊×108%×暴傷×150%×3次</div>
+        </div>
+        <div class="result-card dark">
+          <div class="card-label-dark">指定目標總傷害</div>
+          <div class="card-value dark" id="r-slash-total-burst">─</div>
+          <div class="card-formula-dark">6段普通＋3次雪爆指定目標</div>
+        </div>
+      </div>
+
+      <div class="divider"><span></span><em>一技</em><span></span></div>
+
+      <div class="section-title">一技：雪立・裁（Lv.5・125%）</div>
+      <div class="result-grid">
+        <div class="result-card amber">
+          <div class="card-label">基礎傷害</div>
+          <div class="card-value amber" id="r-q1-base">─</div>
+          <div class="card-formula">攻擊 × 125%</div>
+        </div>
+        <div class="result-card amber">
+          <div class="card-label">暴擊傷害</div>
+          <div class="card-value amber" id="r-q1-crit">─</div>
+          <div class="card-formula">基礎 × 暴傷%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 龍膽藍璃 ══ -->
+    <div id="tab-crystal" class="tab-content">
+
+      <div class="section-title">雪御前初始攻擊力</div>
+      <div class="input-group">
+        <div class="input-label"><span class="badge badge-atk">攻擊</span>初始攻擊力（含御魂）</div>
+        <input type="number" id="c-atk" placeholder="例：10579" oninput="calcCrystal()">
+      </div>
+
+      <div class="section-title">重複召喚次數（0-3）</div>
+      <div class="summon-selector">
+        <button class="summon-btn active" onclick="setSummon(0)" id="summon-0">0次<span>初次召喚</span></button>
+        <button class="summon-btn" onclick="setSummon(1)" id="summon-1">+1次<span>+39%生命</span></button>
+        <button class="summon-btn" onclick="setSummon(2)" id="summon-2">+2次<span>+78%生命</span></button>
+        <button class="summon-btn" onclick="setSummon(3)" id="summon-3">+3次<span>+117%生命</span></button>
+      </div>
+
+      <!-- 龍膽藍璃面板 -->
+      <div class="crystal-panel">
+        <div class="crystal-title">龍膽藍璃・當前面板</div>
+        <div class="crystal-grid">
+          <div class="crystal-stat">
+            <div class="crystal-stat-label">生命上限</div>
+            <div class="crystal-stat-val" id="dy-hp">─</div>
+            <div class="crystal-stat-sub" id="dy-hp-sub">初始攻擊 × 360%</div>
+          </div>
+          <div class="crystal-stat">
+            <div class="crystal-stat-label">重複召喚加成</div>
+            <div class="crystal-stat-val" id="dy-bonus">─</div>
+            <div class="crystal-stat-sub" id="dy-bonus-sub">初始攻擊 × 39% / 次</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 藍璃傷害 -->
+      <div class="section-title">龍膽藍璃・出擊傷害</div>
+      <div class="result-grid">
+        <div class="result-card ice">
+          <div class="card-label">龍膽藍璃生命上限</div>
+          <div class="card-value ice" id="r-crystal-hp">─</div>
+          <div class="card-formula">初始攻擊 × (360%+重複×39%)</div>
+        </div>
+        <div class="result-card crystal">
+          <div class="card-label">出擊傷害（生命×50%）</div>
+          <div class="card-value crystal" id="r-crystal-dmg">─</div>
+          <div class="card-formula">龍膽藍璃生命 × 50%</div>
+        </div>
+      </div>
+
+      <div class="alert tip">
+        <div class="alert-icon">💎</div>
+        <div class="alert-body"><strong>重複召喚機制</strong>被重複召喚時，生命上限提升初始攻擊的39%（最多3次），並恢復全部生命。每次重複召喚傷害也隨之提升。</div>
+      </div>
+
+      <div class="divider"><span></span><em>重複召喚對比</em><span></span></div>
+
+      <div class="section-title">重複召喚次數・傷害對比</div>
+      <div class="slash-stack" id="summon-compare"></div>
+
+    </div>
+
+    <!-- ══ 技能說明 ══ -->
+    <div id="tab-skill" class="tab-content">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">1</div>
+          <div><div class="skill-name-zh">雪立・裁</div><div class="skill-name-en">Lv.5</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>飛身攻擊<strong>單體</strong>，造成攻擊 <span class="hv">125%</span> 傷害。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">2</div>
+          <div><div class="skill-name-zh">龍膽・綻</div><div class="skill-name-en">Lv.5・召喚</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-buff">被動</span><span>每次<strong>單體攻擊</strong>時，獲得1層<span class="hb">巫靈雪刃</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-sum">召喚</span><span>擊敗非召喚物敵方目標時，在其行動條處召喚<span class="hp">龍膽藍璃</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-sum">主動</span><span>主動召喚龍膽藍璃（消耗鬼火）。</span></div>
+          <div class="skill-row"><span class="skill-key key-sum">Lv.5</span><span>戰鬥開始時，自動召喚龍膽藍璃。</span></div>
+          <div class="skill-row"><span class="skill-key key-crystal">藍璃</span><span>飛出璃刃，對敵方<strong>生命最低</strong>的目標造成藍璃當前生命上限 <span class="hv">50%</span> 的傷害。龍膽藍璃在場時，雪御前<span class="hv">免疫受到的傷害</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-crystal">藍璃</span><span>生命 = 初始攻擊 × <span class="hv">360%</span>（Lv.4升至360%，Lv.1基礎240%→Lv.2 280%→Lv.3 320%→Lv.4 360%）。被召喚時繼承雪御前的暴擊、暴擊傷害、防禦和 <span class="hv">95%</span> 速度。被重複召喚時，生命上限提升初始攻擊的 <span class="hv">39%</span>（最多3次），並恢復全部生命。免疫負面狀態和控制效果。</span></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <div class="skill-num">3</div>
+          <div><div class="skill-name-zh">千雪・斬</div><div class="skill-name-en">Lv.5</div></div>
+        </div>
+        <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>斬出9段刀光攻擊指定目標，每段造成攻擊 <span class="hv">27%</span> 傷害。其中<strong>第3、6、9段</strong>自動進化為雪爆。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">雪爆</span><span>每2層巫靈雪刃觸發1次，轉為全體攻擊，造成攻擊 <span class="hv">108%</span> 傷害；指定目標額外受到 <span class="hv">+50%</span>（Lv.4）。9段共觸發 <span class="hv">3次</span>雪爆。</span></div>
+          <div class="skill-row"><span class="skill-key key-dmg">Lv.4</span><span>指定敵方受到的雪爆傷害提升 <span class="hv">50%</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-dmg">Lv.5</span><span>若擊敗目標，指定<strong>血量最少</strong>的敵方繼續攻擊。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">巫靈</span><span>【印記，最多3層】每次<strong>單體攻擊</strong>獲得1層。施放「千雪・斬」時，每2層觸發1次雪爆（全體 <span class="hv">88%</span>，Lv.3升至 <span class="hv">108%</span>）。9段中第3、6、9段各觸發1次，共3次。</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer">雪御前・數值計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+</div>
+
+<script>
+function el(id) { return document.getElementById(id); }
+function val(id) { var e = el(id); return e ? (parseFloat(e.value) || 0) : 0; }
+function fmt(n) { return Math.floor(n).toLocaleString(); }
+function setText(id, txt) { var e = el(id); if (e) e.textContent = txt; }
+
+var summonCount = 0;
+
+function setSummon(n) {
+  summonCount = n;
+  for (var i = 0; i <= 3; i++) {
+    var btn = el('summon-' + i);
+    if (btn) btn.className = 'summon-btn' + (i === n ? ' active' : '');
+  }
+  calcCrystal();
+}
+
+function switchTab(name) {
+  var names = ['slash','crystal','skill'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var t = el('tab-' + name);
+  if (t) t.classList.add('active');
+  if (name === 'crystal') {
+    var sAtk = el('s-atk'), cAtk = el('c-atk');
+    if (sAtk && cAtk && sAtk.value) cAtk.value = sAtk.value;
+    calcCrystal();
+  }
+}
+
+function calcSlash() {
+  var atk = val('s-atk');
+  var cdmg = val('s-cdmg') || 150;
+
+  if (!atk) {
+    ['r-slash-total','r-snowburst','r-snowburst-target','r-slash-total-burst','r-q1-base','r-q1-crit'].forEach(function(id) { setText(id, '─'); });
+    el('slash-stack').innerHTML = '';
+    return;
+  }
+
+  // 正確循環：9段中第3、6、9段進化成雪爆，共6段普通+3次雪爆
+  var perHit         = atk * 0.27 * (cdmg / 100);  // 普通刀光（6段）
+  var snowburst      = atk * 1.08 * (cdmg / 100);  // 雪爆全體（3次）
+  var snowburstTarget = snowburst * 1.5;             // 雪爆對指定目標（+50%）
+
+  var slashTotal6    = perHit * 6;                  // 6段普通合計
+  var snowburstTotal = snowburst * 3;               // 3次雪爆全體合計
+  var snowburstTargetTotal = snowburstTarget * 3;   // 3次雪爆指定目標合計
+
+  // 指定目標總傷：6段普通 + 3次雪爆指定目標
+  var totalTarget = slashTotal6 + snowburstTargetTotal;
+  // 其他目標：只有3次雪爆全體
+  var totalOther  = snowburstTotal;
+
+  setText('r-slash-total',       fmt(slashTotal6));
+  setText('r-snowburst',         fmt(snowburstTotal));
+  setText('r-snowburst-target',  fmt(snowburstTargetTotal));
+  setText('r-slash-total-burst', fmt(totalTarget));
+  setText('r-q1-base', fmt(atk * 1.25));
+  setText('r-q1-crit', fmt(atk * 1.25 * (cdmg / 100)));
+
+  // 分段視覺化（正確順序：1-2普通、3雪爆、4-5普通、6雪爆、7-8普通、9雪爆）
+  var maxVal = Math.max(snowburstTarget, 1);
+  var html = '';
+  var burstSegments = {3: true, 6: true, 9: true};
+
+  for (var i = 1; i <= 9; i++) {
+    if (burstSegments[i]) {
+      // 雪爆段
+      var wb = Math.min((snowburst / maxVal) * 100, 100);
+      var wbt = Math.min((snowburstTarget / maxVal) * 100, 100);
+      html += '<div class="slash-row snowburst">' +
+        '<div class="slash-label" style="color:#1a6090;font-size:9px">第' + i + '段<br>❄雪爆</div>' +
+        '<div class="slash-bar-wrap"><div class="slash-bar-track"><div class="slash-bar-fill" style="width:' + wb + '%;background:var(--crystal)"></div></div>' +
+        '<div class="slash-note">全體：攻擊×108%×暴傷＝' + fmt(snowburst) + '　指定+50%：' + fmt(snowburstTarget) + '</div></div>' +
+        '<div class="slash-val" style="color:#1a6090">' + fmt(snowburstTarget) + '</div>' +
+        '</div>';
+    } else {
+      // 普通刀光
+      var w = Math.min((perHit / maxVal) * 100, 100);
+      html += '<div class="slash-row">' +
+        '<div class="slash-label">第' + i + '段</div>' +
+        '<div class="slash-bar-wrap"><div class="slash-bar-track"><div class="slash-bar-fill" style="width:' + w + '%"></div></div>' +
+        '<div class="slash-note">攻擊 × 27% × 暴傷</div></div>' +
+        '<div class="slash-val">' + fmt(perHit) + '</div>' +
+        '</div>';
+    }
+  }
+
+  // 合計列
+  html += '<div class="slash-row total">' +
+    '<div class="slash-label-dark" style="font-size:9px">指定<br>目標</div>' +
+    '<div class="slash-bar-wrap"><div class="slash-bar-track"><div class="slash-bar-fill" style="width:100%;background:#4a9ad8"></div></div>' +
+    '<div class="slash-note-dark">6段普通（' + fmt(slashTotal6) + '）＋ 3次雪爆指定（' + fmt(snowburstTargetTotal) + '）</div></div>' +
+    '<div class="slash-val-dark">' + fmt(totalTarget) + '</div>' +
+    '</div>';
+  html += '<div class="slash-row total" style="background:#0d2030;border-color:#1a4a6a;">' +
+    '<div class="slash-label-dark" style="font-size:9px">其他<br>目標</div>' +
+    '<div class="slash-bar-wrap"><div class="slash-bar-track"><div class="slash-bar-fill" style="width:' + Math.min((totalOther/totalTarget)*100,100) + '%;background:#2a7ab8"></div></div>' +
+    '<div class="slash-note-dark">3次雪爆全體</div></div>' +
+    '<div class="slash-val-dark">' + fmt(totalOther) + '</div>' +
+    '</div>';
+  el('slash-stack').innerHTML = html;
+}
+
+function calcCrystal() {
+  var atk = val('c-atk');
+  var n = summonCount;
+
+  if (!atk) {
+    ['r-crystal-hp','r-crystal-dmg','dy-hp','dy-bonus'].forEach(function(id) { setText(id, '─'); });
+    el('summon-compare').innerHTML = '';
+    return;
+  }
+
+  var baseHp  = atk * 3.60;
+  var bonusHp = atk * 0.39 * n;
+  var totalHp = baseHp + bonusHp;
+  var dmg     = totalHp * 0.50;
+
+  setText('dy-hp',    fmt(totalHp));
+  setText('dy-bonus', n > 0 ? '+' + fmt(bonusHp) : '無');
+  setText('dy-hp-sub',    '初始攻擊×360%' + (n > 0 ? '  +' + (n * 39) + '%' : ''));
+  setText('dy-bonus-sub', n > 0 ? '×' + n + '次 × 39%' : '尚未重複召喚');
+  setText('r-crystal-hp',  fmt(totalHp));
+  setText('r-crystal-dmg', fmt(dmg));
+
+  // 四種召喚次數對比
+  var maxDmg = (atk * 3.60 + atk * 0.39 * 3) * 0.5;
+  var html = '';
+  var labels = ['初次召喚', '第1次重複', '第2次重複', '第3次重複'];
+  for (var i = 0; i <= 3; i++) {
+    var hp_i  = atk * 3.60 + atk * 0.39 * i;
+    var dmg_i = hp_i * 0.5;
+    var w = Math.min((dmg_i / maxDmg) * 100, 100);
+    var isActive = (i === n);
+    html += '<div class="slash-row' + (isActive ? ' snowburst-target' : '') + '">' +
+      '<div class="slash-label" style="color:' + (isActive ? 'var(--ice-dark)' : 'var(--gray)') + ';font-size:9px">' + labels[i] + '</div>' +
+      '<div class="slash-bar-wrap"><div class="slash-bar-track"><div class="slash-bar-fill" style="width:' + w + '%;background:' + (isActive ? 'var(--ice-mid)' : '#90c8f0') + '"></div></div>' +
+      '<div class="slash-note">生命 ' + fmt(hp_i) + '・傷害 = 生命×50%</div></div>' +
+      '<div class="slash-val" style="color:' + (isActive ? 'var(--ice-dark)' : 'var(--gray)') + '">' + fmt(dmg_i) + '</div>' +
+      '</div>';
+  }
+  el('summon-compare').innerHTML = html;
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  setSummon(0);
+});
+</script>
+</body>
+</html>
