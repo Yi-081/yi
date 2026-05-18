@@ -229,7 +229,7 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
           <span class="full-card-label">友方目標治療量（基礎）</span>
           <span class="full-card-value" id="r-heal-base">─</span>
         </div>
-        <div class="full-card-formula">生命上限 × 15%</div>
+        <div class="full-card-formula">生命上限 × 15%・附加3層新蕊</div>
       </div>
 
       <div class="result-grid">
@@ -239,9 +239,9 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
           <div class="card-formula">基礎治療 × 暴傷%</div>
         </div>
         <div class="result-card teal">
-          <div class="card-label">Lv.4 額外治療</div>
+          <div class="card-label">Lv.4 暴擊時額外治療</div>
           <div class="card-value teal" id="r-heal-extra">─</div>
-          <div class="card-formula">治療暴擊時，額外治療1人</div>
+          <div class="card-formula">治療暴擊擴散至全體友方</div>
         </div>
       </div>
 
@@ -249,11 +249,11 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
 
       <!-- 新蕊流程 -->
       <div class="xinrui-flow">
-        <div class="flow-step">施加<br>新蕊</div>
+        <div class="flow-step">施加<br>3層新蕊</div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">每回合<br>回血×3次</div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step gold">觸發<br>盛放✨</div>
+        <div class="flow-step gold">觸發盛放<br>+拉條30%✨</div>
       </div>
 
       <div class="section-title">新蕊：每回合回血量</div>
@@ -273,34 +273,34 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
         <div class="result-card green">
           <div class="card-label">新蕊3次總回血（基礎）</div>
           <div class="card-value green" id="r-xinrui-total">─</div>
-          <div class="card-formula">每回合回血 × 3次</div>
+          <div class="card-formula">每次回血 × 3次</div>
         </div>
         <div class="result-card amber">
           <div class="card-label">盛放觸發後增益</div>
-          <div class="card-value amber" style="font-size:18px">攻/防/速<br>+50%</div>
-          <div class="card-formula">持續3回合</div>
+          <div class="card-value amber" style="font-size:16px">攻/防/速<br>+50%・拉條30%</div>
+          <div class="card-formula">持續3回合（Lv.3解鎖拉條）</div>
         </div>
       </div>
 
-      <div class="divider"><span></span><em>三技復活回血</em><span></span></div>
+      <div class="divider"><span></span><em>三技復活</em><span></span></div>
 
-      <div class="section-title">三技：醒時花（Lv.5）・復活後回血</div>
+      <div class="section-title">三技：灼華映春（Lv.5）・復活回血</div>
       <div class="result-grid">
         <div class="result-card purple">
-          <div class="card-label">友方復活後回血（基礎）</div>
+          <div class="card-label">復活回血 Lv.1（20%）</div>
           <div class="card-value purple" id="r-revive-base">─</div>
-          <div class="card-formula">生命上限 × 10%（Lv.2）</div>
+          <div class="card-formula">生命上限 × 20%</div>
         </div>
         <div class="result-card purple">
-          <div class="card-label">友方復活後回血（暴擊）</div>
+          <div class="card-label">復活回血 Lv.4（24%）</div>
           <div class="card-value purple" id="r-revive-crit">─</div>
-          <div class="card-formula">基礎 × 暴傷%</div>
+          <div class="card-formula">生命上限 × 24%</div>
         </div>
       </div>
 
       <div class="alert info show">
         <div class="alert-icon">💡</div>
-        <div class="alert-body"><strong>復活附加新蕊</strong>醒時花復活友方後，會為其施加新蕊，復活後立刻開始每回合持續回血，並在3次後觸發盛放。</div>
+        <div class="alert-body"><strong>復活附加效果</strong>灼華映春復活友方後，附加3層新蕊＋盛放增益，並立刻拉條50%。被動無消耗復活（冷卻1回合）同樣觸發。</div>
       </div>
 
     </div>
@@ -388,11 +388,11 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
           <div><div class="skill-name-zh">擷芳意</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
         </div>
         <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-heal">治療</span><span>為友方目標治療生命上限 <span class="hp">15%</span> 的生命，並施加<span class="hg">新蕊</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>治療<span class="hu">暴擊</span>時，額外治療1個生命比例最低的非召喚物友方。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>先機：為生命最低的友方施加新蕊（不影響治療數值）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">新蕊</span><span>【印記】攜帶者行動開始時，治療灼華桃花妖生命上限 <span class="hp">10%</span> 的生命；治療暴擊時將治療全體友方。觸發 <span class="hv">3次</span>後移除，並使攜帶者獲得<span class="ha">盛放</span>（持續3回合）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">盛放</span><span>【印記】攻擊、防禦與速度提升 <span class="ha">50%</span>。持續3回合。</span></div>
+          <div class="skill-row"><span class="skill-key key-heal">治療</span><span>為友方目標治療生命上限 <span class="hp">15%</span> 的生命，並施加<span class="hg">3層新蕊</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>治療<span class="hu">暴擊</span>時，治療效果擴散至<strong>全體友方</strong>。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>先機：為生命最低的友方施加新蕊（戰鬥開始時觸發）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">新蕊</span><span>【印記，3層】攜帶者行動開始時，治療灼華桃花妖生命上限 <span class="hp">10%</span> 的生命；治療暴擊時擴散至全體友方。觸發 <span class="hv">3次</span>後移除，使攜帶者獲得<span class="ha">盛放</span>（持續3回合），並拉條自身 <span class="hv">30%</span>（Lv.3）。</span></div>
+          <div class="skill-row"><span class="skill-key key-buff">盛放</span><span>【印記】攻擊、防禦與速度提升 <span class="ha">50%</span>，持續3回合。</span></div>
           <div class="skill-row"><span class="skill-key key-tip">唯一</span><span>多個同名式神上場，此技能只有一個生效。</span></div>
         </div>
       </div>
@@ -400,16 +400,12 @@ input[type=number]:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba
       <div class="skill-card">
         <div class="skill-card-header">
           <div class="skill-num">3</div>
-          <div><div class="skill-name-zh">醒時花</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
+          <div><div class="skill-name-zh">灼華映春</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
         </div>
         <div class="skill-body">
+          <div class="skill-row"><span class="skill-key key-rev">主動</span><span>復活1名陣亡友方，治療生命上限 <span class="hg">20%</span>（Lv.4升至24%），附加 <span class="hg">3層新蕊＋盛放</span>，並立即拉條 <span class="hv">50%</span>。</span></div>
+          <div class="skill-row"><span class="skill-key key-rev">被動</span><span>敵方行動結束後，若友方目標被擊敗，<strong>無消耗自動復活</strong>（冷卻1回合）。被復活的友方保留陣亡前的狀態和印記，在原行動條位置復活並拉條 <span class="hv">50%</span>。</span></div>
           <div class="skill-row"><span class="skill-key key-cond">被動</span><span>自身初始暴擊達 <span class="hu">100%</span> 時，受到的傷害降低 <span class="hv">35%</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">觸發</span><span>友方被復活時，獲得<span class="ha">盛放</span>（持續3回合）。</span></div>
-          <div class="skill-row"><span class="skill-key key-rev">主動</span><span>復活友方目標並為其施加<span class="hg">新蕊</span>（消耗3鬼火）。</span></div>
-          <div class="skill-row"><span class="skill-key key-heal">Lv.2</span><span>友方目標被復活時，額外治療灼華桃花妖生命上限 <span class="hp">10%</span> 的生命。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>被「醒時花」復活的友方提升 <span class="hv">50%</span> 行動條。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>盛放持續回合增至 <span class="hv">3回合</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-rev">Lv.5</span><span>敵方行動結束後，若友方目標被擊敗，<strong>無消耗自動施放</strong>（單次戰鬥最多觸發3次）。</span></div>
           <div class="skill-row"><span class="skill-key key-tip">唯一</span><span>多個同名式神上場，此技能只有一個生效。</span></div>
         </div>
       </div>
@@ -489,9 +485,10 @@ function calcHeal() {
   setText('r-xinrui-crit', fmt(xinruiCrit));
   setText('r-xinrui-total', fmt(xinruiBase * 3));
 
-  var reviveBase = hp * 0.10;
+  var reviveBase = hp * 0.20;
+  var reviveLv4  = hp * 0.24;
   setText('r-revive-base', fmt(reviveBase));
-  setText('r-revive-crit', fmt(reviveBase * (cdmg / 100)));
+  setText('r-revive-crit', fmt(reviveLv4));
 
   // 同步到逆推
   var rHp = el('r-cur-hp'), rCdmg = el('r-cur-cdmg');
