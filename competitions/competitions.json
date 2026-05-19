@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-18T02:59:45",
-  "count": 44,
+  "last_updated": "2026-05-19T02:55:56",
+  "count": 45,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -208,7 +208,23 @@
       "description": "全球量化金融研究競賽第六屆，三階段團隊賽制。參賽者在 WorldQuant BRAIN 線上回測平台建構數學模型，免費報名。台灣過去曾產生區域冠軍隊伍。Stage 1 計分板於 5/18 凍結。",
       "url": "https://platform.worldquantbrain.com/iqc",
       "source": "WorldQuant",
-      "status": "closing_soon"
+      "status": "closed"
+    },
+    {
+      "id": "e8c71732b257",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月18日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-18",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605180001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
     },
     {
       "id": "real_001",
