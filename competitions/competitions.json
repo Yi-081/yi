@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-26T02:53:03",
-  "count": 50,
+  "last_updated": "2026-05-27T03:31:56",
+  "count": 54,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -303,6 +303,70 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605250001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "9b03e8f08f32",
+      "title": "壽險業115年截至3月底外幣保險商品銷售情形",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-26",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605260003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "5eaf8c7128b0",
+      "title": "金管會修正發布「保險業內部控制及稽核制度實施辦法」，增強保險業資訊安全防......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-26",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605260002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "83f14a2b5758",
+      "title": "金管會對台新國際商業銀行前理財專員挪用客戶款項所涉缺失之行政處分",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-26",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605260001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "638dad1c9f3d",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月26日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-26",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605260006&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
