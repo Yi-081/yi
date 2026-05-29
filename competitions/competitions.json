@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-28T02:51:51",
-  "count": 55,
+  "last_updated": "2026-05-29T02:55:49",
+  "count": 59,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -383,6 +383,70 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605270001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "868a40cd43f6",
+      "title": "金管會公布我國普惠金融指標114年結果，全數達標且多項國際指標優於國際平......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-28",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605280004&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "f954ca32b074",
+      "title": "配合保險業清償能力制度之調整，預告「金融控股公司合併資本適足性管理辦法」......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-28",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605280003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "b0a7c83f5cfa",
+      "title": "預告修正「金融機構及提供虛擬資產服務之事業或人員防制詐欺犯罪危害應遵循事......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-28",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605280002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "c125eddda8f6",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月28日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-28",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605280006&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
