@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-29T02:55:49",
-  "count": 59,
+  "last_updated": "2026-05-30T02:48:50",
+  "count": 60,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -465,7 +465,23 @@
       "description": "以『FINPOWER — 智慧營運與資產創新實證』為主題，10 家金融機構釋出 16 項真實場景需求，涵蓋 AI 客服、LLM、信用卡 AI Agent、企業保障缺口辨識（保險）、虛擬資產服務等，邀請新創或技術團隊進行 PoC 實證合作，不限公司規模與國籍。",
       "url": "https://contest.bhuntr.com/tw/x3neqcj6skqtkakkht/",
       "source": "FinTechSpace",
-      "status": "closing_soon"
+      "status": "closed"
+    },
+    {
+      "id": "a779eb125c35",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年5月29日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-05-29",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202605290001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
     },
     {
       "id": "59e6182aae1a",
