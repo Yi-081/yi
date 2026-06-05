@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-04T03:42:53",
-  "count": 64,
+  "last_updated": "2026-06-05T03:30:40",
+  "count": 67,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -544,6 +544,54 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606030001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "fe3a78007549",
+      "title": "金管會提醒機車族朋友應投保強制汽車責任保險",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-04",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606040002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "d0f24cdf2f1e",
+      "title": "金管會呼籲消費者勿購買未經主管機關核准之境外保險商品",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-04",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606040001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "96f1f05dfbab",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年6月4日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-04",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606040003&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
