@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-09T02:50:57",
-  "count": 69,
+  "last_updated": "2026-06-10T03:28:10",
+  "count": 71,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -624,6 +624,38 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606080001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "92e15e88145d",
+      "title": "115年4月份信用卡、現金卡及電子支付機構業務資訊",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-09",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606090001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "db72958dba35",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年6月9日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-09",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606090004&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
