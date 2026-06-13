@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-12T03:39:39",
-  "count": 73,
+  "last_updated": "2026-06-13T03:27:18",
+  "count": 74,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -688,6 +688,22 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606110005&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "f554aea95e30",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年6月12日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-12",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606120001&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
