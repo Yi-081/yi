@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-18T03:38:53",
-  "count": 81,
+  "last_updated": "2026-06-19T04:01:07",
+  "count": 83,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -800,6 +800,38 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606170003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "4e22a753b81d",
+      "title": "金管會發布「金融業後量子密碼遷移參考指引」 引導金融機構強化量子風險整備",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-18",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606180001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "0d2f741408dc",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年6月18日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-06-18",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202606180005&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
