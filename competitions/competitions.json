@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-07-07T02:48:48",
-  "count": 96,
+  "last_updated": "2026-07-08T02:26:21",
+  "count": 99,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1042,6 +1042,54 @@
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607060003&dtable=News",
       "source": "金管會",
       "status": "closed"
+    },
+    {
+      "id": "a221e59dd3f4",
+      "title": "115年5月份信用卡、現金卡及電子支付機構業務資訊",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-07",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607070003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "42c2040ea123",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年7月7日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-07",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607070006&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "a12a797e648c",
+      "title": "「主委與新創有約」三場面對面座談，傾聽建言並期勉共同推動金融科技發展",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-08",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607080001&dtable=News",
+      "source": "金管會",
+      "status": "closing_soon"
     },
     {
       "id": "59e6182aae1a",
