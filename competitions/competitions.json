@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-07-14T02:09:47",
-  "count": 106,
+  "last_updated": "2026-07-15T02:07:37",
+  "count": 110,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1200,6 +1200,70 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607130001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "afff63493a5e",
+      "title": "金管會提醒金融業強化前沿AI模型攻擊風險整備",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-14",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607140002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "643d18fb67ce",
+      "title": "「股票禮品卡」-2026首案金融科技創新實驗順利落地，金管會鼓勵業者持續......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-14",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607140001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "8031c4b5337b",
+      "title": "金管會修正「人身保險業辦理利率變動型保險商品業務應注意事項」規定，強化利......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-14",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607140003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "c72dda7c84bb",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年7月14日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-14",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607140004&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
