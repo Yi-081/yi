@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-07-16T02:21:15",
-  "count": 111,
+  "last_updated": "2026-07-17T02:24:14",
+  "count": 114,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1280,6 +1280,54 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607150001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "c9a577987f93",
+      "title": "金管會許可歐付寶電子支付股份有限公司經營國外小額匯兌業務暨兼營外籍移工國......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-16",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607160003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "af4eaaf30585",
+      "title": "金管會同意臺灣土地銀行辦理高資產客戶適用之金融商品及服務",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-16",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607160002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "dbe52861afdf",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年7月16日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-16",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607160005&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
