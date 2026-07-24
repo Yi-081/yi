@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-07-23T02:28:22",
-  "count": 118,
+  "last_updated": "2026-07-24T02:25:12",
+  "count": 121,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1392,6 +1392,54 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607220001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "6c966c7760a3",
+      "title": "金管會提醒微型電動二輪車車主應投保強制汽車責任保險",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-23",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607230002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "f7765a533e15",
+      "title": "金管會提醒民眾暑假出遊投保旅遊相關保險更安心",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-23",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607230001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "8bd30a4d8898",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年7月23日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-23",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607230003&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
