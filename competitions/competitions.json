@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-07-28T02:12:13",
-  "count": 123,
+  "last_updated": "2026-07-29T02:22:35",
+  "count": 125,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1472,6 +1472,38 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607270001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "ec3b5bfd40d1",
+      "title": "壽險業115年截至5月底外幣保險商品銷售情形",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-28",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607280002&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "e5bcccb0d008",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年7月28日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-07-28",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202607280004&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
