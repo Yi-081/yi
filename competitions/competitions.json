@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-08-04T02:10:49",
-  "count": 131,
+  "last_updated": "2026-08-05T02:10:25",
+  "count": 133,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1600,6 +1600,38 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202608030001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "5fae948399a6",
+      "title": "金管會預告修正「保險業財務報告編製準則」，優化財務報告之表達及揭露更具透......",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-08-04",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202608040001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "1273a7164524",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年8月4日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-08-04",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202608040004&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
