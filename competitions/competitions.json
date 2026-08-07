@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-08-06T02:13:47",
-  "count": 134,
+  "last_updated": "2026-08-07T02:30:28",
+  "count": 136,
   "competitions": [
     {
       "id": "64522ae3075e",
@@ -1648,6 +1648,38 @@
       "prize": "",
       "description": "",
       "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202608050003&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "f02661b3414f",
+      "title": "壽險公司115年截至第2季具外溢效果保險商品及實物給付保險商品之銷售情形",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-08-06",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202608060001&dtable=News",
+      "source": "金管會",
+      "status": "closed"
+    },
+    {
+      "id": "31e76f4804fd",
+      "title": "金融監督管理委員會證券期貨局每日新聞（115年8月6日）",
+      "organizer": "金融監督管理委員會",
+      "category": [
+        "fintech",
+        "insurance"
+      ],
+      "deadline": "2026-08-06",
+      "registration_start": "",
+      "prize": "",
+      "description": "",
+      "url": "https://www.fsc.gov.twhome.jsp?id=96&parentpath=0,2&mcustomize=news_view.jsp&dataserno=202608060005&dtable=News",
       "source": "金管會",
       "status": "closed"
     },
