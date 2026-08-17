@@ -253,7 +253,6 @@ select { font-size: 15px; cursor: pointer; }
         </select>
       </div>
 
-      <!-- 幻化人數選擇 -->
       <div class="section-title">幻化人數</div>
       <div class="illus-selector">
         <button class="illus-btn active" onclick="setIllus(0)" id="illus-0">0人<span>普通形態</span></button>
@@ -262,197 +261,53 @@ select { font-size: 15px; cursor: pointer; }
         <button class="illus-btn" onclick="setIllus(3)" id="illus-3">3人<span>+60%各項</span></button>
       </div>
 
-      <!-- 大妖姿態面板 -->
       <div class="daiyou-panel" id="daiyou-panel">
         <div class="daiyou-title">大妖姿態・合體面板</div>
         <div class="daiyou-grid">
-          <div class="daiyou-stat">
-            <div class="daiyou-stat-label">生命上限</div>
-            <div class="daiyou-stat-val" id="dy-hp">─</div>
-            <div class="daiyou-stat-sub">初始攻擊 × 225%</div>
-          </div>
-          <div class="daiyou-stat">
-            <div class="daiyou-stat-label">攻擊加成</div>
-            <div class="daiyou-stat-val" id="dy-atk-bonus">─</div>
-            <div class="daiyou-stat-sub" id="dy-atk-sub">幻化人數 × 20%</div>
-          </div>
-          <div class="daiyou-stat">
-            <div class="daiyou-stat-label">防禦加成</div>
-            <div class="daiyou-stat-val" id="dy-def-bonus">─</div>
-            <div class="daiyou-stat-sub" id="dy-def-sub">幻化人數 × 20%</div>
-          </div>
-          <div class="daiyou-stat">
-            <div class="daiyou-stat-label">暴傷加成（Lv.5）</div>
-            <div class="daiyou-stat-val" id="dy-crit">─</div>
-            <div class="daiyou-stat-sub" id="dy-crit-sub">幻化人數 × 10%暴傷</div>
-          </div>
+          <div class="daiyou-stat"><div class="daiyou-stat-label">生命上限</div><div class="daiyou-stat-val" id="dy-hp">─</div><div class="daiyou-stat-sub">初始攻擊 × 225%</div></div>
+          <div class="daiyou-stat"><div class="daiyou-stat-label">攻擊加成</div><div class="daiyou-stat-val" id="dy-atk-bonus">─</div><div class="daiyou-stat-sub" id="dy-atk-sub">幻化人數 × 20%</div></div>
+          <div class="daiyou-stat"><div class="daiyou-stat-label">防禦加成</div><div class="daiyou-stat-val" id="dy-def-bonus">─</div><div class="daiyou-stat-sub" id="dy-def-sub">幻化人數 × 20%</div></div>
+          <div class="daiyou-stat"><div class="daiyou-stat-label">暴傷加成（Lv.5）</div><div class="daiyou-stat-val" id="dy-crit">─</div><div class="daiyou-stat-sub" id="dy-crit-sub">幻化人數 × 10%暴傷</div></div>
         </div>
       </div>
 
-      <!-- 回血 -->
       <div class="result-grid">
-        <div class="result-card green">
-          <div class="card-label">大妖姿態生命上限</div>
-          <div class="card-value green" id="r-dy-hp">─</div>
-          <div class="card-formula">初始攻擊 × 225%</div>
-        </div>
-        <div class="result-card teal">
-          <div class="card-label">終式・破空回血</div>
-          <div class="card-value teal" id="r-dy-heal">─</div>
-          <div class="card-formula">初始攻擊 × 100%</div>
-        </div>
+        <div class="result-card green"><div class="card-label">大妖姿態生命上限</div><div class="card-value green" id="r-dy-hp">─</div><div class="card-formula">初始攻擊 × 225%</div></div>
+        <div class="result-card teal"><div class="card-label">終式・破空回血</div><div class="card-value teal" id="r-dy-heal">─</div><div class="card-formula">初始攻擊 × 100%</div></div>
       </div>
 
       <div class="divider"><span></span><em>終式・破空</em><span></span></div>
-
-      <!-- 終式破空 -->
       <div class="section-title">終式・破空（大妖姿態專用・3段300%）</div>
       <div class="hasou-stack" id="hasou-stack"></div>
-
       <div class="result-grid">
-        <div class="result-card dark">
-          <div class="card-label-dark">第1、2段傷害</div>
-          <div class="card-value dark" id="r-hasou-per">─</div>
-          <div class="card-formula-dark">攻擊×(1+幻化×20%)×300%×衰減</div>
-        </div>
-        <div class="result-card dark">
-          <div class="card-label-dark">3段合計</div>
-          <div class="card-value dark" id="r-hasou-total">─</div>
-          <div class="card-formula-dark">第3段含幻化傷害係數</div>
-        </div>
+        <div class="result-card dark"><div class="card-label-dark">第1、2段傷害</div><div class="card-value dark" id="r-hasou-per">─</div><div class="card-formula-dark">攻擊×(1+幻化×20%)×300%×衰減÷敵方存活數</div></div>
+        <div class="result-card dark"><div class="card-label-dark">3段合計</div><div class="card-value dark" id="r-hasou-total">─</div><div class="card-formula-dark">第3段含幻化傷害係數</div></div>
       </div>
-
-      <div class="alert tip">
-        <div class="alert-icon">💡</div>
-        <div class="alert-body"><strong>幻化加成說明</strong>0人：無加成 ／ 1人：+100% ／ 2人：+200% ／ 3人：+360%。衰減：敵方每少1人 -12%。</div>
-      </div>
-
+      <div class="alert tip"><div class="alert-icon">💡</div><div class="alert-body"><strong>幻化加成說明</strong>0人：無加成 ／ 1人：+100% ／ 2人：+200% ／ 3人：+360%。衰減：敵方每少1人 -12%；每段總傷害平均分配給當下存活的全體敵方。</div></div>
     </div>
 
-    <!-- ══ 普通技能 ══ -->
     <div id="tab-normal" class="tab-content">
-
       <div class="section-title">面板輸入</div>
       <div class="input-row">
-        <div class="input-group">
-          <div class="input-label"><span class="badge badge-atk">攻擊</span>攻擊力</div>
-          <input type="number" id="n-atk" placeholder="例：7158" oninput="calcNormal()">
-        </div>
-        <div class="input-group">
-          <div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害%</div>
-          <input type="number" id="n-cdmg" placeholder="例：157" oninput="calcNormal()">
-        </div>
+        <div class="input-group"><div class="input-label"><span class="badge badge-atk">攻擊</span>攻擊力</div><input type="number" id="n-atk" placeholder="例：7158" oninput="calcNormal()"></div>
+        <div class="input-group"><div class="input-label"><span class="badge badge-crit">暴傷</span>暴擊傷害%</div><input type="number" id="n-cdmg" placeholder="例：157" oninput="calcNormal()"></div>
       </div>
-
-      <!-- 一技 -->
       <div class="section-title">一技：狐言（Lv.5・125%）</div>
-      <div class="result-grid">
-        <div class="result-card amber">
-          <div class="card-label">基礎傷害</div>
-          <div class="card-value amber" id="r-q1-base">─</div>
-          <div class="card-formula">攻擊 × 125%</div>
-        </div>
-        <div class="result-card amber">
-          <div class="card-label">暴擊傷害</div>
-          <div class="card-value amber" id="r-q1-crit">─</div>
-          <div class="card-formula">基礎 × 暴傷%</div>
-        </div>
-      </div>
-
-      <!-- 狐影陣 -->
+      <div class="result-grid"><div class="result-card amber"><div class="card-label">基礎傷害</div><div class="card-value amber" id="r-q1-base">─</div><div class="card-formula">攻擊 × 125%</div></div><div class="result-card amber"><div class="card-label">暴擊傷害</div><div class="card-value amber" id="r-q1-crit">─</div><div class="card-formula">基礎 × 暴傷%</div></div></div>
       <div class="section-title">三技：狐影陣（Lv.5・240%・攻擊全體）</div>
-      <div class="result-grid">
-        <div class="result-card purple">
-          <div class="card-label">基礎傷害（全體）</div>
-          <div class="card-value purple" id="r-q3-base">─</div>
-          <div class="card-formula">攻擊 × 240%</div>
-        </div>
-        <div class="result-card purple">
-          <div class="card-label">暴擊傷害（全體）</div>
-          <div class="card-value purple" id="r-q3-crit">─</div>
-          <div class="card-formula">基礎 × 暴傷%</div>
-        </div>
-      </div>
-
-      <div class="alert info">
-        <div class="alert-icon">💡</div>
-        <div class="alert-body"><strong>進入大妖姿態後</strong>狐影陣會被替換為「終式・破空」，請切換到「大妖試算」頁籤計算大招傷害。</div>
-      </div>
+      <div class="result-grid"><div class="result-card purple"><div class="card-label">基礎傷害（全體）</div><div class="card-value purple" id="r-q3-base">─</div><div class="card-formula">攻擊 × 240%</div></div><div class="result-card purple"><div class="card-label">暴擊傷害（全體）</div><div class="card-value purple" id="r-q3-crit">─</div><div class="card-formula">基礎 × 暴傷%</div></div></div>
+      <div class="alert info"><div class="alert-icon">💡</div><div class="alert-body"><strong>進入大妖姿態後</strong>狐影陣會被替換為「終式・破空」，請切換到「大妖試算」頁籤計算大招傷害。</div></div>
     </div>
 
-    <!-- ══ 技能說明 ══ -->
     <div id="tab-skill" class="tab-content">
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num">1</div>
-          <div><div class="skill-name-zh">狐言</div><div class="skill-name-en">Lv.5</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>對敵方目標造成攻擊 <span class="hv">125%</span> 傷害。</span></div>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num">2</div>
-          <div><div class="skill-name-zh">渡靈</div><div class="skill-name-en">Lv.5・唯一效果</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-buff">被動</span><span>葛葉施放「歸源術」外的妖術時，其他非召喚物友方獲得1層<span class="hp">九尾之力</span>，並獲得技能「<span class="hgold">合守</span>」。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">主動</span><span>使指定友方目標提升 <span class="hv">40%</span> 行動條，並獲得2層<span class="hp">狐族庇佑</span>（持續1回合）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>使友方獲得 <span class="hv">3層</span>狐族庇佑。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>友方獲得狐族庇佑時，提升葛葉 <span class="hv">75點速度</span>（最多3次，持續1回合）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>施放使自身獲得1層狐族庇佑（持續1回合）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>戰鬥開始時，獲得1層狐族庇佑（持續1回合）。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">九尾</span><span>【印記，最多3層】攜帶時開啟「歸源術」，可幻化對應層數的友方。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">狐族</span><span>【印記，上限3層】受到傷害、控制效果或放逐時，免疫並移除1層。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">合守</span><span>【被動技能】獲得3層狐族庇佑，持續1回合。</span></div>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num">3</div>
-          <div><div class="skill-name-zh">歸源術</div><div class="skill-name-en">Lv.5</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>選擇友方式神，移除其所有減益，使其進入<span class="hgold">幻化</span>效果，與葛葉合體為<span class="hp">大妖姿態</span>並獲得新回合；或選擇友方式神解除幻化效果。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%生命</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%攻擊</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%防禦</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">+10%暴擊傷害</span>（至多+30%）。</span></div>
-          <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>被葛葉守護，為葛葉提升15%速度。無法動作，不可被選中，行動條位置被鎖定；免疫傷害、治療、增益和減益效果。</span></div>
-          <div class="skill-row"><span class="skill-key key-daiyou">大妖</span><span>生命為葛葉初始攻擊的 <span class="hv">225%</span>。生命比例高於50%時，免疫減益和放逐，行動前獲得與幻化人數相等的鬼火。移除九尾之力外的所有狀態和印記，將「狐影陣」替換為「終式・破空」。受到致命傷害或所有被幻化的式神解除幻化時，回到普通形態。</span></div>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num gold-num">☆</div>
-          <div><div class="skill-name-zh">狐影陣</div><div class="skill-name-en">Lv.5・普通形態大招</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>使用狐妖之術，攻擊敵方全體，造成攻擊 <span class="hv">240%</span> 傷害。</span></div>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-num gold-num">★</div>
-          <div><div class="skill-name-zh">終式・破空</div><div class="skill-name-en">大妖姿態專用大招</div></div>
-        </div>
-        <div class="skill-body">
-          <div class="skill-row"><span class="skill-key key-heal">回血</span><span>恢復自身初始攻擊 <span class="hg">100%</span> 的生命。</span></div>
-          <div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>攻擊敵方全體3次，每次造成攻擊 <span class="hv">300%</span> 傷害，傷害平均分配給全體敵方。</span></div>
-          <div class="skill-row"><span class="skill-key key-illus">幻化</span><span>每幻化1名式神，未次傷害提升：1人 <span class="hv">+100%</span>、2人 <span class="hv">+200%</span>、3人 <span class="hv">+360%</span>。</span></div>
-          <div class="skill-row"><span class="skill-key key-cond">衰減</span><span>敵方人數每比友方初始人數減少1人，傷害衰減 <span class="hv">12%</span>（最多衰減60%）。</span></div>
-        </div>
-      </div>
-
+      <div class="skill-card"><div class="skill-card-header"><div class="skill-num">1</div><div><div class="skill-name-zh">狐言</div><div class="skill-name-en">Lv.5</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>對敵方目標造成攻擊 <span class="hv">125%</span> 傷害。</span></div></div></div>
+      <div class="skill-card"><div class="skill-card-header"><div class="skill-num">2</div><div><div class="skill-name-zh">渡靈</div><div class="skill-name-en">Lv.5・唯一效果</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key key-buff">被動</span><span>葛葉施放「歸源術」外的妖術時，其他非召喚物友方獲得1層<span class="hp">九尾之力</span>，並獲得技能「<span class="hgold">合守</span>」。</span></div><div class="skill-row"><span class="skill-key key-buff">主動</span><span>使指定友方目標提升 <span class="hv">40%</span> 行動條，並獲得2層<span class="hp">狐族庇佑</span>（持續1回合）。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>使友方獲得 <span class="hv">3層</span>狐族庇佑。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>友方獲得狐族庇佑時，提升葛葉 <span class="hv">75點速度</span>（最多3次，持續1回合）。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>施放使自身獲得1層狐族庇佑（持續1回合）。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>戰鬥開始時，獲得1層狐族庇佑（持續1回合）。</span></div><div class="skill-row"><span class="skill-key key-buff">九尾</span><span>【印記，最多3層】攜帶時開啟「歸源術」，可幻化對應層數的友方。</span></div><div class="skill-row"><span class="skill-key key-buff">狐族</span><span>【印記，上限3層】受到傷害、控制效果或放逐時，免疫並移除1層。</span></div><div class="skill-row"><span class="skill-key key-buff">合守</span><span>【被動技能】獲得3層狐族庇佑，持續1回合。</span></div></div></div>
+      <div class="skill-card"><div class="skill-card-header"><div class="skill-num">3</div><div><div class="skill-name-zh">歸源術</div><div class="skill-name-en">Lv.5</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key key-illus">幻化</span><span>選擇友方式神，移除其所有減益，使其進入<span class="hgold">幻化</span>效果，與葛葉合體為<span class="hp">大妖姿態</span>並獲得新回合；或選擇友方式神解除幻化效果。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.2</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%生命</span>。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.3</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%攻擊</span>。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.4</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">20%防禦</span>。</span></div><div class="skill-row"><span class="skill-key key-buff">Lv.5</span><span>每幻化1名式神，提升大妖姿態 <span class="hv">+10%暴擊傷害</span>（至多+30%）。</span></div><div class="skill-row"><span class="skill-key key-illus">幻化</span><span>被葛葉守護，為葛葉提升15%速度。無法動作，不可被選中，行動條位置被鎖定；免疫傷害、治療、增益和減益效果。</span></div><div class="skill-row"><span class="skill-key key-daiyou">大妖</span><span>生命為葛葉初始攻擊的 <span class="hv">225%</span>。生命比例高於50%時，免疫減益和放逐，行動前獲得與幻化人數相等的鬼火。移除九尾之力外的所有狀態和印記，將「狐影陣」替換為「終式・破空」。受到致命傷害或所有被幻化的式神解除幻化時，回到普通形態。</span></div></div></div>
+      <div class="skill-card"><div class="skill-card-header"><div class="skill-num gold-num">☆</div><div><div class="skill-name-zh">狐影陣</div><div class="skill-name-en">Lv.5・普通形態大招</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>使用狐妖之術，攻擊敵方全體，造成攻擊 <span class="hv">240%</span> 傷害。</span></div></div></div>
+      <div class="skill-card"><div class="skill-card-header"><div class="skill-num gold-num">★</div><div><div class="skill-name-zh">終式・破空</div><div class="skill-name-en">大妖姿態專用大招</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key key-heal">回血</span><span>恢復自身初始攻擊 <span class="hg">100%</span> 的生命。</span></div><div class="skill-row"><span class="skill-key key-dmg">傷害</span><span>攻擊敵方全體3次，每次造成攻擊 <span class="hv">300%</span> 傷害，傷害平均分配給全體敵方。</span></div><div class="skill-row"><span class="skill-key key-illus">幻化</span><span>依幻化人數提升末次傷害：1人 <span class="hv">+100%</span>、2人 <span class="hv">+200%</span>、3人 <span class="hv">+360%</span>。</span></div><div class="skill-row"><span class="skill-key key-cond">衰減</span><span>敵方人數每比友方初始人數減少1人，傷害衰減 <span class="hv">12%</span>（最多衰減60%）。</span></div></div></div>
     </div>
   </div>
-  <div class="footer">葛葉・數值計算機 ◆ 資料來源：遊戲內技能說明實測</div>
+  <div class="footer">葛葉・數值計算機 ◆ 資料版本：2026-08-17</div>
 </div>
 
 <script>
@@ -460,124 +315,59 @@ function el(id) { return document.getElementById(id); }
 function val(id) { var e = el(id); return e ? (parseFloat(e.value) || 0) : 0; }
 function fmt(n) { return Math.floor(n).toLocaleString(); }
 function setText(id, txt) { var e = el(id); if (e) e.textContent = txt; }
-
 var illusCount = 0;
-
-function setIllus(n) {
-  illusCount = n;
-  for (var i = 0; i <= 3; i++) {
-    var btn = el('illus-' + i);
-    if (btn) btn.className = 'illus-btn' + (i === n ? ' active' : '');
-  }
-  calcMain();
-}
-
+function setIllus(n) { illusCount = n; for (var i = 0; i <= 3; i++) { var btn = el('illus-' + i); if (btn) btn.className = 'illus-btn' + (i === n ? ' active' : ''); } calcMain(); }
 function switchTab(name) {
   var names = ['main','normal','skill'];
-  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
-    b.classList.toggle('active', names[i] === name);
-  });
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', names[i] === name); });
   document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
-  var t = el('tab-' + name);
-  if (t) t.classList.add('active');
-  if (name === 'normal') {
-    var atkEl = el('m-atk'), cdmgEl = el('m-cdmg');
-    var nAtk = el('n-atk'), nCdmg = el('n-cdmg');
-    if (atkEl && nAtk && atkEl.value) nAtk.value = atkEl.value;
-    if (cdmgEl && nCdmg && cdmgEl.value) nCdmg.value = cdmgEl.value;
-    calcNormal();
-  }
+  var t = el('tab-' + name); if (t) t.classList.add('active');
+  if (name === 'normal') { var atkEl = el('m-atk'), cdmgEl = el('m-cdmg'); var nAtk = el('n-atk'), nCdmg = el('n-cdmg'); if (atkEl && nAtk && atkEl.value) nAtk.value = atkEl.value; if (cdmgEl && nCdmg && cdmgEl.value) nCdmg.value = cdmgEl.value; calcNormal(); }
 }
-
 function calcMain() {
   var atk = val('m-atk');
   var cdmg = val('m-cdmg') || 150;
   var enemyLess = parseInt((el('m-enemy') || {value:'0'}).value) || 0;
   var n = illusCount;
-
-  if (!atk) {
-    ['r-dy-hp','r-dy-heal','r-hasou-per','r-hasou-total','dy-hp','dy-atk-bonus','dy-def-bonus','dy-crit'].forEach(function(id) { setText(id, '─'); });
-    el('hasou-stack').innerHTML = '';
-    return;
-  }
-
-  // 大妖姿態面板
-  var cdmg = val('m-cdmg') || 150;
-  var dyHp   = atk * 2.25 * (1 + n * 0.20);
-  var atkBonus = n * 20;
+  if (!atk) { ['r-dy-hp','r-dy-heal','r-hasou-per','r-hasou-total','dy-hp','dy-atk-bonus','dy-def-bonus','dy-crit'].forEach(function(id) { setText(id, '─'); }); el('hasou-stack').innerHTML = ''; return; }
+  var dyHp = atk * 2.25 * (1 + n * 0.20);
   var defBonus = n * 20;
-  var cdmgBonus = n * 10; // Lv.5：每幻化+10%暴傷
-
-  var PANEL_ATK_MULT = [1.0, 1.2, 1.4, 1.6];
-  var PANEL_DMG_MULT = [1.0, 2.0, 3.0, 4.6];
-  setText('dy-hp',        fmt(dyHp));
+  var cdmgBonus = n * 10;
+  setText('dy-hp', fmt(dyHp));
   setText('dy-atk-bonus', n > 0 ? '+' + (n*20) + '%' : '無加成');
   setText('dy-def-bonus', defBonus > 0 ? '+' + defBonus + '%' : '無加成');
-  setText('dy-crit',      cdmgBonus > 0 ? '+' + cdmgBonus + '%暴傷' : '無加成');
-  setText('dy-atk-sub',   n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
-  setText('dy-def-sub',   n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
-  setText('dy-crit-sub',  n > 0 ? '幻化' + n + '人 × 10%暴傷（Lv.5）' : '未幻化');
-
-  setText('r-dy-hp',   fmt(dyHp));
-  setText('r-dy-heal', fmt(atk * 1.0));
-
-  // 終式破空
+  setText('dy-crit', cdmgBonus > 0 ? '+' + cdmgBonus + '%暴傷' : '無加成');
+  setText('dy-atk-sub', n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
+  setText('dy-def-sub', n > 0 ? '幻化' + n + '人 × 20%' : '未幻化');
+  setText('dy-crit-sub', n > 0 ? '幻化' + n + '人 × 10%暴傷（Lv.5）' : '未幻化');
+  setText('r-dy-hp', fmt(dyHp));
+  setText('r-dy-heal', fmt(atk));
   var ILLUS_ATK_MULT = [1.0, 1.2, 1.4, 1.6];
   var ILLUS_DMG_MULT = [1.0, 2.0, 3.0, 4.6];
   var enemyCount = Math.max(1, 6 - enemyLess);
-  var decayRate  = enemyLess * 0.12;
-  var enemyMult  = 1 - decayRate;
+  var decayRate = Math.min(0.60, enemyLess * 0.12);
+  var enemyMult = 1 - decayRate;
   var atkBoosted = atk * ILLUS_ATK_MULT[n];
-  var hit12  = atkBoosted * 3.0 * enemyMult / 6;
-  var hit3   = atkBoosted * 3.0 * ILLUS_DMG_MULT[n] * enemyMult / 6;
+  var hit12 = atkBoosted * 3.0 * enemyMult / enemyCount;
+  var hit3 = atkBoosted * 3.0 * ILLUS_DMG_MULT[n] * enemyMult / enemyCount;
   var total3 = hit12 * 2 + hit3;
-
-  setText('r-hasou-per',   fmt(hit12));
+  setText('r-hasou-per', fmt(hit12));
   setText('r-hasou-total', fmt(total3));
-
-  var maxVal = Math.max(hit3, 1);
-  var html = '';
+  var maxVal = Math.max(hit3, 1), html = '';
   for (var i = 1; i <= 2; i++) {
     var w = Math.min((hit12 / maxVal) * 100, 100);
-    html += '<div class="hasou-row">' +
-      '<div class="hasou-label">第' + i + '段</div>' +
-      '<div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:' + w + '%"></div></div>' +
-      '<div class="hasou-note">每個敵人受到・攻擊×(1+幻化×20%)×300%×(1-' + (decayRate*100).toFixed(0) + '%)÷6人</div></div>' +
-      '<div class="hasou-val">' + fmt(hit12) + '</div>' +
-      '</div>';
+    html += '<div class="hasou-row"><div class="hasou-label">第' + i + '段</div><div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:' + w + '%"></div></div><div class="hasou-note">每個敵人受到・攻擊×(1+幻化×20%)×300%×(1-' + (decayRate*100).toFixed(0) + '%)÷' + enemyCount + '人</div></div><div class="hasou-val">' + fmt(hit12) + '</div></div>';
   }
-  var w3 = 100;
-  html += '<div class="hasou-row" style="background:var(--purple-pale);border-color:var(--purple-mid);">' +
-    '<div class="hasou-label" style="color:var(--purple-dark)">第3段</div>' +
-    '<div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:' + w3 + '%;background:var(--purple-mid)"></div></div>' +
-    '<div class="hasou-note">每個敵人受到・×幻化係數（' + ILLUS_DMG_MULT[n].toFixed(1) + '×）×(1-' + (decayRate*100).toFixed(0) + '%)÷6人</div></div>' +
-    '<div class="hasou-val" style="color:var(--purple-dark)">' + fmt(hit3) + '</div>' +
-    '</div>';
-  html += '<div class="hasou-row total">' +
-    '<div class="hasou-label-dark">合計</div>' +
-    '<div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:100%;background:#c090ff"></div></div>' +
-    '<div class="hasou-note-dark">每人受到・幻化' + n + '人・衰減' + (decayRate*100).toFixed(0) + '%・剩' + enemyCount + '人</div></div>' +
-    '<div class="hasou-val-dark">' + fmt(total3) + '</div>' +
-    '</div>';
+  html += '<div class="hasou-row" style="background:var(--purple-pale);border-color:var(--purple-mid);"><div class="hasou-label" style="color:var(--purple-dark)">第3段</div><div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:100%;background:var(--purple-mid)"></div></div><div class="hasou-note">每個敵人受到・×幻化係數（' + ILLUS_DMG_MULT[n].toFixed(1) + '×）×(1-' + (decayRate*100).toFixed(0) + '%)÷' + enemyCount + '人</div></div><div class="hasou-val" style="color:var(--purple-dark)">' + fmt(hit3) + '</div></div>';
+  html += '<div class="hasou-row total"><div class="hasou-label-dark">合計</div><div class="hasou-bar-wrap"><div class="hasou-bar-track"><div class="hasou-bar-fill" style="width:100%;background:#c090ff"></div></div><div class="hasou-note-dark">每人受到・幻化' + n + '人・衰減' + (decayRate*100).toFixed(0) + '%・剩' + enemyCount + '人</div></div><div class="hasou-val-dark">' + fmt(total3) + '</div></div>';
   el('hasou-stack').innerHTML = html;
 }
-
 function calcNormal() {
-  var atk = val('n-atk');
-  var cdmg = val('n-cdmg') || 150;
-  if (!atk) {
-    ['r-q1-base','r-q1-crit','r-q3-base','r-q3-crit'].forEach(function(id) { setText(id, '─'); });
-    return;
-  }
-  setText('r-q1-base', fmt(atk * 1.25));
-  setText('r-q1-crit', fmt(atk * 1.25 * (cdmg / 100)));
-  setText('r-q3-base', fmt(atk * 2.40));
-  setText('r-q3-crit', fmt(atk * 2.40 * (cdmg / 100)));
+  var atk = val('n-atk'); var cdmg = val('n-cdmg') || 150;
+  if (!atk) { ['r-q1-base','r-q1-crit','r-q3-base','r-q3-crit'].forEach(function(id) { setText(id, '─'); }); return; }
+  setText('r-q1-base', fmt(atk * 1.25)); setText('r-q1-crit', fmt(atk * 1.25 * (cdmg / 100))); setText('r-q3-base', fmt(atk * 2.40)); setText('r-q3-crit', fmt(atk * 2.40 * (cdmg / 100)));
 }
-
-window.addEventListener('DOMContentLoaded', function() {
-  setIllus(0);
-});
+window.addEventListener('DOMContentLoaded', function() { setIllus(0); });
 </script>
 </body>
 </html>
