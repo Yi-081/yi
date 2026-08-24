@@ -24,126 +24,22 @@
 <body>
 <nav class="site-nav"><a class="site-back" href="index.html">← 返回式神首頁</a><span class="site-brand">陰陽師・PVP LAB</span></nav>
 <div class="container">
-  <div class="hero">
-    <div class="hero-head"><div class="hero-mark"><img src="images/不相狐禪.jpeg" alt="不相狐禪"></div><div><h1>SSR 不相狐禪</h1><p>運勢骰子交換・600% 判定・狐影戲法試算</p></div></div>
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="forward">🎲 骰子判定</button>
-      <button class="tab-btn" data-tab="reverse">↩️ 目標逆推</button>
-      <button class="tab-btn" data-tab="skill">📖 技能說明</button>
-    </div>
-  </div>
-
-  <div class="body-wrap">
-    <div id="tab-forward" class="tab-content active">
-      <div class="section-title">你的配裝面板</div>
-      <div class="input-row">
-        <div class="input-group"><div class="input-label"><span class="badge badge-atk">攻擊</span>不相狐禪初始攻擊</div><input type="number" id="f-atk" placeholder="例：3404" inputmode="numeric"></div>
-        <div class="input-group"><div class="input-label"><span class="badge">生命</span>不相狐禪生命面板</div><input type="number" id="f-hp" placeholder="例：13753" inputmode="numeric"></div>
-      </div>
-
-      <div class="section-title">骰子交換後・核心判定</div>
-      <div class="kill-line">
-        <div class="kill-title">判定公式</div>
-        <div class="kill-formula">交換後攻擊 × 6 ＞ 骰子目標交換後生命</div>
-        <div class="kill-note">若你把運勢骰子放在準備用狐影戲法攻擊的同一個目標，這裡以你的生命面板作為對方交換後的生命基準，反推你至少要換到多少攻擊。</div>
-      </div>
-      <div class="result-grid">
-        <div class="result-card fox"><div class="card-label">最低交換後攻擊</div><div class="card-value fox" id="r-need-atk">─</div><div class="card-formula">⌊交換後生命 ÷ 6⌋ + 1</div></div>
-        <div class="result-card purple"><div class="card-label">取得攻擊理論上限</div><div class="card-value purple" id="r-atk-cap">─</div><div class="card-formula">初始攻擊 × 350%</div></div>
-        <div class="result-card green"><div class="card-label">最高可控生命線</div><div class="card-value green" id="r-control-hp">─</div><div class="card-formula">350% 攻擊上限 × 600%</div></div>
-        <div class="result-card amber"><div class="card-label">需求攻擊占上限</div><div class="card-value amber" id="r-cap-rate">─</div><div class="card-formula">最低需求 ÷ 攻擊上限</div></div>
-      </div>
-      <div class="branch" id="dice-msg">輸入你的初始攻擊與生命面板後，自動判斷這套配裝是否有足夠的交換攻擊空間。</div>
-
-      <div class="section-title">輸入實際換到的攻擊（選填）</div>
-      <div class="input-group"><div class="input-label">這次骰子交換後實際攻擊</div><input type="number" id="f-swap-atk" placeholder="例：10500" inputmode="numeric"></div>
-      <div class="result-grid">
-        <div class="result-card blue"><div class="card-label">實際 600% 判定線</div><div class="card-value blue" id="r-real-line">─</div><div class="card-formula">實際交換後攻擊 × 6</div></div>
-        <div class="result-card fox"><div class="card-label">距離最低需求</div><div class="card-value fox" id="r-atk-gap">─</div><div class="card-formula">實際交換攻擊 − 最低需求</div></div>
-      </div>
-      <div class="branch" id="real-msg">若知道這次實際換到多少攻擊，可直接確認是否已跨過 600% 判定線。</div>
-
-      <div class="divider"><span></span><em>幻象骰子固定倍率</em><span></span></div>
-      <div class="result-grid">
-        <div class="result-card fox"><div class="card-label">幻象骰子護盾</div><div class="card-value fox" id="r-shield">─</div><div class="card-formula">初始攻擊 × 450%</div></div>
-        <div class="result-card green"><div class="card-label">友方全體恢復</div><div class="card-value green" id="r-heal">─</div><div class="card-formula">初始攻擊 × 98%</div></div>
-        <div class="result-card purple"><div class="card-label">敵方全體生命流失</div><div class="card-value purple" id="r-loss">─</div><div class="card-formula">初始攻擊 × 78%</div></div>
-        <div class="result-card amber"><div class="card-label">骰子更新後拉條</div><div class="card-value amber">20%</div><div class="card-formula">幻象骰子消失或更新後</div></div>
-      </div>
-
-      <div class="section-title">狐影戲法・實際骰子攻擊分支</div>
-      <div class="input-row">
-        <div class="input-group"><div class="input-label">骰子目標目前生命（選填）</div><input type="number" id="f-curhp" placeholder="未填則用你的生命面板" inputmode="numeric"></div>
-        <div class="input-group"><div class="input-label">骰子目標生命上限</div><input type="number" id="f-maxhp" placeholder="生命分支使用" inputmode="numeric"></div>
-      </div>
-      <div class="result-grid">
-        <div class="result-card amber"><div class="card-label">法陣・全體</div><div class="card-value amber" id="r-aoe">─</div><div class="card-formula" id="r-aoe-f">等待實際交換攻擊</div></div>
-        <div class="result-card fox"><div class="card-label">狐影・指定目標</div><div class="card-value fox" id="r-fox">─</div><div class="card-formula" id="r-fox-f">等待實際交換攻擊</div></div>
-        <div class="result-card green"><div class="card-label">指定目標兩段合計</div><div class="card-value green" id="r-total">─</div><div class="card-formula">法陣 + 狐影，未計防禦</div></div>
-        <div class="result-card blue"><div class="card-label">本次判定線</div><div class="card-value blue" id="r-line">─</div><div class="card-formula">實際交換攻擊 × 600%</div></div>
-      </div>
-      <div class="branch" id="branch-msg">輸入實際交換後攻擊，即可試算狐影戲法分支。</div>
-    </div>
-
-    <div id="tab-reverse" class="tab-content">
-      <div class="section-title">骰子目標反推</div>
-      <div class="input-row">
-        <div class="input-group"><div class="input-label">你的初始攻擊</div><input type="number" id="rev-base-atk" placeholder="例：3404" inputmode="numeric"></div>
-        <div class="input-group"><div class="input-label">交換後目標生命</div><input type="number" id="rev-target-hp" placeholder="例：65000" inputmode="numeric"></div>
-      </div>
-      <div class="section-title">最低交換需求</div>
-      <div class="req-card"><div class="req-icon fox">攻</div><div class="req-info"><div class="req-label">最低交換後攻擊</div><div class="req-formula">⌊目標生命 ÷ 6⌋ + 1</div></div><div class="req-val" id="rev-need-atk">—</div></div>
-      <div class="req-card"><div class="req-icon purple">限</div><div class="req-info"><div class="req-label">你的攻擊取得上限</div><div class="req-formula">初始攻擊 × 350%</div></div><div class="req-val" id="rev-cap">—</div></div>
-      <div class="result-grid">
-        <div class="result-card green"><div class="card-label">最高可控生命線</div><div class="card-value green" id="rev-control">─</div><div class="card-formula">攻擊上限 × 6</div></div>
-        <div class="result-card amber"><div class="card-label">攻擊需求餘裕</div><div class="card-value amber" id="rev-margin">─</div><div class="card-formula">攻擊上限 − 最低需求</div></div>
-      </div>
-      <div class="branch" id="rev-msg">輸入初始攻擊與交換後目標生命，直接反推這個目標是否在你的骰子可控範圍。</div>
-      <div class="notice">💡 技能文字寫的是「交換取得的屬性不超過自身初始屬性的 350%」。因此這裡把 <b>初始攻擊 × 350%</b> 當作可取得攻擊的理論上限；實際交換值仍取決於被附加運勢骰子的目標屬性。</div>
-    </div>
-
-    <div id="tab-skill" class="tab-content">
-      <div class="skill-card"><div class="skill-card-header"><div class="skill-num">1</div><div><div class="skill-name">當骰一擊</div><div class="skill-sub">Lv.5・0 鬼火</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key">傷害</span><span>攻擊敵方單體，滿技造成攻擊 <b>125%</b> 傷害。</span></div></div></div>
-      <div class="skill-card"><div class="skill-card-header"><div class="skill-num">2</div><div><div class="skill-name">時也運也</div><div class="skill-sub">Lv.5・2 鬼火</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key">幻象</span><span>戰鬥開始和行動時獲得或更新幻象骰子；護盾吸收等同初始攻擊 <b>450%</b> 的傷害。</span></div><div class="skill-row"><span class="skill-key">生命</span><span>幻象骰子消失或非首次更新時，敵方全體失去等同初始攻擊 <b>78%</b> 的生命值。</span></div><div class="skill-row"><span class="skill-key">Lv.3</span><span>幻象骰子消失或更新後，提升 <b>20%</b> 行動條。</span></div><div class="skill-row"><span class="skill-key">Lv.5</span><span>獲得或更新幻象骰子時，友方全體恢復等同初始攻擊 <b>98%</b> 的生命值。</span></div><div class="skill-row"><span class="skill-key">運勢</span><span>交換除速度外的所有屬性，交換取得的屬性不超過自身初始屬性的 <b>350%</b>；不相狐禪自身不受此效果影響。</span></div></div></div>
-      <div class="skill-card"><div class="skill-card-header"><div class="skill-num">3</div><div><div class="skill-name">狐影戲法</div><div class="skill-sub">Lv.5・3 鬼火</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key">判定</span><span>若不相狐禪當下攻擊 × <b>600%</b> 高於目標目前生命：法陣造成攻擊 <b>100%</b>，狐影造成攻擊 <b>300%</b>。</span></div><div class="skill-row"><span class="skill-key">生命</span><span>若未高於：法陣造成目標生命上限 <b>10%</b>，狐影造成目標生命上限 <b>30%</b>。</span></div><div class="skill-row"><span class="skill-key">Lv.3</span><span>狐影戲法造成的傷害不觸發敵方御魂和被動。</span></div><div class="skill-row"><span class="skill-key">Lv.5</span><span>若存在運勢骰子，施放技能鬼火使用減少 <b>1</b> 點。</span></div></div></div>
-    </div>
-  </div>
-  <div class="footer">不相狐禪・骰子交換與 600% 判定計算機 ◆ 遊戲內技能截圖校正：2026-08-24</div>
-</div>
+<div class="hero"><div class="hero-head"><div class="hero-mark"><img src="images/不相狐禪.jpeg" alt="不相狐禪"></div><div><h1>SSR 不相狐禪</h1><p>運勢骰子交換・600% 判定・狐影戲法試算</p></div></div><div class="tabs"><button class="tab-btn active" data-tab="forward">🎲 骰子判定</button><button class="tab-btn" data-tab="reverse">↩️ 目標逆推</button><button class="tab-btn" data-tab="skill">📖 技能說明</button></div></div>
+<div class="body-wrap">
+<div id="tab-forward" class="tab-content active">
+<div class="section-title">你的配裝面板</div><div class="input-row"><div class="input-group"><div class="input-label"><span class="badge badge-atk">攻擊</span>不相狐禪初始攻擊</div><input type="number" id="f-atk" placeholder="例：3404" inputmode="numeric"></div><div class="input-group"><div class="input-label"><span class="badge">生命</span>不相狐禪生命面板</div><input type="number" id="f-hp" placeholder="例：13753" inputmode="numeric"></div></div>
+<div class="section-title">骰子交換後・核心判定</div><div class="kill-line"><div class="kill-title">判定公式</div><div class="kill-formula">交換後攻擊 × 6 ＞ 骰子目標交換後生命</div><div class="kill-note">以你的生命面板作為對方交換後生命基準，直接顯示交換後攻擊必須大於多少。</div></div>
+<div class="result-grid"><div class="result-card fox"><div class="card-label">交換後攻擊需大於</div><div class="card-value fox" id="r-need-atk">─</div><div class="card-formula">交換後生命 ÷ 6</div></div><div class="result-card purple"><div class="card-label">取得攻擊理論上限</div><div class="card-value purple" id="r-atk-cap">─</div><div class="card-formula">初始攻擊 × 350%</div></div><div class="result-card green"><div class="card-label">最高可控生命線</div><div class="card-value green" id="r-control-hp">─</div><div class="card-formula">350% 攻擊上限 × 600%</div></div><div class="result-card amber"><div class="card-label">需求攻擊占上限</div><div class="card-value amber" id="r-cap-rate">─</div><div class="card-formula">門檻 ÷ 攻擊上限</div></div></div><div class="branch" id="dice-msg">輸入你的初始攻擊與生命面板後，自動判斷這套配裝是否有足夠的交換攻擊空間。</div>
+<div class="section-title">輸入實際換到的攻擊（選填）</div><div class="input-group"><div class="input-label">這次骰子交換後實際攻擊</div><input type="number" id="f-swap-atk" placeholder="例：10500" inputmode="numeric"></div><div class="result-grid"><div class="result-card blue"><div class="card-label">實際 600% 判定線</div><div class="card-value blue" id="r-real-line">─</div><div class="card-formula">實際交換後攻擊 × 6</div></div><div class="result-card fox"><div class="card-label">高於門檻</div><div class="card-value fox" id="r-atk-gap">─</div><div class="card-formula">實際交換攻擊 − 門檻</div></div></div><div class="branch" id="real-msg">若知道這次實際換到多少攻擊，可直接確認是否已跨過 600% 判定線。</div>
+<div class="divider"><span></span><em>幻象骰子固定倍率</em><span></span></div><div class="result-grid"><div class="result-card fox"><div class="card-label">幻象骰子護盾</div><div class="card-value fox" id="r-shield">─</div><div class="card-formula">初始攻擊 × 450%</div></div><div class="result-card green"><div class="card-label">友方全體恢復</div><div class="card-value green" id="r-heal">─</div><div class="card-formula">初始攻擊 × 98%</div></div><div class="result-card purple"><div class="card-label">敵方全體生命流失</div><div class="card-value purple" id="r-loss">─</div><div class="card-formula">初始攻擊 × 78%</div></div><div class="result-card amber"><div class="card-label">骰子更新後拉條</div><div class="card-value amber">20%</div><div class="card-formula">幻象骰子消失或更新後</div></div></div>
+<div class="section-title">狐影戲法・實際骰子攻擊分支</div><div class="input-row"><div class="input-group"><div class="input-label">骰子目標目前生命（選填）</div><input type="number" id="f-curhp" placeholder="未填則用你的生命面板" inputmode="numeric"></div><div class="input-group"><div class="input-label">骰子目標生命上限</div><input type="number" id="f-maxhp" placeholder="生命分支使用" inputmode="numeric"></div></div><div class="result-grid"><div class="result-card amber"><div class="card-label">法陣・全體</div><div class="card-value amber" id="r-aoe">─</div><div class="card-formula" id="r-aoe-f">等待實際交換攻擊</div></div><div class="result-card fox"><div class="card-label">狐影・指定目標</div><div class="card-value fox" id="r-fox">─</div><div class="card-formula" id="r-fox-f">等待實際交換攻擊</div></div><div class="result-card green"><div class="card-label">指定目標兩段合計</div><div class="card-value green" id="r-total">─</div><div class="card-formula">法陣 + 狐影，未計防禦</div></div><div class="result-card blue"><div class="card-label">本次判定線</div><div class="card-value blue" id="r-line">─</div><div class="card-formula">實際交換攻擊 × 600%</div></div></div><div class="branch" id="branch-msg">輸入實際交換後攻擊，即可試算狐影戲法分支。</div></div>
+<div id="tab-reverse" class="tab-content"><div class="section-title">骰子目標反推</div><div class="input-row"><div class="input-group"><div class="input-label">你的初始攻擊</div><input type="number" id="rev-base-atk" placeholder="例：3404" inputmode="numeric"></div><div class="input-group"><div class="input-label">交換後目標生命</div><input type="number" id="rev-target-hp" placeholder="例：65000" inputmode="numeric"></div></div><div class="section-title">交換需求</div><div class="req-card"><div class="req-icon fox">攻</div><div class="req-info"><div class="req-label">交換後攻擊需大於</div><div class="req-formula">目標生命 ÷ 6</div></div><div class="req-val" id="rev-need-atk">—</div></div><div class="req-card"><div class="req-icon purple">限</div><div class="req-info"><div class="req-label">你的攻擊取得上限</div><div class="req-formula">初始攻擊 × 350%</div></div><div class="req-val" id="rev-cap">—</div></div><div class="result-grid"><div class="result-card green"><div class="card-label">最高可控生命線</div><div class="card-value green" id="rev-control">─</div><div class="card-formula">攻擊上限 × 6</div></div><div class="result-card amber"><div class="card-label">攻擊餘裕</div><div class="card-value amber" id="rev-margin">─</div><div class="card-formula">攻擊上限 − 門檻</div></div></div><div class="branch" id="rev-msg">輸入初始攻擊與交換後目標生命，直接反推這個目標是否在你的骰子可控範圍。</div><div class="notice">💡 技能條件為「交換後攻擊 × 6 ＞ 目標生命」，所以頁面直接顯示攻擊必須<b>大於</b>的門檻，不另外加 1。</div></div>
+<div id="tab-skill" class="tab-content"><div class="skill-card"><div class="skill-card-header"><div class="skill-num">1</div><div><div class="skill-name">當骰一擊</div><div class="skill-sub">Lv.5・0 鬼火</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key">傷害</span><span>攻擊敵方單體，滿技造成攻擊 <b>125%</b> 傷害。</span></div></div></div><div class="skill-card"><div class="skill-card-header"><div class="skill-num">2</div><div><div class="skill-name">時也運也</div><div class="skill-sub">Lv.5・2 鬼火</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key">幻象</span><span>戰鬥開始和行動時獲得或更新幻象骰子；護盾吸收等同初始攻擊 <b>450%</b> 的傷害。</span></div><div class="skill-row"><span class="skill-key">生命</span><span>幻象骰子消失或非首次更新時，敵方全體失去等同初始攻擊 <b>78%</b> 的生命值。</span></div><div class="skill-row"><span class="skill-key">Lv.3</span><span>幻象骰子消失或更新後，提升 <b>20%</b> 行動條。</span></div><div class="skill-row"><span class="skill-key">Lv.5</span><span>獲得或更新幻象骰子時，友方全體恢復等同初始攻擊 <b>98%</b> 的生命值。</span></div><div class="skill-row"><span class="skill-key">運勢</span><span>交換除速度外的所有屬性，交換取得的屬性不超過自身初始屬性的 <b>350%</b>；不相狐禪自身不受此效果影響。</span></div></div></div><div class="skill-card"><div class="skill-card-header"><div class="skill-num">3</div><div><div class="skill-name">狐影戲法</div><div class="skill-sub">Lv.5・3 鬼火</div></div></div><div class="skill-body"><div class="skill-row"><span class="skill-key">判定</span><span>若不相狐禪當下攻擊 × <b>600%</b> 高於目標目前生命：法陣造成攻擊 <b>100%</b>，狐影造成攻擊 <b>300%</b>。</span></div><div class="skill-row"><span class="skill-key">生命</span><span>若未高於：法陣造成目標生命上限 <b>10%</b>，狐影造成目標生命上限 <b>30%</b>。</span></div><div class="skill-row"><span class="skill-key">Lv.3</span><span>狐影戲法造成的傷害不觸發敵方御魂和被動。</span></div><div class="skill-row"><span class="skill-key">Lv.5</span><span>若存在運勢骰子，施放技能鬼火使用減少 <b>1</b> 點。</span></div></div></div></div>
+</div><div class="footer">不相狐禪・骰子交換與 600% 判定計算機 ◆ 遊戲內技能截圖校正：2026-08-24</div></div>
 <script>
-function E(id){return document.getElementById(id)}
-function V(id){return parseFloat(E(id)?.value)||0}
-function F(n){return Math.floor(n).toLocaleString()}
-function T(id,v){if(E(id))E(id).textContent=v}
-function switchTab(name){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));E('tab-'+name).classList.add('active')}
-document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)))
-function needAtk(hp){return hp>0?Math.floor(hp/6)+1:0}
-function calcForward(){
-  let baseAtk=V('f-atk'),ownHp=V('f-hp'),swapAtk=V('f-swap-atk'),cur=V('f-curhp')||ownHp,max=V('f-maxhp');
-  let cap=baseAtk*3.5,need=needAtk(ownHp),control=cap*6;
-  T('r-need-atk',need?F(need):'─');T('r-atk-cap',baseAtk?F(cap):'─');T('r-control-hp',baseAtk?F(control):'─');T('r-cap-rate',need&&cap?(need/cap*100).toFixed(1)+'%':'─');
-  let dm=E('dice-msg');dm.className='branch';
-  if(!baseAtk||!ownHp){dm.innerHTML='輸入你的初始攻擊與生命面板後，自動判斷這套配裝是否有足夠的交換攻擊空間。'}
-  else if(cap>=need){dm.classList.add('success');dm.innerHTML='<strong>✅ 這套面板理論上可達成</strong><br>交換後目標生命以 '+F(ownHp)+' 計，最低需要 '+F(need)+' 攻擊；你的取得攻擊上限為 '+F(cap)+'，還有 '+F(cap-need)+' 攻擊餘裕。'}
-  else{dm.classList.add('danger');dm.innerHTML='<strong>❌ 350% 攻擊上限不足</strong><br>最低需要 '+F(need)+' 攻擊，但你的理論上限只有 '+F(cap)+'，還差 '+F(need-cap)+'。'}
-  T('r-shield',baseAtk?F(baseAtk*4.5):'─');T('r-heal',baseAtk?F(baseAtk*.98):'─');T('r-loss',baseAtk?F(baseAtk*.78):'─');
-  let realLine=swapAtk*6,gap=swapAtk&&need?swapAtk-need:0;T('r-real-line',swapAtk?F(realLine):'─');T('r-atk-gap',swapAtk&&need?(gap>=0?'+':'')+F(gap):'─');
-  let rm=E('real-msg');rm.className='branch';
-  if(!swapAtk||!ownHp){rm.innerHTML='若知道這次實際換到多少攻擊，可直接確認是否已跨過 600% 判定線。'}
-  else if(swapAtk>=need){rm.classList.add('success');rm.innerHTML='<strong>✅ 實際交換攻擊已達標</strong><br>'+F(swapAtk)+' × 6 ＝ '+F(realLine)+' ＞ '+F(ownHp)+'，可進入攻擊倍率分支。'}
-  else{rm.classList.add('warning');rm.innerHTML='<strong>⚠️ 實際交換攻擊尚未達標</strong><br>目前 '+F(swapAtk)+' 攻擊，至少還需要 '+F(need-swapAtk)+' 攻擊。'}
-  calcSkill(swapAtk,cur,max);
-}
-function calcSkill(a,cur,max){
-  let line=a*6;T('r-line',a?F(line):'─');
-  if(!a||!cur){T('r-aoe','─');T('r-fox','─');T('r-total','─');T('r-aoe-f','等待實際交換攻擊');T('r-fox-f','等待實際交換攻擊');E('branch-msg').innerHTML='輸入實際交換後攻擊，即可試算狐影戲法分支。';return}
-  if(line>cur){let x=a,y=a*3;T('r-aoe',F(x));T('r-fox',F(y));T('r-total',F(x+y));T('r-aoe-f','攻擊 × 100%');T('r-fox-f','攻擊 × 300%');E('branch-msg').innerHTML='<strong>攻擊倍率分支成立</strong><br>'+F(a)+' × 600% ＝ '+F(line)+' ＞ 目標目前生命 '+F(cur)+'。'}
-  else if(max){let x=max*.1,y=max*.3;T('r-aoe',F(x));T('r-fox',F(y));T('r-total',F(x+y));T('r-aoe-f','生命上限 × 10%');T('r-fox-f','生命上限 × 30%');E('branch-msg').innerHTML='<strong>生命上限分支成立</strong><br>'+F(a)+' × 600% ＝ '+F(line)+' ≤ 目標目前生命 '+F(cur)+'。'}
-  else{T('r-aoe','需生命上限');T('r-fox','需生命上限');T('r-total','─');T('r-aoe-f','生命上限 × 10%');T('r-fox-f','生命上限 × 30%');E('branch-msg').innerHTML='<strong>生命上限分支</strong><br>目前未跨過 600% 判定線，請輸入目標生命上限。'}
-}
-['f-atk','f-hp','f-swap-atk','f-curhp','f-maxhp'].forEach(id=>E(id).addEventListener('input',calcForward))
-function calcReverse(){let baseAtk=V('rev-base-atk'),hp=V('rev-target-hp'),cap=baseAtk*3.5,need=needAtk(hp),control=cap*6,margin=cap-need;T('rev-need-atk',need?F(need):'—');T('rev-cap',baseAtk?F(cap):'—');T('rev-control',baseAtk?F(control):'─');T('rev-margin',baseAtk&&hp?(margin>=0?'+':'')+F(margin):'─');let m=E('rev-msg');m.className='branch';if(!baseAtk||!hp){m.innerHTML='輸入初始攻擊與交換後目標生命，直接反推這個目標是否在你的骰子可控範圍。'}else if(cap>=need){m.classList.add('success');m.innerHTML='<strong>✅ 在可控範圍內</strong><br>目標生命 '+F(hp)+' 需要至少 '+F(need)+' 攻擊；你的理論上限 '+F(cap)+' 足夠。'}else{m.classList.add('danger');m.innerHTML='<strong>❌ 超出目前面板可控範圍</strong><br>需要 '+F(need)+' 攻擊，但 350% 理論上限只有 '+F(cap)+'。'}}
-['rev-base-atk','rev-target-hp'].forEach(id=>E(id).addEventListener('input',calcReverse));calcForward();calcReverse();
-</script>
-</body>
-</html>
+function E(id){return document.getElementById(id)}function V(id){return parseFloat(E(id)?.value)||0}function F(n){return Math.floor(n).toLocaleString()}function D(n){return n.toLocaleString(undefined,{maximumFractionDigits:2})}function T(id,v){if(E(id))E(id).textContent=v}function switchTab(name){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));E('tab-'+name).classList.add('active')}document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)))
+function threshold(hp){return hp>0?hp/6:0}
+function calcForward(){let baseAtk=V('f-atk'),ownHp=V('f-hp'),swapAtk=V('f-swap-atk'),cur=V('f-curhp')||ownHp,max=V('f-maxhp');let cap=baseAtk*3.5,need=threshold(ownHp),control=cap*6;T('r-need-atk',need?'> '+D(need):'─');T('r-atk-cap',baseAtk?F(cap):'─');T('r-control-hp',baseAtk?F(control):'─');T('r-cap-rate',need&&cap?(need/cap*100).toFixed(1)+'%':'─');let dm=E('dice-msg');dm.className='branch';if(!baseAtk||!ownHp){dm.innerHTML='輸入你的初始攻擊與生命面板後，自動判斷這套配裝是否有足夠的交換攻擊空間。'}else if(cap>need){dm.classList.add('success');dm.innerHTML='<strong>✅ 這套面板理論上可達成</strong><br>交換後目標生命以 '+F(ownHp)+' 計，交換後攻擊需大於 '+D(need)+'；你的取得攻擊上限為 '+F(cap)+'。'}else{dm.classList.add('danger');dm.innerHTML='<strong>❌ 350% 攻擊上限不足</strong><br>交換後攻擊需大於 '+D(need)+'，但你的理論上限只有 '+F(cap)+'。'}T('r-shield',baseAtk?F(baseAtk*4.5):'─');T('r-heal',baseAtk?F(baseAtk*.98):'─');T('r-loss',baseAtk?F(baseAtk*.78):'─');let realLine=swapAtk*6,gap=swapAtk&&need?swapAtk-need:0;T('r-real-line',swapAtk?F(realLine):'─');T('r-atk-gap',swapAtk&&need?(gap>0?'+':'')+D(gap):'─');let rm=E('real-msg');rm.className='branch';if(!swapAtk||!ownHp){rm.innerHTML='若知道這次實際換到多少攻擊，可直接確認是否已跨過 600% 判定線。'}else if(swapAtk>need){rm.classList.add('success');rm.innerHTML='<strong>✅ 實際交換攻擊已達標</strong><br>'+F(swapAtk)+' × 6 ＝ '+F(realLine)+' ＞ '+F(ownHp)+'，可進入攻擊倍率分支。'}else{rm.classList.add('warning');rm.innerHTML='<strong>⚠️ 實際交換攻擊尚未達標</strong><br>目前 '+F(swapAtk)+'，需要大於 '+D(need)+' 攻擊。'}calcSkill(swapAtk,cur,max)}
+function calcSkill(a,cur,max){let line=a*6;T('r-line',a?F(line):'─');if(!a||!cur){T('r-aoe','─');T('r-fox','─');T('r-total','─');T('r-aoe-f','等待實際交換攻擊');T('r-fox-f','等待實際交換攻擊');E('branch-msg').innerHTML='輸入實際交換後攻擊，即可試算狐影戲法分支。';return}if(line>cur){let x=a,y=a*3;T('r-aoe',F(x));T('r-fox',F(y));T('r-total',F(x+y));T('r-aoe-f','攻擊 × 100%');T('r-fox-f','攻擊 × 300%');E('branch-msg').innerHTML='<strong>攻擊倍率分支成立</strong><br>'+F(a)+' × 600% ＝ '+F(line)+' ＞ 目標目前生命 '+F(cur)+'。'}else if(max){let x=max*.1,y=max*.3;T('r-aoe',F(x));T('r-fox',F(y));T('r-total',F(x+y));T('r-aoe-f','生命上限 × 10%');T('r-fox-f','生命上限 × 30%');E('branch-msg').innerHTML='<strong>生命上限分支成立</strong><br>'+F(a)+' × 600% ＝ '+F(line)+' ≤ 目標目前生命 '+F(cur)+'。'}else{T('r-aoe','需生命上限');T('r-fox','需生命上限');T('r-total','─');T('r-aoe-f','生命上限 × 10%');T('r-fox-f','生命上限 × 30%');E('branch-msg').innerHTML='<strong>生命上限分支</strong><br>目前未跨過 600% 判定線，請輸入目標生命上限。'}}['f-atk','f-hp','f-swap-atk','f-curhp','f-maxhp'].forEach(id=>E(id).addEventListener('input',calcForward))
+function calcReverse(){let baseAtk=V('rev-base-atk'),hp=V('rev-target-hp'),cap=baseAtk*3.5,need=threshold(hp),control=cap*6,margin=cap-need;T('rev-need-atk',need?'> '+D(need):'—');T('rev-cap',baseAtk?F(cap):'—');T('rev-control',baseAtk?F(control):'─');T('rev-margin',baseAtk&&hp?(margin>0?'+':'')+D(margin):'─');let m=E('rev-msg');m.className='branch';if(!baseAtk||!hp){m.innerHTML='輸入初始攻擊與交換後目標生命，直接反推這個目標是否在你的骰子可控範圍。'}else if(cap>need){m.classList.add('success');m.innerHTML='<strong>✅ 在可控範圍內</strong><br>目標生命 '+F(hp)+' 時，交換後攻擊需大於 '+D(need)+'；你的理論上限 '+F(cap)+' 足夠。'}else{m.classList.add('danger');m.innerHTML='<strong>❌ 超出目前面板可控範圍</strong><br>交換後攻擊需大於 '+D(need)+'，但 350% 理論上限只有 '+F(cap)+'。'}}['rev-base-atk','rev-target-hp'].forEach(id=>E(id).addEventListener('input',calcReverse));calcForward();calcReverse();
+</script></body></html>
