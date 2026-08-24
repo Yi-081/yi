@@ -10,6 +10,8 @@ on:
     workflows: ["每日更新比賽資料"]
     types: [completed]
     branches: [main, master]
+  schedule:
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
