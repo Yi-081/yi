@@ -23,20 +23,33 @@ button{border:0;border-radius:12px;padding:10px 14px;font-weight:900;cursor:poin
 textarea{width:100%;min-height:110px;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit}.result{font-weight:900;font-size:20px;margin-top:14px}
 footer{padding:28px;color:var(--muted);text-align:center}.mini{font-size:14px;color:var(--muted)}
 @media(max-width:720px){th,td{font-size:13px}.qhead{align-items:center}}
+.section-banner{margin:34px 0 18px;padding:22px 20px;border-radius:20px;background:linear-gradient(135deg,#17365d,#315f9f);color:#fff;box-shadow:0 8px 24px #17365d18}
+.section-banner h2{color:#fff;margin:0 0 5px}.section-banner p{margin:0;opacity:.92}
+.mode-tag{display:inline-block;font-size:13px;font-weight:900;border-radius:999px;padding:4px 10px;margin-bottom:8px;background:#ffffff22;border:1px solid #ffffff35}
+.answer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hint-btn{background:#fff4cc;color:#7a5200;border:1px solid #efd880}.answer-btn{background:#f2ecff;color:#5b3aa8;border:1px solid #d6c6ff}
+.hintbox{background:#fff9e8;border:1px solid #efd880;border-radius:12px;padding:12px 14px;margin-top:10px}
+.refbox{background:#f7f3ff;border:1px solid #d8c9ff;border-radius:12px;padding:12px 14px;margin-top:10px;white-space:pre-wrap}
+.checkbox{margin-top:12px}.section-note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:16px}
+.nav-major{background:var(--navy)!important;color:#fff!important}
+@media(max-width:720px){.answer-actions button{flex:1 1 46%}}
 </style>
 </head>
 <body>
 <header><div class="wrap">
-<span class="scope">本週範圍：第 4 章問答題 1～8</span>
-<h1>審計學第 4 章｜8 題問答衝刺網站</h1>
-<p>只依你上傳檔案前段「問答題第 1～8 題」整理；檔案後方「未收錄於課本習題之歷屆考題」全部排除。</p>
+<span class="scope">本週範圍：第 4 章</span>
+<h1>審計學第 4 章｜考前互動複習</h1>
+<p>四個區塊分開複習：講義整理、課本選擇題、課本問答題、額外補充。</p>
 </div></header>
 
 <nav><div class="wrap">
-<a href="#q1">第1題</a><a href="#q2">第2題</a><a href="#q3">第3題</a><a href="#q4">第4題</a><a href="#q5">第5題</a><a href="#q6">第6題</a><a href="#q7">第7題</a><a href="#q8">第8題</a><a href="#flash">記憶卡</a><a href="#quiz">測驗</a>
+<a class="nav-major" href="#notes">講義</a>
+<a class="nav-major" href="#quiz">選擇題</a>
+<a class="nav-major" href="#short">問答題</a>
+<a class="nav-major" href="#assertions">額外補充</a>
 </div></nav>
 
 <main class="wrap">
+<div id="notes" class="section-banner"><span class="mode-tag">講義</span><h2>第 4 章講義整理</h2><p>先理解重點與口訣；這裡不作答、不混入課本選擇題或問答題。</p></div>
 <section>
 <div class="card">
 <h2>考前先背這 8 題的主軸</h2>
@@ -180,7 +193,26 @@ footer{padding:28px;color:var(--muted);text-align:center}.mini{font-size:14px;co
 </div>
 </section>
 
+
+
+
+
+
+<div class="section-banner"><span class="mode-tag">選擇題</span><h2>課本選擇題</h2><p>只做你拍的課本第 4 章選擇題原題，交卷後顯示答案與解析。</p></div>
+<section id="quiz">
+<h2>課本原題｜選擇題 1～18</h2>
+<div class="card">
+<p><b>這裡改成你剛剛照片中的課本原題。</b> 題號與答案依課本第 4 章練習題頁 193～195。</p>
+<p class="mini">先作答再交卷；交卷後才顯示正確答案與簡短解析。</p>
+</div>
+<div id="textbookQuiz"></div>
+<button class="primary" onclick="gradeTextbook()">交卷</button>
+<button class="ghost" onclick="renderTextbook()">重做</button>
+<div class="result" id="textbookResult"></div>
+</section>
+<div class="section-banner"><span class="mode-tag">問答題</span><h2>課本問答題 1～8</h2><p>完全依檔案題目作答，可先看提示、再打字、核對關鍵字，也可直接查看參考答案。</p></div>
 <section id="short"><h2>問答題 1～8｜打字複習＋關鍵字核對</h2><div class="card"><p><b>操作方式：</b>先依課本題目直接打出你記得的答案，再按「核對答案」。系統會依課本解答的關鍵字判斷有寫到哪些重點、可能漏掉哪些內容。</p><p class="mini">關鍵字核對只作為複習輔助，不要求逐字完全相同。</p></div><div id="writtenPractice"></div></section>
+<div class="section-banner"><span class="mode-tag">額外補充</span><h2>管理階層聲明與交易聲明</h2><p>這區不是第 4 章問答檔原題，獨立補充 ECVOP、OCACCP、CECVOP。</p></div>
 <section id="assertions">
 <h2>課堂補充｜管理階層五大聲明 ECVOP＋交易 OCACCP＋CECVOP</h2>
 <div class="card">
@@ -195,27 +227,52 @@ footer{padding:28px;color:var(--muted);text-align:center}.mini{font-size:14px;co
 <button class="ghost" onclick="renderAssertionQuiz()">重做</button>
 <div class="result" id="assertionResult"></div>
 </section>
-<section id="flash">
-<h2>互動記憶卡</h2><div class="grid" id="flashGrid"></div>
-</section>
-
-<section id="quiz">
-<h2>課本原題｜選擇題 1～18</h2>
-<div class="card">
-<p><b>這裡改成你剛剛照片中的課本原題。</b> 題號與答案依課本第 4 章練習題頁 193～195。</p>
-<p class="mini">先作答再交卷；交卷後才顯示正確答案與簡短解析。</p>
-</div>
-<div id="textbookQuiz"></div>
-<button class="primary" onclick="gradeTextbook()">交卷</button>
-<button class="ghost" onclick="renderTextbook()">重做</button>
-<div class="result" id="textbookResult"></div>
-</section>
+<section id="flash"><h2>講義記憶卡</h2><div class="section-note">這些卡片是講義重點快速回想，與課本選擇題、問答題分開。</div><div class="grid" id="flashGrid"></div></section>
 </main>
 
-<footer>僅使用本次上傳檔案「問答題第 1～8 題」；未收錄於課本習題之歷屆考題未納入。</footer>
+<footer>講義、課本選擇題、課本問答題、額外補充已分區呈現；問答題範圍僅第 1～8 題。</footer>
 
 <script>
-const writtenQuestions=[{"n":1,"q":"下列十項事實乃說明審計人員取得審計證據的情形：(1)盤點手存現金。(2)根據銷貨簿查核銷貨發票。(3)詢問管理階層並取得以土地抵押所獲貸款的信札。(4)核閱本年度所購送貨卡車的行車執照、統一發票收執聯、牌照稅收據等文件。(5)計算當年度毛利率並和上年度相比較。(6)和委託公司法律顧問午餐並討論未決訟案。(7)計算折舊費用。(8)化學工程師送來公司汽油存貨分級的書面報告。(9)向復華公司函證所集保的大同公司股票。(10)監督委託人職員實地盤點存貨。試指出審計程序的名稱、審計證據的類別、以及和每一證據有關的主要主張（聲明），並指出每類證據究係來自企業外部的獨立個體、審計人員自行取得或自製並存留的憑證。","g":[["實地審核","實體證據","存在或發生"],["逆查","文書憑證"],["查詢","委託人聲明書","表達與揭露"],["檢視","權利和義務"],["分析性程序","分析性證據","完整性"],["口頭證據"],["重做","計算憑證","評價或分配"],["專家證據"],["函證"],["觀察"],["外部獨立個體","自行取得","自製並存留"]],"a":"(1)實地審核／實體證據／存在或發生／B；(2)逆查／文書憑證／存在或發生／C；(3)查詢／委託人聲明書／表達與揭露／C；(4)檢視／文書憑證／權利和義務／C；(5)分析性程序／分析性證據／完整性／B；(6)查詢／口頭證據／表達與揭露／A；(7)重做／計算憑證／評價或分配／B；(8)查詢／專家證據／評價或分配／A；(9)函證／文書憑證／存在或發生／A；(10)觀察／實體證據／存在或發生／B。A＝企業外部的獨立個體；B＝審計人員自行取得；C＝自製並存留的憑證。"},{"n":2,"q":"請根據審計準則公報第 50 號「分析性程序」說明：(一)分析性程序之定義。(二)使用分析性程序之目的。","g":[["財務資料","非財務資料","可能關係"],["評估財務資訊"],["不一致","預期值","重大差異"],["證實性分析性程序","攸關","可靠"],["查核工作即將結束前","整體結論","瞭解一致"]],"a":"(一)分析性程序係指經由分析財務資料間與非財務資料間之可能關係，藉以評估財務資訊；亦包含對與其他攸關資訊不一致，或與預期值存有重大差異之變動或關係作必要調查。(二)目的：1.採用證實性分析性程序以取得攸關且可靠之查核證據。2.於查核工作即將結束前，設計並執行可協助查核人員作成整體結論之分析性程序，以確定財務報表是否與查核人員對受查者之瞭解一致。"},{"n":3,"q":"我國審計準則公報第 53 號規範「查核證據」之規定，查核證據既須足夠及適切，又須攸關及可靠。試述：(1)何謂查核證據的「足夠性」？(2)何謂查核證據的「適切性」？(3)「足夠性」與「適切性」兩者之關聯為何？(4)查核人員對是否已取得足夠及適切之查核證據做出專業判斷時，應考慮哪三項攸關因素？(5)查核證據之來源及形式所影響者，究與足夠、適切、攸關或可靠何者有關？","g":[["足夠性","數量"],["適切性","品質","攸關性","可靠性"],["互相關聯","品質越高","數量越少"],["品質不佳","無法彌補"],["查核程序之性質","財務報導之及時性","成本與效益"],["來源","性質","可靠性"],["外部獨立來源","內部控制","直接取得","書面","原始文件"]],"a":"(1)足夠性：查核證據數量之衡量。(2)適切性：查核證據品質之衡量，亦即攸關性及可靠性。(3)兩者互相關聯；證據品質越高，通常所需數量越少，但取得較多證據可能無法彌補品質不佳。(4)查核程序之性質、財務報導之及時性、成本與效益之權衡。(5)查核證據之來源及形式主要影響可靠性；外部獨立來源、有效內控、直接取得、書面、原始文件通常較可靠。"},{"n":4,"q":"請依據審計準則公報第五十三號「查核證據」，回答：(一)查核人員若擬採用管理階層專家工作所編製之資訊作為查核證據，應考量專家工作就查核目的而言之重要性，並於必要範圍內執行哪些程序？(二)查核人員採用受查者所產生之資訊時，應於必要時執行哪些程序，以評估就查核目的而言該資訊是否足夠可靠？","g":[["專業能力","適任能力","客觀性"],["專家工作","瞭解"],["攸關聲明","查核證據","適切"],["正確性","完整性"],["足夠精確","詳盡"]],"a":"(一)1.評估該專家之專業能力、適任能力及客觀性。2.取得對該專家工作之瞭解。3.評估採用該專家工作以作為攸關聲明之查核證據是否適切。(二)1.取得有關該資訊正確性及完整性之查核證據。2.評估該資訊就查核目的而言是否足夠精確及詳盡。"},{"n":5,"q":"依據我國審計準則公報第 53 號，查核人員評估查核證據可靠性時，可歸納出哪些原則？請詳細說明之。","g":[["外部獨立來源","可靠性較高"],["內部","控制","有效"],["直接取得","間接","推論"],["書面","口頭"],["原始文件","影印","傳真","數位化"],["例外情況"]],"a":"可靠性受來源、性質及取得時情況影響，且原則仍可能有例外。一般可歸納：1.外部獨立來源之證據可靠性較高。2.內部證據若相關控制有效，可靠性較高。3.查核人員直接取得較間接或透過推論取得可靠。4.書面形式較口頭取得可靠。5.原始文件較影印、傳真、縮影、數位化或其他轉製文件可靠。"},{"n":6,"q":"承辦查核案件應設置工作底稿。請依序回答：(一)查核人員於記錄所執行查核程序之性質、時間及範圍時，應記載哪些事項？(二)查核工作底稿之格式、內容及範圍，取決於哪些因素？(三)查核人員評估所辨認不實表達對查核之影響，以及未更正不實表達對財務報表之影響時，哪些事項應列入查核工作底稿？","g":[["測試項目","辨認特性"],["執行查核工作","人員","完成日期"],["複核","人員","日期","範圍"],["規模","複雜程度"],["查核程序之性質","重大不實表達風險","查核證據之重要性"],["錯誤或例外","查核方法及工具"],["查核團隊","討論","重大決定"],["顯然微小","門檻"],["累計","不實表達","是否已更正"],["未更正","是否重大","結論","基礎"]],"a":"(一)1.所測試項目之辨認特性。2.執行查核工作之人員及完成日期。3.複核查核工作之人員、日期及範圍。(二)取決於受查者規模與複雜程度、查核程序性質、已辨認重大不實表達風險、查核證據重要性、錯誤或例外之性質及範圍、查核結論及其基礎作成書面紀錄之必要性、查核方法及工具。(三)評估不實表達對查核之影響時，包括查核團隊討論及重大決定、對受查者及環境與內控之了解、所辨認及評估之重大不實表達風險、相關控制。未更正不實表達則包括顯然微小門檻、累計不實表達及是否已更正、未更正不實表達是否重大之結論及其基礎。"},{"n":7,"q":"請依據我國審計準則公報之相關規定，回答：(一)承辦查核案件設置工作底稿有多重功用，試舉三個例子說明之。(二)我國審計準則對於當年度之查核工作底稿何時歸檔之規範為何？工作底稿之保管及所有權又有何規範？(三)若擬採用依管理階層專家工作所編製之資訊作為查核證據，評估該專家工作是否適切時，應考量之因素為何？","g":[["規劃","執行查核工作"],["查核工作負責"],["未來查核","延續性"],["六十天","60天","歸檔"],["不得","刪除","銷毀"],["所有權","會計師事務所"],["不得洩露","第三者"],["五年","5年"],["發現或結論","攸關性","合理性","一致性"],["假設","方法","攸關性","合理性"],["原始資料","攸關性","完整性","正確性"]],"a":"(一)例如：協助查核團隊規劃及執行查核工作；促使查核團隊對其查核工作負責；保存對未來查核工作具有重要延續性意義事項之紀錄。(二)通常於查核報告日後60天內完成彙整及歸檔；完成後於保管期限屆滿前不得刪除或銷毀；所有權原則上屬會計師事務所；除法令、專業準則另有規定或經受查者同意外，不得洩露第三者；保管年限自查核報告日起算不短於5年。(三)考量專家發現或結論之攸關性、合理性、與其他證據之一致性及是否適當反映於財報；重要假設及方法之攸關性與合理性；大量原始資料之攸關性、完整性及正確性。"},{"n":8,"q":"依據我國審計準則 610 號「採用內部稽核人員之工作」，有關評估內部稽核職能，查核人員應就查核目的評估哪些事項，以確定是否可採用內部稽核工作？查核人員如作出哪些判斷，則不得採用內部稽核工作？（未依題目格式作答不予計分）","g":[["控制測試"],["有限判斷","證實程序"],["觀察存貨盤點"],["追蹤交易流程"],["法令遵循"],["非重要組成個體"],["客觀性","無法支持"],["缺乏","專業能力"],["未應用","系統化","嚴謹","方法"]],"a":"可採用之內部稽核工作：1.控制測試。2.有限判斷之證實程序。3.觀察存貨盤點。4.追蹤交易流程。5.法令遵循之測試。6.非重要組成個體財務資訊之查核或核閱。不得採用之判斷：1.組織中之定位及相關政策與程序無法支持內部稽核人員之客觀性。2.內部稽核職能缺乏足夠之專業能力。3.內部稽核職能未應用系統化且嚴謹之方法（包含品質管制政策及程序）。"}];function nrm(s){return (s||"").toLowerCase().replace(/[\\s、，。；：,.()（）\\-]/g,"");}function renderWritten(){var box=document.getElementById("writtenPractice");if(!box)return;box.innerHTML="";writtenQuestions.forEach(function(x){var d=document.createElement("div");d.className="card";d.innerHTML="<div class=\"qhead\"><div class=\"qnum\">"+x.n+"</div><div><h2>問答題第 "+x.n+" 題</h2></div></div><div class=\"info\" style=\"white-space:pre-wrap\"><b>課本題目：</b><br>"+x.q+"</div><textarea id=\"wa"+x.n+"\" placeholder=\"請直接打出你記得的答案……\"></textarea><div style=\"margin-top:10px\"><button class=\"primary\" onclick=\"checkWritten("+x.n+")\">核對答案</button> <button class=\"ghost\" onclick=\"clearWritten("+x.n+")\">清除重寫</button></div><div id=\"wr"+x.n+"\" style=\"margin-top:12px\"></div>";box.appendChild(d);});}function checkWritten(n){var x=writtenQuestions.find(function(v){return v.n===n;});var raw=document.getElementById("wa"+n).value;var txt=nrm(raw);var out=document.getElementById("wr"+n);if(!txt){out.innerHTML="<div class=\"warn\">你還沒作答。先憑記憶寫一次，再核對會更有效。</div>";return;}var hits=[],miss=[];x.g.forEach(function(g){var ok=g.some(function(k){return txt.indexOf(nrm(k))>=0;});(ok?hits:miss).push(g);});var pct=Math.round(hits.length/x.g.length*100);var level=pct>=85?"很完整":pct>=65?"大致正確":pct>=40?"有抓到部分重點":"需要再補強";var ht=hits.map(function(g){return "✓ "+g.join("／");}).join("<br>");var mt=miss.map(function(g){return "• "+g.join("／");}).join("<br>");out.innerHTML="<div class=\"exam\"><b>關鍵字完整度：約 "+pct+"%｜"+level+"</b><br>"+(ht||"尚未偵測到主要關鍵字")+"</div>"+(miss.length?"<div class=\"warn\"><b>可能漏掉：</b><br>"+mt+"</div>":"")+"<details><summary>展開課本參考答案</summary><div style=\"white-space:pre-wrap;margin-top:10px\">"+x.a+"</div></details>";}function clearWritten(n){document.getElementById("wa"+n).value="";document.getElementById("wr"+n).innerHTML="";}renderWritten();
+const writtenQuestions=[{"n":1,"q":"下列十項事實乃說明審計人員取得審計證據的情形：(1)盤點手存現金。(2)根據銷貨簿查核銷貨發票。(3)詢問管理階層並取得以土地抵押所獲貸款的信札。(4)核閱本年度所購送貨卡車的行車執照、統一發票收執聯、牌照稅收據等文件。(5)計算當年度毛利率並和上年度相比較。(6)和委託公司法律顧問午餐並討論未決訟案。(7)計算折舊費用。(8)化學工程師送來公司汽油存貨分級的書面報告。(9)向復華公司函證所集保的大同公司股票。(10)監督委託人職員實地盤點存貨。試指出審計程序的名稱、審計證據的類別、以及和每一證據有關的主要主張（聲明），並指出每類證據究係來自企業外部的獨立個體、審計人員自行取得或自製並存留的憑證。","g":[["實地審核","實體證據","存在或發生"],["逆查","文書憑證"],["查詢","委託人聲明書","表達與揭露"],["檢視","權利和義務"],["分析性程序","分析性證據","完整性"],["口頭證據"],["重做","計算憑證","評價或分配"],["專家證據"],["函證"],["觀察"],["外部獨立個體","自行取得","自製並存留"]],"a":"(1)實地審核／實體證據／存在或發生／B；(2)逆查／文書憑證／存在或發生／C；(3)查詢／委託人聲明書／表達與揭露／C；(4)檢視／文書憑證／權利和義務／C；(5)分析性程序／分析性證據／完整性／B；(6)查詢／口頭證據／表達與揭露／A；(7)重做／計算憑證／評價或分配／B；(8)查詢／專家證據／評價或分配／A；(9)函證／文書憑證／存在或發生／A；(10)觀察／實體證據／存在或發生／B。A＝企業外部的獨立個體；B＝審計人員自行取得；C＝自製並存留的憑證。"},{"n":2,"q":"請根據審計準則公報第 50 號「分析性程序」說明：(一)分析性程序之定義。(二)使用分析性程序之目的。","g":[["財務資料","非財務資料","可能關係"],["評估財務資訊"],["不一致","預期值","重大差異"],["證實性分析性程序","攸關","可靠"],["查核工作即將結束前","整體結論","瞭解一致"]],"a":"(一)分析性程序係指經由分析財務資料間與非財務資料間之可能關係，藉以評估財務資訊；亦包含對與其他攸關資訊不一致，或與預期值存有重大差異之變動或關係作必要調查。(二)目的：1.採用證實性分析性程序以取得攸關且可靠之查核證據。2.於查核工作即將結束前，設計並執行可協助查核人員作成整體結論之分析性程序，以確定財務報表是否與查核人員對受查者之瞭解一致。"},{"n":3,"q":"我國審計準則公報第 53 號規範「查核證據」之規定，查核證據既須足夠及適切，又須攸關及可靠。試述：(1)何謂查核證據的「足夠性」？(2)何謂查核證據的「適切性」？(3)「足夠性」與「適切性」兩者之關聯為何？(4)查核人員對是否已取得足夠及適切之查核證據做出專業判斷時，應考慮哪三項攸關因素？(5)查核證據之來源及形式所影響者，究與足夠、適切、攸關或可靠何者有關？","g":[["足夠性","數量"],["適切性","品質","攸關性","可靠性"],["互相關聯","品質越高","數量越少"],["品質不佳","無法彌補"],["查核程序之性質","財務報導之及時性","成本與效益"],["來源","性質","可靠性"],["外部獨立來源","內部控制","直接取得","書面","原始文件"]],"a":"(1)足夠性：查核證據數量之衡量。(2)適切性：查核證據品質之衡量，亦即攸關性及可靠性。(3)兩者互相關聯；證據品質越高，通常所需數量越少，但取得較多證據可能無法彌補品質不佳。(4)查核程序之性質、財務報導之及時性、成本與效益之權衡。(5)查核證據之來源及形式主要影響可靠性；外部獨立來源、有效內控、直接取得、書面、原始文件通常較可靠。"},{"n":4,"q":"請依據審計準則公報第五十三號「查核證據」，回答：(一)查核人員若擬採用管理階層專家工作所編製之資訊作為查核證據，應考量專家工作就查核目的而言之重要性，並於必要範圍內執行哪些程序？(二)查核人員採用受查者所產生之資訊時，應於必要時執行哪些程序，以評估就查核目的而言該資訊是否足夠可靠？","g":[["專業能力","適任能力","客觀性"],["專家工作","瞭解"],["攸關聲明","查核證據","適切"],["正確性","完整性"],["足夠精確","詳盡"]],"a":"(一)1.評估該專家之專業能力、適任能力及客觀性。2.取得對該專家工作之瞭解。3.評估採用該專家工作以作為攸關聲明之查核證據是否適切。(二)1.取得有關該資訊正確性及完整性之查核證據。2.評估該資訊就查核目的而言是否足夠精確及詳盡。"},{"n":5,"q":"依據我國審計準則公報第 53 號，查核人員評估查核證據可靠性時，可歸納出哪些原則？請詳細說明之。","g":[["外部獨立來源","可靠性較高"],["內部","控制","有效"],["直接取得","間接","推論"],["書面","口頭"],["原始文件","影印","傳真","數位化"],["例外情況"]],"a":"可靠性受來源、性質及取得時情況影響，且原則仍可能有例外。一般可歸納：1.外部獨立來源之證據可靠性較高。2.內部證據若相關控制有效，可靠性較高。3.查核人員直接取得較間接或透過推論取得可靠。4.書面形式較口頭取得可靠。5.原始文件較影印、傳真、縮影、數位化或其他轉製文件可靠。"},{"n":6,"q":"承辦查核案件應設置工作底稿。請依序回答：(一)查核人員於記錄所執行查核程序之性質、時間及範圍時，應記載哪些事項？(二)查核工作底稿之格式、內容及範圍，取決於哪些因素？(三)查核人員評估所辨認不實表達對查核之影響，以及未更正不實表達對財務報表之影響時，哪些事項應列入查核工作底稿？","g":[["測試項目","辨認特性"],["執行查核工作","人員","完成日期"],["複核","人員","日期","範圍"],["規模","複雜程度"],["查核程序之性質","重大不實表達風險","查核證據之重要性"],["錯誤或例外","查核方法及工具"],["查核團隊","討論","重大決定"],["顯然微小","門檻"],["累計","不實表達","是否已更正"],["未更正","是否重大","結論","基礎"]],"a":"(一)1.所測試項目之辨認特性。2.執行查核工作之人員及完成日期。3.複核查核工作之人員、日期及範圍。(二)取決於受查者規模與複雜程度、查核程序性質、已辨認重大不實表達風險、查核證據重要性、錯誤或例外之性質及範圍、查核結論及其基礎作成書面紀錄之必要性、查核方法及工具。(三)評估不實表達對查核之影響時，包括查核團隊討論及重大決定、對受查者及環境與內控之了解、所辨認及評估之重大不實表達風險、相關控制。未更正不實表達則包括顯然微小門檻、累計不實表達及是否已更正、未更正不實表達是否重大之結論及其基礎。"},{"n":7,"q":"請依據我國審計準則公報之相關規定，回答：(一)承辦查核案件設置工作底稿有多重功用，試舉三個例子說明之。(二)我國審計準則對於當年度之查核工作底稿何時歸檔之規範為何？工作底稿之保管及所有權又有何規範？(三)若擬採用依管理階層專家工作所編製之資訊作為查核證據，評估該專家工作是否適切時，應考量之因素為何？","g":[["規劃","執行查核工作"],["查核工作負責"],["未來查核","延續性"],["六十天","60天","歸檔"],["不得","刪除","銷毀"],["所有權","會計師事務所"],["不得洩露","第三者"],["五年","5年"],["發現或結論","攸關性","合理性","一致性"],["假設","方法","攸關性","合理性"],["原始資料","攸關性","完整性","正確性"]],"a":"(一)例如：協助查核團隊規劃及執行查核工作；促使查核團隊對其查核工作負責；保存對未來查核工作具有重要延續性意義事項之紀錄。(二)通常於查核報告日後60天內完成彙整及歸檔；完成後於保管期限屆滿前不得刪除或銷毀；所有權原則上屬會計師事務所；除法令、專業準則另有規定或經受查者同意外，不得洩露第三者；保管年限自查核報告日起算不短於5年。(三)考量專家發現或結論之攸關性、合理性、與其他證據之一致性及是否適當反映於財報；重要假設及方法之攸關性與合理性；大量原始資料之攸關性、完整性及正確性。"},{"n":8,"q":"依據我國審計準則 610 號「採用內部稽核人員之工作」，有關評估內部稽核職能，查核人員應就查核目的評估哪些事項，以確定是否可採用內部稽核工作？查核人員如作出哪些判斷，則不得採用內部稽核工作？（未依題目格式作答不予計分）","g":[["控制測試"],["有限判斷","證實程序"],["觀察存貨盤點"],["追蹤交易流程"],["法令遵循"],["非重要組成個體"],["客觀性","無法支持"],["缺乏","專業能力"],["未應用","系統化","嚴謹","方法"]],"a":"可採用之內部稽核工作：1.控制測試。2.有限判斷之證實程序。3.觀察存貨盤點。4.追蹤交易流程。5.法令遵循之測試。6.非重要組成個體財務資訊之查核或核閱。不得採用之判斷：1.組織中之定位及相關政策與程序無法支持內部稽核人員之客觀性。2.內部稽核職能缺乏足夠之專業能力。3.內部稽核職能未應用系統化且嚴謹之方法（包含品質管制政策及程序）。"}];function nrm(s){return (s||"").toLowerCase().replace(/[\\s、，。；：,.()（）\\-]/g,"");}function renderWritten(){
+ var box=document.getElementById("writtenPractice");if(!box)return;box.innerHTML="";
+ writtenQuestions.forEach(function(x){
+   var d=document.createElement("div");d.className="card";
+   d.innerHTML="<div class=\"qhead\"><div class=\"qnum\">"+x.n+"</div><div><h2>問答題第 "+x.n+" 題</h2></div></div>"
+   +"<div class=\"info\" style=\"white-space:pre-wrap\"><b>課本題目：</b><br>"+x.q+"</div>"
+   +"<textarea id=\"wa"+x.n+"\" placeholder=\"請依課本題目直接作答……\"></textarea>"
+   +"<div class=\"answer-actions\">"
+   +"<button class=\"hint-btn\" onclick=\"showHint("+x.n+",1)\">提示 1</button>"
+   +"<button class=\"hint-btn\" onclick=\"showHint("+x.n+",2)\">提示 2</button>"
+   +"<button class=\"answer-btn\" onclick=\"showReference("+x.n+")\">查看參考答案</button>"
+   +"<button class=\"primary\" onclick=\"checkWritten("+x.n+")\">核對關鍵字</button>"
+   +"<button class=\"ghost\" onclick=\"clearWritten("+x.n+")\">清除重寫</button>"
+   +"</div>"
+   +"<div id=\"hint"+x.n+"\"></div><div id=\"ref"+x.n+"\"></div><div id=\"wr"+x.n+"\" class=\"checkbox\"></div>";
+   box.appendChild(d);
+ });
+}
+function showHint(n,level){
+ var x=writtenQuestions.find(function(v){return v.n===n;});
+ var h=document.getElementById("hint"+n);
+ if(level===1){
+   h.innerHTML="<div class=\"hintbox\"><b>提示 1｜答題架構</b><br>這題共有 "+x.g.length+" 組主要評分重點。先按題目小題順序，把每一組都寫出來。</div>";
+ }else{
+   var cues=x.g.map(function(g,i){return (i+1)+". "+g[0];}).join("　");
+   h.innerHTML="<div class=\"hintbox\"><b>提示 2｜關鍵方向</b><br>"+cues+"</div>";
+ }
+}
+function showReference(n){
+ var x=writtenQuestions.find(function(v){return v.n===n;});
+ var r=document.getElementById("ref"+n);
+ if(r.innerHTML){r.innerHTML="";return;}
+ r.innerHTML="<div class=\"refbox\"><b>課本參考答案</b><br>"+x.a+"</div>";
+}
+function checkWritten(n){var x=writtenQuestions.find(function(v){return v.n===n;});var raw=document.getElementById("wa"+n).value;var txt=nrm(raw);var out=document.getElementById("wr"+n);if(!txt){out.innerHTML="<div class=\"warn\">你還沒作答。先憑記憶寫一次，再核對會更有效。</div>";return;}var hits=[],miss=[];x.g.forEach(function(g){var ok=g.some(function(k){return txt.indexOf(nrm(k))>=0;});(ok?hits:miss).push(g);});var pct=Math.round(hits.length/x.g.length*100);var level=pct>=85?"很完整":pct>=65?"大致正確":pct>=40?"有抓到部分重點":"需要再補強";var ht=hits.map(function(g){return "✓ "+g.join("／");}).join("<br>");var mt=miss.map(function(g){return "• "+g.join("／");}).join("<br>");out.innerHTML="<div class=\"exam\"><b>關鍵字完整度：約 "+pct+"%｜"+level+"</b><br>"+(ht||"尚未偵測到主要關鍵字")+"</div>"+(miss.length?"<div class=\"warn\"><b>可能漏掉：</b><br>"+mt+"</div>":"")+"<details><summary>展開課本參考答案</summary><div style=\"white-space:pre-wrap;margin-top:10px\">"+x.a+"</div></details>";}function clearWritten(n){
+document.getElementById("wa"+n).value="";
+document.getElementById("wr"+n).innerHTML="";
+document.getElementById("hint"+n).innerHTML="";
+document.getElementById("ref"+n).innerHTML="";
+}renderWritten();
 const assertionWritten=[
 {n:"A",title:"管理階層五大聲明＝ECVOP",q:"請打出管理階層五大聲明 ECVOP 各字母代表的英文或中文概念。",groups:[["Existence","存在"],["Completeness","完整"],["Valuation","評價","衡量"],["Ownership","所有權","權利義務"],["Presentation","表達","揭露"]],answer:"E = Existence（存在）；C = Completeness（完整）；V = Valuation（評價）；O = Ownership／Rights & Obligations（所有權／權利與義務）；P = Presentation（表達／揭露）。"},
 {n:"B",title:"驗證交易 OCACCP",q:"請打出驗證交易 OCACCP 各字母代表的概念。",groups:[["Occurrence","發生"],["Completeness","完整"],["Accuracy","正確","準確"],["Cutoff","截止"],["Classification","分類"],["Presentation","表達","揭露"]],answer:"O = Occurrence（發生）；C = Completeness（完整）；A = Accuracy（正確性）；C = Cutoff（截止）；C = Classification（分類）；P = Presentation（表達／揭露）。"},
