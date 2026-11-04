@@ -53,8 +53,16 @@ footer{text-align:center;color:var(--muted);padding:28px}
 <div id="wrongBox"></div></section>
 
 <section id="focus"><div class="section-banner"><h2>老師指定問答高優先</h2><p>這裡不是平均複習，而是依老師點名考點集中練。</p></div>
-<div class="card"><h3>① 重大性｜第 5 章</h3><p>重大性、執行重大性、考量時機、基準、工作底稿紀錄。</p></div>
-<div class="card"><h3>② 分析性查核程序｜第 4 章</h3><p>定義＋使用目的：證實性分析程序、查核結束前整體結論。</p></div>
+<div class="card">
+<h3>① 重大性｜第 5 章</h3>
+<div class="mini"><b>老師指定考點</b>｜重大性、執行重大性、考量時機、基準、工作底稿紀錄。</div>
+<div id="materialityPractice"></div>
+</div>
+<div class="card">
+<h3>② 分析性查核程序｜第 4 章</h3>
+<div class="mini"><b>老師指定考點</b>｜定義＋使用目的。</div>
+<div id="analyticsPractice"></div>
+</div>
 <div class="card"><h3>③ 查核意見報告書｜第 2 章</h3><p>老師會給一段文字，判斷它屬於哪一段。下面直接用辨識題練。</p><div id="reportBox"></div><button class="primary" onclick="gradeReport()">交卷：段落辨識</button><div id="reportResult" class="result"></div></div>
 </section>
 
@@ -91,4 +99,47 @@ function clearWrong(){localStorage.removeItem("auditWrong");renderWrong();}
 function renderReport(){document.getElementById("reportBox").innerHTML=REPORT.map((x,i)=>"<div class='q'><div class='ref'>"+x.s+"</div>"+x.o.map((v,j)=>"<label class='option'><input type='radio' name='r"+i+"' value='"+j+"'> ("+String.fromCharCode(65+j)+") "+v+"</label>").join("")+"<div id='re"+i+"'></div></div>").join("");}
 function gradeReport(){let s=0,n=0;REPORT.forEach((x,i)=>{const e=document.querySelector("input[name='r"+i+"']:checked"),out=document.getElementById("re"+i);if(e){n++;if(+e.value===x.a){s++;out.innerHTML="<div class='ok'>✅ 正確｜"+x.e+"</div>";}else out.innerHTML="<div class='bad'>❌ 正確答案："+x.o[x.a]+"｜"+x.e+"</div>";}else out.innerHTML="<div class='bad'>⚠️ 未作答｜"+x.o[x.a]+"</div>";});document.getElementById("reportResult").textContent="得分："+s+" / "+REPORT.length;}
 renderBank();newMock();renderWrong();renderReport();
+
+const HIGH_PRIORITY_WRITTEN=[
+{
+id:"mat",
+title:"重大性",
+q:"請說明：(1) 何謂重大性？(2) 何謂執行重大性？(3) 查核人員於整個查核過程中特別在那些時機應考量重大性及查核風險？",
+hint1:"先分成 3 小題回答：重大性定義、執行重大性定義、4 個考量時機。",
+hint2:"四個時機口訣：風險 → 程序 → 未更正 → 意見。",
+a:"(1) 重大性：如不實表達（包含遺漏）之個別金額或彙總數，可合理預期將影響財務報表使用者所作之經濟決策，則被認為具有重大性。\n(2) 執行重大性：查核人員所設定低於財務報表整體重大性之單一或多個金額，使未更正及未偵出不實表達之彙總數超過財務報表整體重大性之可能性降低至一適當水準。\n(3) 特別考量時機：①辨認及評估重大不實表達風險；②決定進一步查核程序之性質、時間及範圍；③評估未更正不實表達對財務報表之影響；④形成查核意見。",
+g:[["重大性","經濟決策"],["執行重大性","低於","整體重大性"],["辨認及評估","重大不實表達風險"],["性質","時間","範圍"],["未更正不實表達"],["形成查核意見"]]
+},
+{
+id:"ana",
+title:"分析性查核程序",
+q:"請根據課本內容說明：(1) 分析性程序之定義。(2) 使用分析性程序之目的。",
+hint1:"這題分兩段：先寫『定義』，再寫『兩個目的』。",
+hint2:"定義抓：財務資料＋非財務資料＋可能關係；目的抓：證實性分析＋查核結束前整體結論。",
+a:"(1) 分析性程序係指經由分析財務資料間與非財務資料間之可能關係，藉以評估財務資訊。分析性程序亦包含基於以下原因所作之必要調查：①辨認之變動或關係與其他攸關資訊不一致；②辨認之變動或關係與預期值存有重大差異。\n(2) 使用分析性程序之目的：①採用證實性分析性程序以取得攸關且可靠之查核證據；②於查核工作即將結束前，設計並執行可協助查核人員作成整體結論之分析性程序，以確定財務報表是否與查核人員對受查者之瞭解一致。",
+g:[["財務資料","非財務資料","可能關係"],["攸關資訊","不一致"],["預期值","重大差異"],["證實性分析性程序","攸關","可靠"],["查核工作即將結束前","整體結論"],["瞭解一致"]]
+}
+];
+
+function renderHP(targetId, idx){
+ const x=HIGH_PRIORITY_WRITTEN[idx], box=document.getElementById(targetId); if(!box)return;
+ box.innerHTML="<div class='q'><b>題目</b><div class='ref' style='margin-top:8px'>"+x.q+"</div>"
+ +"<textarea id='hp_"+x.id+"' placeholder='先自己寫答案……'></textarea>"
+ +"<div class='actions'><button class='warnbtn' onclick='hpHint("+idx+",1)'>提示 1</button><button class='warnbtn' onclick='hpHint("+idx+",2)'>提示 2</button><button class='primary' onclick='hpCheck("+idx+")'>核對關鍵字</button><button class='ghost' onclick='hpAnswer("+idx+")'>查看參考答案</button><button class='ghost' onclick='hpClear("+idx+")'>清除</button></div>"
+ +"<div id='hp_hint_"+x.id+"'></div><div id='hp_res_"+x.id+"'></div><div id='hp_ans_"+x.id+"'></div></div>";
+}
+function hpHint(i,l){const x=HIGH_PRIORITY_WRITTEN[i];document.getElementById("hp_hint_"+x.id).innerHTML="<div class='hint'><b>提示 "+l+"：</b>"+(l===1?x.hint1:x.hint2)+"</div>";}
+function hpAnswer(i){const x=HIGH_PRIORITY_WRITTEN[i],e=document.getElementById("hp_ans_"+x.id);e.innerHTML=e.innerHTML?"":"<div class='ref'><b>參考答案</b><br>"+x.a.replace(/\n/g,"<br>")+"</div>";}
+function hpCheck(i){
+ const x=HIGH_PRIORITY_WRITTEN[i], raw=document.getElementById("hp_"+x.id).value, txt=(raw||"").toLowerCase().replace(/[\s、，。；：,.()（）\-]/g,""),out=document.getElementById("hp_res_"+x.id);
+ if(!txt){out.innerHTML="<div class='bad'>先自己作答，再按核對。</div>";return;}
+ const hit=[],miss=[];
+ x.g.forEach(g=>{const ok=g.some(k=>txt.includes(k.toLowerCase().replace(/[\s、，。；：,.()（）\-]/g,"")));(ok?hit:miss).push(g);});
+ const pct=Math.round(hit.length/x.g.length*100);
+ out.innerHTML="<div class='ok'><b>關鍵字完整度：約 "+pct+"%</b><br>"+hit.map(g=>"✓ "+g.join("／")).join("<br>")+"</div>"+(miss.length?"<div class='bad'><b>可能漏掉：</b><br>"+miss.map(g=>"• "+g.join("／")).join("<br>")+"</div>":"");
+}
+function hpClear(i){const x=HIGH_PRIORITY_WRITTEN[i];document.getElementById("hp_"+x.id).value="";document.getElementById("hp_hint_"+x.id).innerHTML="";document.getElementById("hp_res_"+x.id).innerHTML="";document.getElementById("hp_ans_"+x.id).innerHTML="";}
+renderHP("materialityPractice",0);
+renderHP("analyticsPractice",1);
+
 </script></body></html>
