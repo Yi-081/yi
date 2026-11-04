@@ -33,11 +33,35 @@ textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:
 
 <nav><div class="wrap">
 <a href="audit-ch4.html">← 第 4 章</a>
+<a href="#focus">老師指定問答考點</a>
 <a href="#quiz">課本選擇題</a>
-<a href="#written">課本問答題</a>
+<a href="#written">第 5 章完整問答</a>
 </div></nav>
 
 <main class="wrap">
+<div class="section-banner" id="focus"><h2>老師指定問答考點</h2><p>依你提供的老師筆記：①重大性 ②分析性查核程序 ③查核意見報告書。這三類優先練。</p></div>
+<section>
+<div class="card">
+<h3>① 重大性｜第 5 章</h3>
+<p><b>最優先會寫：</b>重大性、執行重大性、決定重大性的重點、何時考量重大性、重大性基準、工作底稿應記錄哪些重大性金額。</p>
+<div class="mini">來源：第 5 章問答題第 2～4 題。</div>
+</div>
+<div class="card">
+<h3>② 分析性查核程序｜第 4 章</h3>
+<p><b>最優先會寫：</b>分析性程序定義＋使用分析性程序的兩個目的。</p>
+<div class="mini">核心：分析財務資料與非財務資料間的可能關係；必要時調查與其他攸關資訊不一致或與預期值有重大差異的變動／關係。</div>
+</div>
+<div class="card">
+<h3>③ 查核意見報告書｜第 2 章</h3>
+<p><b>最優先會寫：</b>無保留查核報告至少包含哪些段落，以及修正式意見三種類型與判斷條件。</p>
+<div class="mini">判斷矩陣：重大但非廣泛＝保留；已確認重大且廣泛＝否定；無法取得證據且可能重大且廣泛＝無法表示。</div>
+</div>
+<div class="card">
+<h3>三大考點快速打字練習</h3>
+<div id="focusPractice"></div>
+</div>
+</section>
+
 <div class="section-banner"><h2>課本選擇題</h2><p>第 5 章課本選擇題 1～29 題。</p></div>
 <section id="quiz">
 <div class="card"><b>作答方式：</b>全部答完後按「交卷」。不論答對或答錯，每題都會顯示答案與簡短解析。</div>
@@ -129,6 +153,31 @@ function checkW(i){
 }
 function clearW(i){document.getElementById("wa"+i).value="";document.getElementById("hintw"+i).innerHTML="";document.getElementById("refw"+i).innerHTML="";document.getElementById("resw"+i).innerHTML="";}
 renderWritten();
+
+
+const focusData=[{"t":"重大性","q":"請說明：何謂重大性？何謂執行重大性？查核人員於整個查核過程中特別在那些時機應考量重大性及查核風險？","g":[["重大性","經濟決策"],["執行重大性","低於","整體重大性"],["辨認及評估","重大不實表達風險"],["進一步查核程序","性質","時間","範圍"],["未更正不實表達"],["形成查核意見"]],"h":"先記 2 個定義＋4 個時機。口訣可抓：風險、程序、未更正、意見。","a":"重大性：不實表達（包含遺漏）之個別金額或彙總數，如可合理預期影響財務報表使用者所作之經濟決策，即被認為具有重大性。執行重大性：查核人員設定低於財務報表整體重大性之單一或多個金額，使未更正及未偵出不實表達彙總數超過整體重大性之可能性降低至適當水準。特別考量時機：1.辨認及評估重大不實表達風險；2.決定進一步查核程序之性質、時間及範圍；3.評估未更正不實表達對財務報表之影響；4.形成查核意見。"},{"t":"分析性查核程序","q":"請說明分析性程序之定義，以及使用分析性程序的目的。","g":[["財務資料","非財務資料","可能關係"],["評估財務資訊"],["不一致","預期值","重大差異"],["證實性分析性程序","攸關","可靠"],["查核工作即將結束前","整體結論","瞭解一致"]],"h":"定義抓「財務＋非財務的關係」；目的抓兩個：證實性、查核結束前整體結論。","a":"分析性程序係指經由分析財務資料間與非財務資料間之可能關係，藉以評估財務資訊；亦包含對與其他攸關資訊不一致，或與預期值存有重大差異之變動或關係作必要調查。目的：1.採用證實性分析性程序以取得攸關且可靠之查核證據。2.於查核工作即將結束前，設計並執行分析性程序，以協助查核人員作成整體結論，確認財務報表是否與其對受查者之瞭解一致。"},{"t":"查核意見報告書","q":"請說明無保留意見查核報告至少應包括哪些主要段落？修正式意見有哪三種類型，應如何判斷？","g":[["查核意見"],["查核意見之基礎"],["關鍵查核事項"],["管理階層","治理單位","責任"],["會計師","查核財務報表之責任"],["保留意見"],["否定意見"],["無法表示意見"],["重大但非廣泛"],["重大且廣泛"],["無法取得","足夠及適切","查核證據"]],"h":"先背五段：意、基、關、管、會。再背修正式三種：保、否、無。關鍵判斷是『有沒有證據』＋『重大是否廣泛』。","a":"無保留意見查核報告至少包括：查核意見段、查核意見之基礎段、關鍵查核事項段、管理階層與治理單位對財務報表之責任段、會計師查核財務報表之責任段。修正式意見包括保留意見、否定意見、無法表示意見。若已取得足夠適切證據，確認不實表達重大但非廣泛→保留；重大且廣泛→否定。若無法取得足夠適切證據，可能影響重大但非廣泛→保留；可能影響重大且廣泛→無法表示。"}];
+function renderFocus(){
+ const box=document.getElementById("focusPractice"); if(!box)return; box.innerHTML="";
+ focusData.forEach((x,i)=>{
+   const d=document.createElement("div");d.className="q";
+   d.innerHTML="<b>"+x.t+"</b><div class='mini' style='margin-top:6px'>"+x.q+"</div>"
+   +"<textarea id='fp"+i+"' placeholder='直接打出你記得的答案……'></textarea>"
+   +"<div class='actions'><button class='hint' onclick='focusHint("+i+")'>提示</button><button class='ref' onclick='focusRef("+i+")'>查看參考答案</button><button class='primary' onclick='focusCheck("+i+")'>核對關鍵字</button><button class='ghost' onclick='focusClear("+i+")'>清除</button></div>"
+   +"<div id='fph"+i+"'></div><div id='fpr"+i+"'></div><div id='fpc"+i+"'></div>";
+   box.appendChild(d);
+ });
+}
+function focusHint(i){document.getElementById("fph"+i).innerHTML="<div class='hintbox'><b>提示：</b>"+focusData[i].h+"</div>";}
+function focusRef(i){const e=document.getElementById("fpr"+i);e.innerHTML=e.innerHTML?"":"<div class='refbox'><b>參考答案</b><br>"+focusData[i].a+"</div>";}
+function focusCheck(i){
+ const x=focusData[i],txt=norm(document.getElementById("fp"+i).value),out=document.getElementById("fpc"+i);
+ if(!txt){out.innerHTML="<div class='bad'>先作答再核對。</div>";return;}
+ const hit=[],miss=[];x.g.forEach(g=>{const ok=g.some(k=>txt.includes(norm(k)));(ok?hit:miss).push(g);});
+ const pct=Math.round(hit.length/x.g.length*100);
+ out.innerHTML="<div class='ok'><b>關鍵字完整度：約 "+pct+"%</b><br>"+hit.map(g=>"✓ "+g.join("／")).join("<br>")+"</div>"+(miss.length?"<div class='bad'><b>可能漏掉：</b><br>"+miss.map(g=>"• "+g.join("／")).join("<br>")+"</div>":"");
+}
+function focusClear(i){document.getElementById("fp"+i).value="";document.getElementById("fph"+i).innerHTML="";document.getElementById("fpr"+i).innerHTML="";document.getElementById("fpc"+i).innerHTML="";}
+renderFocus();
 
 </script>
 </body></html>
