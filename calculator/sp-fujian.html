@@ -29,4 +29,39 @@
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
 </script>
+
+<!-- 統一最大輸出介面：原計算公式保留；戰鬥累積條件自動取上限 -->
+<style id="max-output-unified">
+.max-ui{max-width:900px;margin:14px auto 22px;padding:0 12px;font-family:"Microsoft JhengHei",sans-serif}.max-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.max-tabs button{border:1px solid #bfa67d;border-radius:10px;padding:13px 5px;background:#f5ebd9;color:#483621;font-size:15px;font-weight:700;cursor:pointer}.max-tabs button.selected{background:#68452d;color:white}.max-panel{display:none;background:#fffdf8;border:1px solid #d8c6a9;border-radius:14px;padding:14px}.max-panel.selected{display:block}.max-panel .tab,.max-panel .tab-content{display:block!important;visibility:visible!important}.max-panel .tab:not(:last-child){margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #e7ded0}.max-panel input,.max-panel select{max-width:100%}.max-reverse label{display:block;font-size:14px;font-weight:700;margin:12px 0 6px}.max-reverse input{width:100%;padding:12px;border:1px solid #bca887;border-radius:9px;font-size:18px}.max-reverse button{margin-top:12px;padding:12px 18px;border:0;border-radius:9px;background:#68452d;color:white;font-weight:700}.max-reverse-result{margin-top:12px;font-size:17px;line-height:1.8;overflow-wrap:anywhere}.max-info{font-size:12px;color:#796a58;line-height:1.8;margin:12px 0}.max-hidden{display:none!important}
+</style>
+<script>
+(function(){
+const config={"calcIds":["heal","burst"],"skillId":"skill","inputId":"def","outputId":"heal-all","kind":"治療量"};
+function setup(){
+ const calcSections=config.calcIds.map(id=>document.getElementById(id)).filter(Boolean);
+ const skill=document.getElementById(config.skillId);
+ if(!calcSections.length||!skill)return;
+ const main=calcSections[0].parentElement;
+ const wrapper=document.createElement('div');wrapper.className='max-ui';
+ wrapper.innerHTML='<div class="max-tabs"><button type="button" class="selected" data-max-tab="calculate">🧮 計算</button><button type="button" data-max-tab="reverse">🎯 反推面板</button><button type="button" data-max-tab="skills">📖 技能說明</button></div><div class="max-panel selected" data-max-panel="calculate"><div class="max-info">以技能滿級及可累積效果最高值計算；數值為原頁公式所定義的理論值，未另計敵方防禦、減傷或御魂。</div></div><div class="max-panel max-reverse" data-max-panel="reverse"><label for="max-target">目標'+config.kind+'</label><input id="max-target" type="number" min="0" step="any" placeholder="輸入想達到的數值"><button type="button" id="max-solve">反推所需面板</button><div class="max-reverse-result" id="max-reverse-result" aria-live="polite"></div><p class="max-info">反推以計算頁目前的其他輸入值為固定條件，對指定面板進行數值求解。若有上限、門檻或非單調效果，可能無法反推，請以技能說明為準。</p></div><div class="max-panel" data-max-panel="skills"></div>';
+ main.parentNode.insertBefore(wrapper,main);
+ const calcPanel=wrapper.querySelector('[data-max-panel="calculate"]');
+ for(const section of calcSections){section.classList.add('active');calcPanel.appendChild(section)}
+ skill.classList.add('active');wrapper.querySelector('[data-max-panel="skills"]').appendChild(skill);
+ // Hide legacy multi-tab controls and utility-only panels, but preserve original computation functions.
+ const tabs=document.querySelectorAll('.tabs,.tab-buttons');tabs.forEach(t=>{if(!wrapper.contains(t))t.classList.add('max-hidden')});
+ const legacy=main.querySelectorAll('.tab,.tab-content');legacy.forEach(t=>t.classList.add('max-hidden'));
+ // The original page may have additional decorative containers; keep them to avoid breaking scripts.
+ wrapper.querySelectorAll('[data-max-tab]').forEach(b=>b.addEventListener('click',()=>{wrapper.querySelectorAll('[data-max-tab]').forEach(x=>x.classList.toggle('selected',x===b));wrapper.querySelectorAll('[data-max-panel]').forEach(p=>p.classList.toggle('selected',p.dataset.maxPanel===b.dataset.maxTab))}));
+ const fixed={"fw":5,"rings":3,"core-now":7,"core-gain":7,"stacks":10,"target-stacks":10,"added":10,"feathers":4,"ashes":3,"demons":2,"flowers":4,"buffs":4,"d-buffs":4,"others":4,"layers":10,"triggers":1,"bats":12,"normal":0,"rest":0,"moon":0,"other":0};
+ for(const [id,value] of Object.entries(fixed)){const e=document.getElementById(id);if(!e)continue;if(e.tagName==='SELECT'){const opts=[...e.options];const selected=opts.find(o=>Number(o.value)===value);if(!selected)continue;}e.value=String(value);const field=e.closest('.field,.input,.input-group');if(field)field.classList.add('max-hidden');else e.classList.add('max-hidden');e.dispatchEvent(new Event('input',{bubbles:true}));}
+ const levelIds=['level','elv','hlv','voice','dreamlv','attacklv','slashlv','oathlv','foxlv','born','destroy','critlv'];for(const id of levelIds){const e=document.getElementById(id);if(!e||e.tagName!=='SELECT')continue;const opts=[...e.options].filter(o=>!o.disabled);if(!opts.length)continue;e.value=opts.reduce((a,b)=>Number(b.value)>Number(a.value)?b:a).value;const field=e.closest('.field,.input,.input-group');if(field)field.classList.add('max-hidden');else e.classList.add('max-hidden');e.dispatchEvent(new Event('change',{bubbles:true}));}
+ function run(){for(const name of ['calc','calcDmg','calcDrum','calcMain','calcNormal','calcSlash','calcCrystal']){try{if(typeof window[name]==='function')window[name]()}catch(e){}}}
+ function number(){run();const e=document.getElementById(config.outputId);if(!e)return NaN;const raw=(e.textContent||'').replace(/,/g,'').replace(/[^0-9.\-]/g,'');return Number(raw)}
+ wrapper.querySelector('#max-solve').addEventListener('click',()=>{const result=wrapper.querySelector('#max-reverse-result'),field=document.getElementById(config.inputId),target=Number(wrapper.querySelector('#max-target').value);if(!field||!Number.isFinite(target)||target<=0){result.textContent='請輸入大於 0 的目標數值。';return}const old=field.value;const set=v=>{field.value=String(v);field.dispatchEvent(new Event('input',{bubbles:true}));return number()};try{let low=0,high=Math.max(1,Number(old)||1),v=set(high);let attempts=0;while(Number.isFinite(v)&&v<target&&attempts++<45&&high<1e13){high*=2;v=set(high)}if(!Number.isFinite(v)||v<target){result.textContent='無法在有效範圍內反推，可能存在技能上限或缺少必要輸入。';return}for(let i=0;i<55;i++){const mid=(low+high)/2;const y=set(mid);if(!Number.isFinite(y)){result.textContent='原公式無法計算此條件。';return}if(y>=target)high=mid;else low=mid}result.textContent='所需'+(field.closest('.field,.input,.input-group')?.querySelector('label')?.textContent?.trim()||'面板')+'：'+Math.ceil(high).toLocaleString('zh-TW')+'（其他條件保持不變）'}finally{field.value=old;field.dispatchEvent(new Event('input',{bubbles:true}));run()}});
+ run();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+</script>
 </body></html>
